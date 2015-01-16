@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2013 Qualcomm Atheros, Inc.
- * 
+ *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
@@ -70,6 +70,49 @@ void ath_spi_flash_unblock(void)
 }
 #endif
 
+#if  defined(CONFIG_ATH_SPI_CS1_GPIO)
+static void ath_gpio_config_output(int gpio)
+{
+#if defined(CONFIG_MACH_AR934x) || \
+	defined(CONFIG_MACH_QCA955x) || \
+	defined(CONFIG_MACH_QCA953x) || \
+	defined(CONFIG_MACH_QCA956x)
+	ath_reg_rmw_clear(ATH_GPIO_OE, (1 << gpio));
+#else
+	ath_reg_rmw_set(ATH_GPIO_OE, (1 << gpio));
+#endif
+}
+
+static void ath_gpio_set_fn(int gpio, int fn)
+{
+#define gpio_fn_reg(x)  ((x) / 4)
+#define gpio_lsb(x)     (((x) % 4) * 8)
+#define gpio_msb(x)     (gpio_lsb(x) + 7)
+#define gpio_mask(x)    (0xffu << gpio_lsb(x))
+#define gpio_set(x, f)  (((f) & 0xffu) << gpio_lsb(x))
+
+	uint32_t *reg = ((uint32_t *)GPIO_OUT_FUNCTION0_ADDRESS) +
+				gpio_fn_reg(gpio);
+
+	ath_reg_wr(reg, (ath_reg_rd(reg) & ~gpio_mask(gpio)) | gpio_set(gpio, fn));
+}
+
+void ath_spi_flash_enable_cs1(void)
+{
+#if CONFIG_MACH_QCA934x
+	int fn = 0x07;
+#elif (CONFIG_MACH_QCA953x || CONFIG_MACH_QCA955x)
+	int fn = 0x0a;
+#else /* CONFIG_MACH_QCA956x*/
+	int fn = 0x25;
+#endif
+
+	ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO, fn);
+	ath_gpio_config_output(CONFIG_ATH_SPI_CS1_GPIO);
+}
+#else
+#define ath_spi_flash_enable_cs1(...)
+#endif
 unsigned long flash_init(void)
 {
 #if !(defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA956x))
@@ -80,9 +123,9 @@ unsigned long flash_init(void)
 #else
 	ath_reg_wr_nf(ATH_SPI_CLOCK, 0x43);
 #endif
-#endif 
+#endif
 
-#if  defined(CONFIG_MACH_QCA953x) /* Added for HB-SMIC */  
+#if  defined(CONFIG_MACH_QCA953x) /* Added for HB-SMIC */
 #ifdef ATH_SST_FLASH
 	ath_reg_wr_nf(ATH_SPI_CLOCK, 0x4);
 	ath_spi_flash_unblock();
@@ -95,6 +138,7 @@ unsigned long flash_init(void)
 	ath_spi_read_id();
 	ath_reg_rmw_clear(ATH_SPI_FS, 1);
 
+	ath_spi_flash_enable_cs1();
 	/*
 	 * hook into board specific code to fill flash_info
 	 */
