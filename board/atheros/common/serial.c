@@ -34,6 +34,9 @@ int serial_init(void)
 	val = ath_reg_rd(GPIO_OE_ADDRESS) & (~0xcffc10u);
 #endif
 
+#if defined(CONFIG_ATH_SPI_NAND_CS_GPIO)
+	val |= 1 << CONFIG_ATH_SPI_NAND_CS_GPIO;
+#endif
 #if defined(CONFIG_ATH_SPI_CS1_GPIO)
 	val |= 1 << CONFIG_ATH_SPI_CS1_GPIO;
 #endif
