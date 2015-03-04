@@ -2058,6 +2058,14 @@ ifeq ($(ETH_CONFIG), _s27)
 	@echo '#define CFG_ATH_GMAC_NMACS 2' >>include/config.h
 endif
 
+ifeq ($(ATH_DUAL_FLASH), 1)
+	@echo '#define CONFIG_ATH_NAND_SUPPORT  1'      >>include/config.h
+ifeq ($(ATH_SPI_NAND), 1)
+	@echo '#define ATH_SPI_NAND             1'      >>include/config.h
+	@echo '#define CONFIG_ATH_SPI_NAND_CS_GPIO  $(ATH_SPI_NAND_CS_GPIO) '>> include/config.h
+endif
+endif
+
 ifdef FLASH_SIZE
 	@echo "#define FLASH_SIZE $(FLASH_SIZE)" >>include/config.h
 endif

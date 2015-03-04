@@ -41,7 +41,12 @@ EXTRA_OBJS = $(BOARD_EXTRA_OBJS_tmp)
 endif #}
 
 ifeq ($(ATH_DUAL_FLASH),1)
-OBJS	+= ../common/ath_nand.o ../../../drivers/nand/nand_ids.o
+OBJS	+= ../../../drivers/nand/nand_ids.o
+ifeq ($(ATH_SPI_NAND),1)
+OBJS	+= ../common/ath_spi_nand.o
+else
+OBJS	+= ../common/ath_nand.o
+endif
 endif
 
 ifndef BOOT_FROM_NAND
