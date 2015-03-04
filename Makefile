@@ -2061,6 +2061,9 @@ endif
 ifdef FLASH_SIZE
 	@echo "#define FLASH_SIZE $(FLASH_SIZE)" >>include/config.h
 endif
+ifdef ATH_SPI_CS1_GPIO
+	@echo "#define CONFIG_ATH_SPI_CS1_GPIO $(ATH_SPI_CS1_GPIO)" >>include/config.h
+endif
 	@./mkconfig -a board953x mips mips board953x atheros
 
 ap120_config			: 	unconfig
