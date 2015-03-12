@@ -25,6 +25,11 @@
 #	define	ath_spi_flash_print_info	flash_print_info
 #endif
 
+#define ATH_16M_FLASH_SIZE		0x1000000
+#define ATH_GET_EXT_3BS(addr)		((addr) % ATH_16M_FLASH_SIZE)
+#define ATH_GET_EXT_4B(addr)		((addr) >> 24)
+
+
 /*
  * globals
  */
@@ -39,6 +44,27 @@ static void ath_spi_poll(void);
 static void ath_spi_write_page(uint32_t addr, uint8_t * data, int len);
 #endif
 static void ath_spi_sector_erase(uint32_t addr);
+
+#if (FLASH_SIZE > 16)
+static void ath_spi_enter_ext_addr(u8 addr)
+{
+	ath_spi_write_enable();
+	ath_reg_wr_nf(ATH_SPI_WRITE, ATH_SPI_CS_DIS);
+	ath_spi_bit_banger(ATH_SPI_CMD_WR_EXT);
+	ath_spi_bit_banger(addr);
+	ath_spi_go();
+	ath_spi_poll();
+}
+
+static void ath_spi_exit_ext_addr(int ext)
+{
+	if (ext)
+		ath_spi_enter_ext_addr(0);
+}
+#else
+#define ath_spi_enter_ext_addr(addr)
+#define ath_spi_exit_ext_addr(ext)
+#endif
 
 static void
 ath_spi_read_id(void)
@@ -136,6 +162,7 @@ unsigned long flash_init(void)
 #endif 
 	ath_reg_rmw_set(ATH_SPI_FS, 1);
 	ath_spi_read_id();
+	ath_spi_exit_ext_addr(1);
 	ath_reg_rmw_clear(ATH_SPI_FS, 1);
 
 	ath_spi_flash_enable_cs1();
@@ -154,15 +181,34 @@ ath_spi_flash_print_info(flash_info_t *info)
 int
 flash_erase(flash_info_t *info, int s_first, int s_last)
 {
+	u32 addr;
+	int ext = 0;
 	int i, sector_size = info->size / info->sector_count;
 
 	printf("\nFirst %#x last %#x sector size %#x\n",
 		s_first, s_last, sector_size);
 
-	for (i = s_first; i <= s_last; i++) {
-		printf("\b\b\b\b%4d", i);
-		ath_spi_sector_erase(i * sector_size);
+	addr = s_first * sector_size;
+	if (addr >= ATH_16M_FLASH_SIZE) {
+		ext = 1;
+		ath_spi_enter_ext_addr(ATH_GET_EXT_4B(addr));
+	} else if (s_last * sector_size >= ATH_16M_FLASH_SIZE) {
+		printf("Erase failed, cross 16M is forbidden\n");
+		return -1;
 	}
+
+	for (i = s_first; i <= s_last; i++) {
+		addr = i * sector_size;
+
+		if (ext)
+			addr = ATH_GET_EXT_3BS(addr);
+
+		printf("\b\b\b\b%4d", i);
+		ath_spi_sector_erase(addr);
+	}
+
+	ath_spi_exit_ext_addr(ext);
+
 	ath_spi_done();
 	printf("\n");
 
@@ -223,9 +269,19 @@ write_buff(flash_info_t *info, uchar *source, ulong addr, ulong len)
 	int total = 0, len_this_lp, bytes_this_page;
 	ulong dst;
 	uchar *src;
+	int ext = 0;
 
 	printf("write addr: %x\n", addr);
 	addr = addr - CFG_FLASH_BASE;
+
+	if (addr >= ATH_16M_FLASH_SIZE) {
+		ext = 1;
+		ath_spi_enter_ext_addr(ATH_GET_EXT_4B(addr));
+		addr = ATH_GET_EXT_3BS(addr);
+	} else if (addr + len >= ATH_16M_FLASH_SIZE) {
+		printf("Write failed, cross 16M is forbidden\n");
+		return -1;
+	}
 
 	while (total < len) {
 		src = source + total;
@@ -238,6 +294,8 @@ write_buff(flash_info_t *info, uchar *source, ulong addr, ulong len)
 		ath_spi_write_page(dst, src, len_this_lp);
 		total += len_this_lp;
 	}
+
+	ath_spi_exit_ext_addr(ext);
 
 	ath_spi_done();
 

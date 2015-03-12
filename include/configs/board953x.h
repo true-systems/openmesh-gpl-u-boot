@@ -1,10 +1,10 @@
-/* 
+/*
  * Copyright (c) 2014 The Linux Foundation. All rights reserved.
- * 
+ *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
  * copyright notice and this permission notice appear in all copies.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -12,7 +12,7 @@
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
+ *
  */
 
 #ifndef __BOARD_955X_H
@@ -33,7 +33,11 @@
  * FLASH and environment organization
  */
 #define CFG_MAX_FLASH_BANKS	1	/* max number of memory banks */
-#if (FLASH_SIZE == 16)
+#if (FLASH_SIZE == 32)
+#define CFG_MAX_FLASH_SECT	512	/* max number of sectors on one chip */
+#define ATH_MTDPARTS_MIB0	"64k(mib0)"
+#define ATH_ROOTFS_SIZE		"14528k(rootfs)"
+#elif (FLASH_SIZE == 16)
 #define CFG_MAX_FLASH_SECT	256	/* max number of sectors on one chip */
 #define ATH_MTDPARTS_MIB0	"64k(mib0)"
 #define ATH_ROOTFS_SIZE		"14528k(rootfs)"
@@ -50,7 +54,9 @@
 #endif
 
 #define CFG_FLASH_SECTOR_SIZE	(64*1024)
-#if (FLASH_SIZE == 16)
+#if (FLASH_SIZE == 32)
+#define CFG_FLASH_SIZE		0x02000000	/* Total flash size */
+#elif (FLASH_SIZE == 16)
 #define CFG_FLASH_SIZE		0x01000000	/* Total flash size */
 #elif (FLASH_SIZE == 8)
 #define CFG_FLASH_SIZE		0x00800000	/* max number of sectors on one chip */
@@ -118,6 +124,17 @@
 	#n "=tftp 0x80060000 ${dir}" #f "&&"	\
 	#ec " " #a " " #el "&&"			\
 	#cc " $fileaddr " #a " $filesize\0"
+
+#if (FLASH_SIZE == 32)
+#define __gen_cmd2(n, a1, a2, f, ec, cc, el)	\
+	#n "=tftp 0x80060000 ${dir}" #f "&&"	\
+	#ec " " #a1 " " #el "&&"		\
+	#cc " $fileaddr " #a1 " $filesize &&"	\
+	#ec " " #a2 " " #el "&&"		\
+	#cc " $fileaddr " #a2 " $filesize\0"
+#define gen_cmd2(n, a1, a2, f)			\
+	__gen_cmd2(n, a1, a2, f, erase, cp.b, +$filesize)
+#endif
 
 #define gen_cmd(n, a, f)			\
 	__gen_cmd(n, a, f, erase, cp.b, +$filesize)
@@ -193,7 +210,7 @@
 #		define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:32k(u-boot1),32k(u-boot2),3008k(rootfs),896k(uImage),64k(mib0),64k(ART)"
 #	else
 #		define ATH_F_FILE		fs_name(${bc}-jffs2)
-#	if (FLASH_SIZE == 16)
+#	if (FLASH_SIZE == 16 || FLASH_SIZE == 32)
 #		define ATH_F_LEN		0xE30000
 #		define ATH_K_ADDR		0x9fE80000
 #	else
@@ -202,7 +219,11 @@
 # 	endif
 #		define ATH_F_ADDR		0x9f050000
 #		define ATH_K_FILE		vmlinux${bc}.lzma.uImage
-#		define MTDPARTS_DEFAULT		"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1408k(uImage)," ATH_MTDPARTS_MIB0 ",64k(ART)"
+#		if (FLASH_SIZE == 32)
+#			define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1472k(uImage)," "64k(ART),256k(reserved),16128k(usr)"
+#		else
+#			define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1408k(uImage)," ATH_MTDPARTS_MIB0 ",64k(ART)"
+#		endif
 #	endif
 #endif /*CONFIG_MI124*/
 
@@ -215,7 +236,11 @@
 #endif
 
 #ifndef ATH_U_CMD
-#	define ATH_U_CMD	gen_cmd(lu, 0x9f000000, ATH_U_FILE)
+#	if (FLASH_SIZE == 32)
+#		define ATH_U_CMD	gen_cmd2(lu, 0x9f000000, 0xa0000000, ATH_U_FILE)
+#	else
+#		define ATH_U_CMD	gen_cmd(lu, 0x9f000000, ATH_U_FILE)
+#	endif
 #endif
 
 #ifndef ATH_F_CMD
@@ -256,7 +281,7 @@
 #	ifdef COMPRESSED_UBOOT
 #		define CONFIG_BOOTCOMMAND	"bootm 0x9f300000"
 #	else
-#		if (FLASH_SIZE == 16)
+#		if (FLASH_SIZE == 16 || FLASH_SIZE == 32)
 #			define CONFIG_BOOTCOMMAND	"bootm 0x9fE80000"
 #		else
 #			define CONFIG_BOOTCOMMAND	"bootm 0x9f680000"
