@@ -3755,6 +3755,8 @@
 #define ATH_SPI_CMD_SECTOR_ERASE	0xd8
 #define ATH_SPI_CMD_CHIP_ERASE		0xc7
 #define ATH_SPI_CMD_RDID		0x9f
+#define ATH_SPI_CMD_WR_EXT		0xc5
+#define ATH_SPI_CMD_RD_EXT		0xc8
 
 #if defined(CFG_ATH_EMULATION)
 
