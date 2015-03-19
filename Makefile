@@ -2066,6 +2066,11 @@ ifeq ($(ATH_SPI_NAND), 1)
 endif
 endif
 
+ifeq ($(ATH_DUAL_IMAGE_SUPPORT),1)
+	@echo '#define CONFIG_ATH_DUAL_IMAGE_SUPPORT  1' >>include/config.h
+	@echo '#define BOARD_NAME "$(CFG_BOARD_NAME)"' >>include/config.h
+endif
+
 ifdef FLASH_SIZE
 	@echo "#define FLASH_SIZE $(FLASH_SIZE)" >>include/config.h
 endif
