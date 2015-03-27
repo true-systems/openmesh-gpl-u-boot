@@ -173,7 +173,12 @@
 #		define ATH_K_LEN	0x140000
 #	else //dual flash
 #		ifdef ATH_SPI_NAND
-#			define MTDPARTS_DEFAULT "mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env),128k(pad),64k(ART);ath-spi-nand:2m(uImage),20m(rootfs),106m(data))"
+#			if CONFIG_ATH_DUAL_IMAGE_SUPPORT
+#                               define MTDPARTS_DEFAULT "mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),128k(reserved),64k(art);spi0.1:2m(kernel),20m(rootfs),2m(k-2),20m(r-2),84m(user),22m@0x0(firmware),22m@0x1600000(fw-2)"
+
+#                       else
+#				define MTDPARTS_DEFAULT "mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env),128k(pad),64k(ART);ath-spi-nand:2m(uImage),20m(rootfs),106m(data))"
+#			endif
 #			define ATH_ROOT_DEV     "31:07"
 #			define ATH_F_LEN        0x1400000
 #			define ATH_F_ADDR       0x200000
@@ -219,10 +224,25 @@
 # 	endif
 #		define ATH_F_ADDR		0x9f050000
 #		define ATH_K_FILE		vmlinux${bc}.lzma.uImage
-#		if (FLASH_SIZE == 32)
-#			define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1472k(uImage)," "64k(ART),256k(reserved),16128k(usr)"
+
+#		if CONFIG_ATH_DUAL_IMAGE_SUPPORT
+#			if (FLASH_SIZE == 32)
+#				define MTDPARTS_DEFAULT	"mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)," ATH_ROOTFS_SIZE ",1472k(kernel),64k(art),256k(reserved),14528k(r-2),1472k(k-2),128k(reserved2),16000k@0x50000(firmware),16000k@0x1040000(fw-2)"
+#			else
+#				if defined(CONFIG_ATH_SPI_CS1_GPIO)
+#					define MTDPARTS_DEFAULT	"mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)," ATH_ROOTFS_SIZE ",1472k(kernel),64k(art),16000k@0x50000(firmware);spi0.1:14528k(r-2),1472k(k-2),384k(reserved),16000k@0x0(fw-2)"
+#				else /* FLASH_SIZE == 16 */
+#					define ATH_F_LEN		0x660000
+#					define ATH_K_ADDR		0x9f6B0000
+#					define MTDPARTS_DEFAULT	"mtdparts=spi0.0:256k(u-boot),64k(u-boot-env),6528k(rootfs),1472k(kernel),6528k(r-2),1472k(k-2),64k(art),8000k@0x50000(firmware),8000k@0x820000(fw-2)"
+#				endif
+#			endif
 #		else
-#			define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1408k(uImage)," ATH_MTDPARTS_MIB0 ",64k(ART)"
+#			if (FLASH_SIZE == 32)
+#				define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1472k(uImage)," "64k(ART),256k(reserved),16128k(usr)"
+#			else
+#				define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1408k(uImage)," ATH_MTDPARTS_MIB0 ",64k(ART)"
+#			endif
 #		endif
 #	endif
 #endif /*CONFIG_MI124*/
@@ -254,8 +274,11 @@
 #define CONFIG_EXTRA_ENV_SETTINGS	\
 	"dir=\0" ATH_U_CMD ATH_F_CMD ATH_K_CMD ""
 
-#define	CONFIG_BOOTARGS		"console=ttyS0,115200 root=" ATH_ROOT_DEV " rootfstype=jffs2 init=/sbin/init " MTDPARTS_DEFAULT
-
+#ifdef CONFIG_ATH_DUAL_IMAGE_SUPPORT
+	#define CONFIG_BOOTARGS "board=" BOARD_NAME " console=ttyS0,115200 " MTDPARTS_DEFAULT " rootfstype=squashfs,jffs2 noinitrd"
+#else
+	#define	CONFIG_BOOTARGS	"console=ttyS0,115200 root=" ATH_ROOT_DEV " rootfstype=jffs2 init=/sbin/init " MTDPARTS_DEFAULT
+#endif
 //#define CFG_PLL_FREQ    CFG_PLL_720_600_200
 
 /*

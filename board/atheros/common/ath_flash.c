@@ -97,6 +97,9 @@ void ath_spi_flash_unblock(void)
 #endif
 
 #if  defined(CONFIG_ATH_SPI_CS1_GPIO)
+
+#define ATH_SPI_CS0_GPIO		5
+
 static void ath_gpio_config_output(int gpio)
 {
 #if defined(CONFIG_MACH_AR934x) || \
@@ -123,18 +126,69 @@ static void ath_gpio_set_fn(int gpio, int fn)
 	ath_reg_wr(reg, (ath_reg_rd(reg) & ~gpio_mask(gpio)) | gpio_set(gpio, fn));
 }
 
-void ath_spi_flash_enable_cs1(void)
+int ath_spi_flash_get_fn_cs0(void)
 {
 #if CONFIG_MACH_QCA934x
-	int fn = 0x07;
+	return 0x09;
 #elif (CONFIG_MACH_QCA953x || CONFIG_MACH_QCA955x)
-	int fn = 0x0a;
-#else /* CONFIG_MACH_QCA956x*/
-	int fn = 0x25;
+	return 0x09;
 #endif
+	return -1;
+}
 
-	ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO, fn);
+int ath_spi_flash_get_fn_cs1(void)
+{
+#if CONFIG_MACH_QCA934x
+	return 0x07;
+#elif (CONFIG_MACH_QCA953x || CONFIG_MACH_QCA955x)
+	return 0x0a;
+#endif
+	return -1;
+}
+
+void ath_spi_flash_enable_cs1(void)
+{
+	int fn = ath_spi_flash_get_fn_cs1();
+
+	if (fn < 0) {
+		printf("Error, enable SPI_CS_1 failed\n");
+		return;
+	}
+
+	ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO,
+			ath_spi_flash_get_fn_cs1());
 	ath_gpio_config_output(CONFIG_ATH_SPI_CS1_GPIO);
+}
+
+int flash_select(int chip)
+{
+	int fn_cs0, fn_cs1;
+
+	fn_cs0 = ath_spi_flash_get_fn_cs0();
+	fn_cs1 = ath_spi_flash_get_fn_cs1();
+
+	if (fn_cs0 < 0 || fn_cs1 < 0) {
+		printf("Error, flash select failed\n");
+		return -1;
+	}
+
+	switch (chip) {
+	case 0:
+		ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO, fn_cs1);
+		ath_gpio_set_fn(ATH_SPI_CS0_GPIO, fn_cs0);
+		break;
+
+	case 1:
+		ath_gpio_set_fn(ATH_SPI_CS0_GPIO, 0);
+		ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO, fn_cs0);
+		break;
+
+	default:
+		printf("Error, please specify correct flash number 0/1\n");
+		return -1;
+	}
+
+	return 0;
 }
 #else
 #define ath_spi_flash_enable_cs1(...)
