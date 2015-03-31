@@ -43,7 +43,7 @@ static void ath_spi_write_page(uint32_t addr, uint8_t * data, int len);
 #endif
 static void ath_spi_sector_erase(uint32_t addr);
 
-#if (FLASH_SIZE > 16)
+#if defined(ATH_DUAL_NOR)
 static void ath_spi_enter_ext_addr(u8 addr)
 {
 	ath_spi_write_enable();
@@ -157,9 +157,13 @@ void ath_spi_flash_enable_cs1(void)
 			ath_spi_flash_get_fn_cs1());
 	ath_gpio_config_output(CONFIG_ATH_SPI_CS1_GPIO);
 }
+#else
+#define ath_spi_flash_enable_cs1(...)
+#endif
 
 int flash_select(int chip)
 {
+#if  defined(CONFIG_ATH_SPI_CS1_GPIO)
 	int fn_cs0, fn_cs1;
 
 	fn_cs0 = ath_spi_flash_get_fn_cs0();
@@ -169,16 +173,29 @@ int flash_select(int chip)
 		printf("Error, flash select failed\n");
 		return -1;
 	}
+#endif
 
 	switch (chip) {
 	case 0:
+#if  defined(CONFIG_ATH_SPI_CS1_GPIO)
 		ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO, fn_cs1);
 		ath_gpio_set_fn(ATH_SPI_CS0_GPIO, fn_cs0);
+#elif defined(ATH_DUAL_NOR)
+		ath_reg_rmw_set(ATH_SPI_FS, 1);
+		ath_spi_exit_ext_addr(1);
+		ath_reg_rmw_clear(ATH_SPI_FS, 1);
+#endif
 		break;
 
 	case 1:
+#if  defined(CONFIG_ATH_SPI_CS1_GPIO)
 		ath_gpio_set_fn(ATH_SPI_CS0_GPIO, 0);
 		ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO, fn_cs0);
+#elif defined(ATH_DUAL_NOR)
+		ath_reg_rmw_set(ATH_SPI_FS, 1);
+		ath_spi_enter_ext_addr(1);
+		ath_reg_rmw_clear(ATH_SPI_FS, 1);
+#endif
 		break;
 
 	default:
@@ -188,9 +205,7 @@ int flash_select(int chip)
 
 	return 0;
 }
-#else
-#define ath_spi_flash_enable_cs1(...)
-#endif
+
 unsigned long flash_init(void)
 {
 #if !(defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA956x))

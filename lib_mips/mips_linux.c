@@ -86,7 +86,6 @@ void do_bootm_linux (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[],
 	char *commandline = getenv ("bootargs");
 	char env_buf[12];
 
-
 #if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
 	theKernel =
 		(void (*)(int, char **, char **, int)) ntohl (hdr->ih_ep);
@@ -238,6 +237,10 @@ void do_bootm_linux (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[],
 
 	/* we assume that the kernel is in place */
 	printf ("\nStarting kernel ...\n\n");
+
+#if defined(CONFIG_ATH_SPI_CS1_GPIO) || defined(ATH_DUAL_NOR)
+	flash_select(0);
+#endif
 
 #if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
 #ifdef CONFIG_WASP_SUPPORT
