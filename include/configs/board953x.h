@@ -26,6 +26,10 @@
 #ifndef FLASH_SIZE
 #define FLASH_SIZE 8
 #endif
+
+#if (FLASH_SIZE > 16)
+#define ATH_DUAL_NOR		1
+#endif
 /*-----------------------------------------------------------------------
  * FLASH and environment organization
  */
