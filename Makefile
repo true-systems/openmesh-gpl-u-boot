@@ -2068,8 +2068,8 @@ endif
 
 ifeq ($(ATH_DUAL_IMAGE_SUPPORT),1)
 	@echo '#define CONFIG_ATH_DUAL_IMAGE_SUPPORT  1' >>include/config.h
-	@echo '#define BOARD_NAME "$(CFG_BOARD_NAME)"' >>include/config.h
 endif
+	@echo '#define BOARD_NAME "$(CFG_BOARD_NAME)"' >>include/config.h
 
 ifdef FLASH_SIZE
 	@echo "#define FLASH_SIZE $(FLASH_SIZE)" >>include/config.h

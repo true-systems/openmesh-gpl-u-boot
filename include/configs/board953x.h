@@ -156,6 +156,7 @@
 #	define ATH_U_FILE	u-boot.bin
 #endif
 
+#define ATH_UBI_ARGS	" "
 
 #ifdef CONFIG_ATH_NAND_SUPPORT
 #	ifdef CONFIG_ATH_NAND_BR	// nand boot rom
@@ -176,11 +177,11 @@
 #		ifdef ATH_SPI_NAND
 #			if CONFIG_ATH_DUAL_IMAGE_SUPPORT
 #                               define MTDPARTS_DEFAULT "mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),128k(reserved),64k(art);spi0.1:2m(kernel),20m(rootfs),2m(k-2),20m(r-2),84m(user),22m@0x0(firmware),22m@0x1600000(fw-2)"
-
+#				define ATH_UBI_ARGS	" ubi.mtd=5,2048 root=/dev/mtdblock11 "
 #                       else
-#				define MTDPARTS_DEFAULT "mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env),128k(pad),64k(ART);ath-spi-nand:2m(uImage),20m(rootfs),106m(data))"
+#				define MTDPARTS_DEFAULT "mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),128k(reserved),64k(art);spi0.1:2m(kernel),20m(rootfs),106m(data),22m@0x0(firmware)"
+#				define ATH_UBI_ARGS	" ubi.mtd=5,2048 root=/dev/mtdblock8 "
 #			endif
-#			define ATH_ROOT_DEV     "31:07"
 #			define ATH_F_LEN        0x1400000
 #			define ATH_F_ADDR       0x200000
 #			define ATH_K_ADDR       0x0
@@ -275,8 +276,8 @@
 #define CONFIG_EXTRA_ENV_SETTINGS	\
 	"dir=\0" ATH_U_CMD ATH_F_CMD ATH_K_CMD ""
 
-#ifdef CONFIG_ATH_DUAL_IMAGE_SUPPORT
-	#define CONFIG_BOOTARGS "board=" BOARD_NAME " console=ttyS0,115200 " MTDPARTS_DEFAULT " rootfstype=squashfs,jffs2 noinitrd"
+#ifdef BOARD_NAME
+	#define CONFIG_BOOTARGS "board=" BOARD_NAME " console=ttyS0,115200 " ATH_UBI_ARGS MTDPARTS_DEFAULT " rootfstype=squashfs,jffs2 noinitrd"
 #else
 	#define	CONFIG_BOOTARGS	"console=ttyS0,115200 root=" ATH_ROOT_DEV " rootfstype=jffs2 init=/sbin/init " MTDPARTS_DEFAULT
 #endif
