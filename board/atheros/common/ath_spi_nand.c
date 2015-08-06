@@ -162,6 +162,9 @@ struct ath_spi_nand_priv {
 	uint8_t			(*ecc_status)(uint8_t status);
 	void			(*read_rdm_addr)(int start);
 	int			(*program_load)(struct mtd_info *mtd, uint8_t *buf, int len, uint8_t *oob);
+	void			(*erase_block)(uint32_t start);
+	void			(*page_read_to_cache)(loff_t start);
+	void			(*program_execute)(loff_t start);
 };
 
 /* ath nand info */
@@ -470,19 +473,6 @@ ath_spi_nand_hw_init(ath_spi_nand_sc_t *sc)
 }
 
 static inline void
-ath_spi_nand_cmd_page_read_to_cache(loff_t page)
-{
-	ath_spi_nand_bit_banger(ATH_SPI_NAND_CMD_PAGE_READ_TO_CACHE);
-#if bit_banger
-	ath_spi_nand_bit_banger((page >> 16) & 0xff);
-	ath_spi_nand_bit_banger((page >>  8) & 0xff);
-	ath_spi_nand_bit_banger((page >>  0) & 0xff);
-#else 
-	ath_spi_nand_send_addr(page);
-#endif 
-}
-
-static inline void
 ath_spi_nand_cmd_read_from_cache(ath_spi_nand_sc_t *sc, int start, int len, u_char *buf)
 {
 	int byte;
@@ -511,9 +501,7 @@ ath_spi_nand_page_read(struct mtd_info *mtd, loff_t off, u_char *buf, int len)
 	ath_spi_nand_sc_t	*sc = mtd->priv;
 	struct ath_spi_nand_priv *priv = sc->priv;
 
-	ath_spi_nand_start();
-	ath_spi_nand_cmd_page_read_to_cache(page);
-	ath_spi_nand_end();
+	priv->page_read_to_cache(page);
 
 	status = ath_spi_nand_status(mtd->priv);
 
@@ -611,19 +599,6 @@ ath_spi_nand_cmd_program_load(void)
 	ath_spi_nand_bit_banger(0);
 }
 
-static inline void
-ath_spi_nand_cmd_program_execute(loff_t page)
-{
-	ath_spi_nand_bit_banger(ATH_SPI_NAND_CMD_PROGRAM_EXECUTE);
-#if bit_banger 
-	ath_spi_nand_bit_banger((page >> 16) & 0xff);
-	ath_spi_nand_bit_banger((page >>  8) & 0xff);
-	ath_spi_nand_bit_banger((page >>  0) & 0xff);
-#else 
-	ath_spi_nand_send_addr(page);
-#endif 
-}
-
 /*
  * Assumes:
  *	- page aligned addresses
@@ -643,9 +618,7 @@ ath_spi_nand_page_write(struct mtd_info *mtd, loff_t off, u_char *buf, int len)
 	if (ret)
 		return ret;
 
-	ath_spi_nand_start();
-	ath_spi_nand_cmd_program_execute(page);
-	ath_spi_nand_end();
+	priv->program_execute(page);
 
 	status = ath_spi_nand_status(mtd->priv);
 
@@ -796,6 +769,7 @@ static inline int
 ath_spi_nand_block_erase(ath_spi_nand_sc_t *sc, loff_t block)
 {
 	struct mtd_info *mtd = sc->mtd;
+	struct ath_spi_nand_priv *priv = sc->priv;
 	uint32_t row_addr;
 	int ret = 0, status;
 
@@ -806,16 +780,8 @@ ath_spi_nand_block_erase(ath_spi_nand_sc_t *sc, loff_t block)
 	row_addr = block_to_ra(block >> mtd->erasesize_shift);
 
 	iodbg("%s: Block %u\n", __func__, block_to_ra(row_addr));
-	ath_spi_nand_start();
-	ath_spi_nand_bit_banger(ATH_SPI_NAND_CMD_BLOCK_ERASE);
-#if bit_banger 
-	ath_spi_nand_bit_banger((row_addr >> 16) & 0xff);
-	ath_spi_nand_bit_banger((row_addr >>  8) & 0xff);
-	ath_spi_nand_bit_banger((row_addr >>  0) & 0xff);
-#else 
-	ath_spi_nand_send_addr(row_addr);
-#endif 
-	ath_spi_nand_end();
+
+	priv->erase_block(row_addr);
 
 	status = ath_spi_nand_status(mtd->priv);
 
@@ -833,7 +799,6 @@ ath_spi_nand_block_erase(ath_spi_nand_sc_t *sc, loff_t block)
 
 	return ret;
 }
-
 
 static int
 ath_spi_nand_erase(struct mtd_info *mtd, struct erase_info *instr)
@@ -938,6 +903,17 @@ static struct nand_ecclayout ath_spi_nand_oob_64_mx = {
 	.oobfree	= { { 4, 4 }, { 20, 4 }, { 36, 4 }, { 52, 4 } },
 };
 
+static struct nand_ecclayout ath_spi_nand_oob_64_win = {
+	.eccbytes	= 40,
+	.eccpos		= { 8, 9, 10, 11, 12, 13, 14, 15,
+			    24, 25, 26, 27, 28, 29, 30, 31,
+			    40, 41, 42, 43, 44, 45, 46, 47,
+			    56, 57, 58, 59, 60, 61, 62, 63,
+			    72, 73, 74, 75, 76, 77, 78, 79},
+	.oobavail	= 16,
+	.oobfree	= { { 4, 4 }, { 20, 4 }, { 36, 4 }, { 52, 4 } },
+};
+
 static int
 ath_spi_nand_oob_page_read(struct mtd_info *mtd, loff_t off,
 				struct mtd_oob_ops *ops)
@@ -950,9 +926,7 @@ ath_spi_nand_oob_page_read(struct mtd_info *mtd, loff_t off,
 
 	ops->oobretlen = ops->retlen = 0;
 
-	ath_spi_nand_start();
-	ath_spi_nand_cmd_page_read_to_cache(page);
-	ath_spi_nand_end();
+	priv->page_read_to_cache(page);
 
 	status = ath_spi_nand_status(mtd->priv);
 
@@ -1056,9 +1030,7 @@ ath_spi_nand_oob_page_write(struct mtd_info *mtd, loff_t off,
 	priv->program_load(mtd, ops->datbuf, ops->len, oob);
 	ops->retlen = ops->len;
 
-	ath_spi_nand_start();
-	ath_spi_nand_cmd_program_execute(page);
-	ath_spi_nand_end();
+	priv->program_execute(page);
 
 	status = ath_spi_nand_status(mtd->priv);
 
@@ -1345,7 +1317,7 @@ static int ath_spi_program_load_gd(struct mtd_info *mtd, uint8_t *buf, int len, 
 	return 0;
 }
 
-static int ath_spi_program_load_mx(struct mtd_info *mtd, uint8_t *buf, int len, uint8_t *oob)
+static int ath_spi_program_load_common(struct mtd_info *mtd, uint8_t *buf, int len, uint8_t *oob)
 {
 	if (ath_spi_nand_write_enable(__func__))
 		return -EIO;
@@ -1353,6 +1325,64 @@ static int ath_spi_program_load_mx(struct mtd_info *mtd, uint8_t *buf, int len, 
 	_ath_spi_program_load_gd(mtd, buf, len, oob);
 
 	return 0;
+}
+
+static void _ath_spi_nand_execute_cmd_common(uint32_t start, uint8_t cmd)
+{
+	ath_spi_nand_start();
+	ath_spi_nand_bit_banger(cmd);
+#if bit_banger
+	ath_spi_nand_bit_banger((start >> 16) & 0xff);
+	ath_spi_nand_bit_banger((start >>  8) & 0xff);
+	ath_spi_nand_bit_banger((start >>  0) & 0xff);
+#else
+	ath_spi_nand_send_addr(start);
+#endif
+	ath_spi_nand_end();
+}
+
+static void _ath_spi_nand_execute_cmd_win(uint32_t start, uint8_t cmd)
+{
+	ath_spi_nand_start();
+	ath_spi_nand_bit_banger(cmd);
+	ath_spi_nand_bit_banger(0);	/* dummy byte */
+#if bit_banger
+	ath_spi_nand_bit_banger((start >>  8) & 0xff);
+	ath_spi_nand_bit_banger((start >>  0) & 0xff);
+#else
+	ath_spi_nand_send_2byte_addr(start);
+#endif
+	ath_spi_nand_end();
+}
+
+static void ath_spi_nand_block_erase_common(uint32_t start)
+{
+	_ath_spi_nand_execute_cmd_common(start, ATH_SPI_NAND_CMD_BLOCK_ERASE);
+}
+
+static void ath_spi_nand_block_erase_win(uint32_t start)
+{
+	_ath_spi_nand_execute_cmd_win(start, ATH_SPI_NAND_CMD_BLOCK_ERASE);
+}
+
+static void ath_spi_nand_cmd_page_read_to_cache_common(loff_t page)
+{
+	_ath_spi_nand_execute_cmd_common(page, ATH_SPI_NAND_CMD_PAGE_READ_TO_CACHE);
+}
+
+static void ath_spi_nand_cmd_page_read_to_cache_win(loff_t page)
+{
+	_ath_spi_nand_execute_cmd_win(page, ATH_SPI_NAND_CMD_PAGE_READ_TO_CACHE);
+}
+
+static void ath_spi_nand_cmd_program_execute_common(loff_t page)
+{
+	_ath_spi_nand_execute_cmd_common(page, ATH_SPI_NAND_CMD_PROGRAM_EXECUTE);
+}
+
+static void ath_spi_nand_cmd_program_execute_win(loff_t page)
+{
+	_ath_spi_nand_execute_cmd_win(page, ATH_SPI_NAND_CMD_PROGRAM_EXECUTE);
 }
 
 static struct ath_spi_nand_priv ath_spi_nand_ids[] = {
@@ -1389,6 +1419,13 @@ static struct ath_spi_nand_priv ath_spi_nand_ids[] = {
 		{ 0x22, 0x00, 0x00, 0x00 },	/* Device id */
 		0x02,				/* ecc error code */
 		(256 << 20),			/* 2G bit */
+		64,				/* oob size */
+	},
+	{ /* Winbond -  W25N01GV */
+		0xef,				/* manufacturer code */
+		{ 0xaa, 0x21, 0x00, 0x00 },	/* Device id */
+		0x02,				/* ecc error code */
+		(128 << 20),			/* 1G bit */
 		64,				/* oob size */
 	},
 	/* add new manufacturer here */
@@ -1431,7 +1468,10 @@ done:
 		priv->ecc_layout = &ath_spi_nand_oob_64_mx;
 		priv->ecc_status = ath_spi_nand_eccsr_common;
 		priv->read_rdm_addr = ath_spi_read_rdm_addr_commom;
-		priv->program_load = ath_spi_program_load_mx;
+		priv->program_load = ath_spi_program_load_common;
+		priv->erase_block = ath_spi_nand_block_erase_common;
+		priv->page_read_to_cache = ath_spi_nand_cmd_page_read_to_cache_common;
+		priv->program_execute = ath_spi_nand_cmd_program_execute_common;
 		break;
 	case 0xc8:
 		if (priv->did[0] == 0xf1) {
@@ -1444,6 +1484,18 @@ done:
 			priv->read_rdm_addr = ath_spi_read_rdm_addr_gd;
 		}
 		priv->program_load = ath_spi_program_load_gd;
+		priv->erase_block = ath_spi_nand_block_erase_common;
+		priv->page_read_to_cache = ath_spi_nand_cmd_page_read_to_cache_common;
+		priv->program_execute = ath_spi_nand_cmd_program_execute_common;
+		break;
+	case 0xef:
+		priv->ecc_layout = &ath_spi_nand_oob_64_win;
+		priv->ecc_status = ath_spi_nand_eccsr_common;
+		priv->read_rdm_addr = ath_spi_read_rdm_addr_commom;
+		priv->program_load = ath_spi_program_load_common;
+		priv->erase_block = ath_spi_nand_block_erase_win;
+		priv->page_read_to_cache = ath_spi_nand_cmd_page_read_to_cache_win;
+		priv->program_execute = ath_spi_nand_cmd_program_execute_win;
 		break;
 	default:
 		return NULL;
