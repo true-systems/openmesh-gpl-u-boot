@@ -619,10 +619,10 @@ extern flash_info_t flash_info[];	/* info for FLASH chips */
 unsigned long long
 ath_nand_get_cal_offset(const char *ba)
 {
-        char *mtdparts, ch, *pn, *end;
+        char *mtdparts = NULL, ch, *pn, *end;
         unsigned long long off = 0, size;
-
-        mtdparts = strstr(ba, ATH_NAND_NAND_PART);
+	if (ba)
+		mtdparts = strstr(ba, ATH_NAND_NAND_PART);
         if (!mtdparts) {
                 goto bad;
         }

@@ -103,7 +103,7 @@ void ath_set_tuning_caps(void)
 		XTAL_SPARE_SET(0xf);
 
 	/* checking feature enable bit 6 and caldata is valid */
-	if ((eep->featureEnable & 0x40) && (eep->pad[0x0] != 0xff)) {
+	if ((eep) && (eep->featureEnable & 0x40) && (eep->pad[0x0] != 0xff)) {
 		val &= ~(XTAL_XTAL_CAPINDAC_MASK | XTAL_XTAL_CAPOUTDAC_MASK);
 		val |=	XTAL_XTAL_CAPINDAC_SET(eep->params_for_tuning_caps[0]) |
 			XTAL_XTAL_CAPOUTDAC_SET(eep->params_for_tuning_caps[0]);
