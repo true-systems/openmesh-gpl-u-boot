@@ -87,6 +87,7 @@ void ath_set_tuning_caps(void)
 #endif /* CONFIG_ATH_NAND_BR */
 
 	val =	XTAL_TCXODET_SET(0x0) |
+		XTAL_XTAL_DRVSTR_SET(0x3) |
 		XTAL_XTAL_CAPINDAC_SET(0x45) |
 		XTAL_XTAL_CAPOUTDAC_SET(0x45) |
 		XTAL_XTAL_SHORTXIN_SET(0x0) |
@@ -108,9 +109,6 @@ void ath_set_tuning_caps(void)
 		val |=	XTAL_XTAL_CAPINDAC_SET(eep->params_for_tuning_caps[0]) |
 			XTAL_XTAL_CAPOUTDAC_SET(eep->params_for_tuning_caps[0]);
 
-  			/* DRVSTR value should be set 3 only for 5G */ 
-        		if((eep->pad[33] & 0x01))    
-            			val |= XTAL_XTAL_DRVSTR_SET(0x3) ;
 	}
 
 	ath_reg_wr(XTAL_ADDRESS, val);
