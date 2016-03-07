@@ -184,7 +184,7 @@ SUBDIRS	= tools \
 #########################################################################
 #########################################################################
 
-ALL = u-boot.srec u-boot.bin System.map
+ALL = u-boot.srec u-boot.bin System.map prog_free.bin
 
 ifeq ($(COMPRESSED_UBOOT),1)
 all:		$(ALL) tuboot.bin
@@ -282,6 +282,9 @@ System.map:	u-boot
 		@$(NM) $< | \
 		grep -v '\(compiled\)\|\(\.o$$\)\|\( [aUw] \)\|\(\.\.ng$$\)\|\(LASH[RL]DI\)' | \
 		sort > System.map
+
+prog_free.bin:
+		$(MAKE) -C tools/spi_prog || exit 1
 
 #########################################################################
 else
