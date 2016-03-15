@@ -62,7 +62,6 @@ typedef enum {
 #define ATHR_PHY4_ADDR   0x4
 
 #define MODULE_NAME "ATHRS27"
-
 /*
  * Track per-PHY port information.
  */
@@ -593,7 +592,7 @@ athrs27_phy_speed(int ethUnit,int phyUnit)
     uint32_t  phyBase;
     uint32_t  phyAddr;
     int       ii = 200;
-    int       phySpeed;
+    int       phySpeed = _UNKNOWN_SPEED;
     for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
         if (!ATHR_IS_ETHUNIT(phyUnit, ethUnit)) {
             continue;

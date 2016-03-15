@@ -1299,6 +1299,10 @@ int do_mem_mct (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	if (argc > 1) {
 		size = simple_strtoul(argv[1], NULL, 16);
 	} 
+	else {
+		printf ("Usage:\n%s\n", cmdtp->usage);
+		return -1;
+	}
 	
 	/* Clean all information memory locations */
 	for (i = 0; i < 0xb0; i+=4) {
