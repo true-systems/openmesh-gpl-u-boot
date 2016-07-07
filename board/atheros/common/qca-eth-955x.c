@@ -41,7 +41,6 @@
 
 int ath_gmac_miiphy_read(char *devname, uint32_t phaddr, uint8_t reg, uint16_t *data);
 int ath_gmac_miiphy_write(char *devname, uint32_t phaddr, uint8_t reg, uint16_t data);
-extern void ath_sys_frequency(uint32_t *, uint32_t *, uint32_t *);
 
 #ifndef CFG_ATH_GMAC_NMACS
 #define CFG_ATH_GMAC_NMACS	1

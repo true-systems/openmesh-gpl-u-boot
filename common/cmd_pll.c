@@ -130,7 +130,7 @@ int do_pll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	unsigned	*val;
 
 	if (argc != 2 && argc != 6) {
-		printf(cmdtp->usage);
+		printf("%s\n",cmdtp->usage);
 		return -1;
 	}
 
