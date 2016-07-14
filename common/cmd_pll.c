@@ -155,7 +155,7 @@ int do_pll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		val[5] = simple_strtoul(argv[5], NULL, 16);
 		printf("Setting 0x%x 0x%x 0x%x 0x%x 0x%x\n", val[1], val[2], val[3], val[4], val[5]);
 	} else {
-		printf(cmdtp->usage);
+		printf("%s\n",cmdtp->usage);
 		return -1;
 	}
 
