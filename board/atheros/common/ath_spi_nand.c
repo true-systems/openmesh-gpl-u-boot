@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2014, 2016 The Linux Foundation. All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -1285,7 +1285,7 @@ static void ath_spi_read_rdm_addr_gd(int start)
 #endif
 }
 
-static void _ath_spi_program_load_gd(struct mtd_info *mtd, uint8_t *buf, int len, uint8_t *oob)
+static void _ath_spi_program_load_common(struct mtd_info *mtd, uint8_t *buf, int len, uint8_t *oob)
 {
 	int byte;
 
@@ -1309,7 +1309,7 @@ static void _ath_spi_program_load_gd(struct mtd_info *mtd, uint8_t *buf, int len
 
 static int ath_spi_program_load_gd(struct mtd_info *mtd, uint8_t *buf, int len, uint8_t *oob)
 {
-	_ath_spi_program_load_gd(mtd, buf, len, oob);
+	_ath_spi_program_load_common(mtd, buf, len, oob);
 
 	if (ath_spi_nand_write_enable(__func__))
 		return -EIO;
@@ -1322,7 +1322,24 @@ static int ath_spi_program_load_common(struct mtd_info *mtd, uint8_t *buf, int l
 	if (ath_spi_nand_write_enable(__func__))
 		return -EIO;
 
-	_ath_spi_program_load_gd(mtd, buf, len, oob);
+	_ath_spi_program_load_common(mtd, buf, len, oob);
+
+	return 0;
+}
+
+static int ath_spi_program_load_wb(struct mtd_info *mtd, uint8_t *buf, int len, uint8_t *oob)
+{
+	int byte;
+	uint8_t sum = 0xff;
+
+	/* To prevent blank page copy */
+	for (byte = 0; byte < len; byte++)
+		sum = sum & buf[byte];
+
+	if (sum == 0xff)
+		return 0;
+
+	ath_spi_program_load_common(mtd, buf, len, oob);
 
 	return 0;
 }
@@ -1492,7 +1509,7 @@ done:
 		priv->ecc_layout = &ath_spi_nand_oob_64_win;
 		priv->ecc_status = ath_spi_nand_eccsr_common;
 		priv->read_rdm_addr = ath_spi_read_rdm_addr_commom;
-		priv->program_load = ath_spi_program_load_common;
+		priv->program_load = ath_spi_program_load_wb;
 		priv->erase_block = ath_spi_nand_block_erase_win;
 		priv->page_read_to_cache = ath_spi_nand_cmd_page_read_to_cache_win;
 		priv->program_execute = ath_spi_nand_cmd_program_execute_win;
