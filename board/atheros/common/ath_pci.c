@@ -375,46 +375,45 @@ pci_init_board (void)
 	 */
 	if (((ath_reg_rd(PCIE_RESET_ADDRESS)) & 0x1) == 0x0) {
 		prmsg("*** Warning *** : PCIe WLAN Module not found !!!\n");
+	} else {
+#ifndef COMPRESSED_UBOOT
+		/*
+		 * Now, configure for u-boot tools
+		 */
+
+		hose.first_busno = 0;
+		hose.last_busno = 0xff;
+
+		/* System space */
+		pci_set_region(	&hose.regions[0],
+				0x80000000,
+				0x00000000,
+				32 * 1024 * 1024,
+				PCI_REGION_MEM | PCI_REGION_MEMORY);
+
+		/* PCI memory space */
+		pci_set_region(	&hose.regions[1],
+				0x10000000,
+				0x10000000,
+				128 * 1024 * 1024,
+				PCI_REGION_MEM);
+
+		hose.region_count = 2;
+
+		pci_register_hose(&hose);
+
+		pci_set_ops(	&hose,
+				pci_hose_read_config_byte_via_dword,
+				pci_hose_read_config_word_via_dword,
+				ath_pci_read_config,
+				pci_hose_write_config_byte_via_dword,
+				pci_hose_write_config_word_via_dword,
+				ath_pci_write_config);
+#endif
 	}
 #endif
-
 #ifdef PCIE2_APP_ADDRESS
-	pci_rc2_init_board();
-#endif
-
-#ifndef COMPRESSED_UBOOT
-	/*
-	 * Now, configure for u-boot tools
-	 */
-
-	hose.first_busno = 0;
-	hose.last_busno = 0xff;
-
-	/* System space */
-	pci_set_region(	&hose.regions[0],
-			0x80000000,
-			0x00000000,
-			32 * 1024 * 1024,
-			PCI_REGION_MEM | PCI_REGION_MEMORY);
-
-	/* PCI memory space */
-	pci_set_region(	&hose.regions[1],
-			0x10000000,
-			0x10000000,
-			128 * 1024 * 1024,
-			PCI_REGION_MEM);
-
-	hose.region_count = 2;
-
-	pci_register_hose(&hose);
-
-	pci_set_ops(	&hose,
-			pci_hose_read_config_byte_via_dword,
-			pci_hose_read_config_word_via_dword,
-			ath_pci_read_config,
-			pci_hose_write_config_byte_via_dword,
-			pci_hose_write_config_word_via_dword,
-			ath_pci_write_config);
+        pci_rc2_init_board();
 #endif
 	plat_dev_init();
 #endif /* CONFIG_ATH_EMULATION */
