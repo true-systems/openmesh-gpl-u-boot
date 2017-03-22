@@ -546,6 +546,19 @@ void	panic(const char *fmt, ...);
 int	sprintf(char * buf, const char *fmt, ...);
 int	vsprintf(char *buf, const char *fmt, va_list args);
 
+#ifdef CONFIG_SYS_VSNPRINTF
+int	vsnprintf(char *buf, size_t size, const char *fmt, va_list args);
+int	snprintf(char *buf, size_t size, const char *fmt, ...);
+#else
+/*
+ * Use macros to silently drop the size parameter. Note that the 'cn'
+ * versions are the same as the 'n' versions since the functions assume
+ * there is always enough buffer space when !CONFIG_SYS_VSNPRINTF
+ */
+#define snprintf(buf, size, fmt, args...) sprintf(buf, fmt, ##args)
+#define vsnprintf(buf, size, fmt, args...) vsprintf(buf, fmt, ##args)
+#endif /* CONFIG_SYS_VSNPRINTF */
+
 /* lib_generic/crc32.c */
 ulong crc32 (ulong, const unsigned char *, uint);
 ulong crc32_no_comp (ulong, const unsigned char *, uint);

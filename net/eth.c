@@ -258,7 +258,7 @@ int eth_initialize(bd_t *bis)
 				puts (" [PRIME]");
 			}
 
-			sprintf(enetvar, eth_number ? "eth%daddr" : "ethaddr", eth_number);
+			snprintf(enetvar, sizeof(enetvar), eth_number ? "eth%daddr" : "ethaddr", eth_number);
 			tmp = getenv (enetvar);
 
 			for (i=0; i<6; i++) {
