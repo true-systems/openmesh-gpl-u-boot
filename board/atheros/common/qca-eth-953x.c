@@ -514,7 +514,7 @@ int ath_gmac_enet_initialize(bd_t * bis)
 		memset(ath_gmac_macs[i], 0, sizeof(ath_gmac_macs[i]));
 		memset(dev[i], 0, sizeof(dev[i]));
 
-		sprintf(dev[i]->name, "eth%d", i);
+		snprintf(dev[i]->name, sizeof(dev[i]->name), "eth%d", i);
 		ath_gmac_get_ethaddr(dev[i]);
 
 		ath_gmac_macs[i]->mac_unit = i;
