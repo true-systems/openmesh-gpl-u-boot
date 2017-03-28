@@ -30,6 +30,8 @@
 #if (FLASH_SIZE > 16)
 #define ATH_DUAL_NOR		1
 #endif
+
+#define CONFIG_SYS_VSNPRINTF
 /*-----------------------------------------------------------------------
  * FLASH and environment organization
  */
