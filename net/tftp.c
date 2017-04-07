@@ -10,6 +10,8 @@
 #include "tftp.h"
 #include "bootp.h"
 
+DECLARE_GLOBAL_DATA_PTR;
+
 #undef	ET_DEBUG
 
 #if (CONFIG_COMMANDS & CFG_CMD_NET)
@@ -66,6 +68,7 @@ store_block (unsigned block, uchar * src, unsigned len)
 {
 	ulong offset = block * TFTP_BLOCK_SIZE + TftpBlockWrapOffset;
 	ulong newsize = offset + len;
+	bd_t *bd = gd->bd;
 #ifdef CFG_DIRECT_FLASH_TFTP
 	int i, rc = 0;
 
@@ -88,6 +91,36 @@ store_block (unsigned block, uchar * src, unsigned len)
 	else
 #endif /* CFG_DIRECT_FLASH_TFTP */
 	{
+		/* The file to be tftp'ed should not overwrite the
+		 * code/stack area */
+
+/*		+++++++++++++++++++++++++ Top of RAM (0x88000000)
+*		|Uboot binary(.text,.bss|
+*		|.rodata)		|
+*		+++++++++++++++++++++++++
+*		|	Malloc Area	|
+*		+++++++++++++++++++++++++
+*		|	Board Info	|
+*		+++++++++++++++++++++++++
+*		|	Global Data	|
+*		+++++++++++++++++++++++++
+*		|	Boot params	|
+*		+++++++++++++++++++++++++
+*		|	Stack(2MB max)	|
+*		++++++++++++++++++++++++| Max tftp length
+*		|			|
+*		|			|
+*		|			|
+*		+++++++++++++++++++++++++ CFG_SDRAM_BASE(0x80000000)
+*/
+		if (((load_addr + newsize) >=
+				(bd->bi_boot_params - (1024 * 1024 * 2))) ||
+				((load_addr + newsize) <= CFG_SDRAM_BASE)) {
+			puts("Error file size too large\n");
+			TftpState = STATE_TOO_LARGE;
+			NetState = NETLOOP_FAIL;
+			return;
+		}
 		(void)memcpy((void *)(load_addr + offset), src, len);
 	}
 
