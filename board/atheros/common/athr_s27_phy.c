@@ -757,7 +757,7 @@ unsigned int athrs27_reg_read(unsigned int s27_addr)
     if (is_ar7240()) {
         unit = 0;
     }
-    else if(is_ar7241() || is_ar7242() || is_wasp() || is_qca953x() || is_qca956x()) {
+    else if(is_ar7241() || is_ar7242() || is_wasp() || is_qca953x() || is_qca956x() || is_qcn550x()) {
         unit = 1;
     }
 
@@ -789,7 +789,7 @@ void athrs27_reg_write(unsigned int s27_addr, unsigned int s27_write_data)
     if (is_ar7240()) {
         unit = 0;
     }
-    else if(is_ar7241() || is_ar7242() || is_wasp() || is_qca953x() || is_qca956x()) {
+    else if(is_ar7241() || is_ar7242() || is_wasp() || is_qca953x() || is_qca956x() || is_qcn550x()) {
         unit = 1;
     }
     phy_reg_write(unit,phy_address, reg_address, data);
@@ -818,7 +818,7 @@ unsigned int s27_rd_phy(unsigned int phy_addr, unsigned int reg_addr)
   
   if (is_ar7240()) {
     unit = 0;
-  } else if(is_ar7241() || is_ar7242() || is_wasp() || is_qca953x() || is_qca956x()) {
+  } else if(is_ar7241() || is_ar7242() || is_wasp() || is_qca953x() || is_qca956x() || is_qcn550x()) {
     unit = 1;
   }
   val = (uint32_t) phy_reg_read(unit, phy_addr, reg_addr); 
@@ -831,7 +831,7 @@ void s27_wr_phy(unsigned int phy_addr, unsigned int reg_addr, unsigned int write
   
   if (is_ar7240()) {
     unit = 0;
-  } else if(is_ar7241() || is_ar7242() || is_wasp() || is_qca953x() || is_qca956x()) {
+  } else if(is_ar7241() || is_ar7242() || is_wasp() || is_qca953x() || is_qca956x() || is_qcn550x()) {
     unit = 1;
   }
   

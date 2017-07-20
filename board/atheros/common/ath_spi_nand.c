@@ -287,7 +287,8 @@ ath_gpio_config_output(int gpio)
 #if defined(CONFIG_MACH_AR934x) || \
     defined(CONFIG_MACH_QCA955x) || \
     defined(CONFIG_MACH_QCA953x) || \
-        defined(CONFIG_MACH_QCA956x)
+	defined(CONFIG_MACH_QCA956x) || \
+	defined(CONFIG_MACH_QCN550x)
         ath_reg_rmw_clear(ATH_GPIO_OE, (1 << gpio));
 #else
         ath_reg_rmw_set(ATH_GPIO_OE, (1 << gpio));
@@ -432,7 +433,7 @@ ath_spi_nand_get_spi_cs1_output_value(void)
 	return 0x07;
 #elif (CONFIG_MACH_QCA953x || CONFIG_MACH_QCA955x)
 	return 0x0a;
-#else /* CONFIG_MACH_QCA956x*/
+#else /* CONFIG_MACH_QCA956x || CONFIG_MACH_QCN550x */
 	return 0x25;
 #endif
 }

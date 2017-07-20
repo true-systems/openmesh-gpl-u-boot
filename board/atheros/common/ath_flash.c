@@ -103,7 +103,8 @@ static void ath_gpio_config_output(int gpio)
 #if defined(CONFIG_MACH_AR934x) || \
 	defined(CONFIG_MACH_QCA955x) || \
 	defined(CONFIG_MACH_QCA953x) || \
-	defined(CONFIG_MACH_QCA956x)
+	defined(CONFIG_MACH_QCA956x) || \
+	defined(CONFIG_MACH_QCN550x)
 	ath_reg_rmw_clear(ATH_GPIO_OE, (1 << gpio));
 #else
 	ath_reg_rmw_set(ATH_GPIO_OE, (1 << gpio));
@@ -208,7 +209,7 @@ int flash_select(int chip)
 
 unsigned long flash_init(void)
 {
-#if !(defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA956x))
+#if !(defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x))
 #ifdef ATH_SST_FLASH
 	ath_reg_wr_nf(ATH_SPI_CLOCK, 0x3);
 	ath_spi_flash_unblock();

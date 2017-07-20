@@ -212,7 +212,7 @@ reset:
 	mtc0	zero, $26
 	mtc0	zero, $27
 	mtc0	zero, $28
-#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
+#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 	mtc0	zero, $29	# C0_TagHi
 	mtc0	zero, $28, 2	# C0_DTagLo
 	mtc0	zero, $29, 2	# C0_DTagHi
@@ -253,7 +253,7 @@ reset:
 	lw      t1, 0(ra)
 	move	gp, t1
 
-#if (defined(CONFIG_MACH_HORNET) && defined(CONFIG_HORNET_1_1_WAR)) || defined(CONFIG_MACH_QCA956x)
+#if (defined(CONFIG_MACH_HORNET) && defined(CONFIG_HORNET_1_1_WAR)) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 /**************************************************************************/
 /*
  * WAR: Hornet 1.1 currently need a reset once we boot to let the resetb has
@@ -291,7 +291,7 @@ normal_path:
 
 	/* Initialize any external memory.
 	 */
-#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
+#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 	la      t9, lowlevel_init
 	jalr    t9
 	nop
@@ -323,7 +323,7 @@ rel_start:
 	li	a0, AR7100_SPI_CLOCK
 	li	t0, 0x43
 	sw	t0, 0(a0)
-#elif defined(CONFIG_MACH_QCA956x)
+#elif defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 	/* REMAP_DISABLE */
 	li	a0, AR7100_SPI_CLOCK
 	li	t0, 0x46
@@ -545,7 +545,7 @@ _CHANGE_TAPS:
 	li	t1,	0xfa5de83f		// 4 Row Address Bits, 4 Column Address Bits, 2 BA bits
 	sw	t1,	0x002c(t0)		// PERF_MASK_ADDR_0_ADDRESS
 
-#if defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
+#if defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 	li	t1,	0x0000ffff
 	sw	t1,	0x0070(t0)		// PERF_COMP_AHB_GE0_1_ADDRESS
 

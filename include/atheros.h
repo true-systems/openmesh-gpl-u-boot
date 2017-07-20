@@ -45,6 +45,7 @@
 #define is_hb()		(0)
 
 #define is_qca956x()	(0)
+#define is_qcn550x()	(0)
 
 #define ATH_CONSOLE_BAUD	115200
 
@@ -199,6 +200,8 @@ typedef unsigned int ath_reg_t;
 #	include <953x.h>
 #elif defined(CONFIG_MACH_QCA956x)
 #	include <956x.h>
+#elif defined(CONFIG_MACH_QCN550x)
+#	include <550x.h>
 #else
 #	error "Building U-Boot for unknown device"
 #endif

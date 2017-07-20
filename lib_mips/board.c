@@ -45,7 +45,7 @@ extern int timer_init(void);
 
 extern int incaip_set_cpuclk(void);
 
-#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
+#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 void ath_set_tuning_caps(void);
 #else
 #define ath_set_tuning_caps()	/* nothing */

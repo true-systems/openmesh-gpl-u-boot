@@ -261,7 +261,7 @@ pci_init_board (void)
 	} 
 #else 
 
-#if defined(CONFIG_MACH_QCA956x)
+#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 
         ath_reg_rmw_set(PCIE_PHY_REG_1_ADDRESS, PCIE_PHY_REG_1_S_SET(PCIE_PHY_REG_1_S_RESET));
 
@@ -287,7 +287,8 @@ pci_init_board (void)
 
 #endif 
 
-#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCA953x)
+#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCN550x)
+
 	prmsg("Power up PLL with outdiv = 0 then switch to 3\n");
 
 	ath_reg_wr(PCIE_DPLL3_ADDRESS, PCIE_DPLL3_LOCAL_PLL_PWD_SET(0x1));
@@ -319,7 +320,7 @@ pci_init_board (void)
 #endif
 	udelay(1000);
 
-#if !defined(CONFIG_MACH_QCA956x)
+#if !defined(CONFIG_MACH_QCA956x) && !defined(CONFIG_MACH_QCN550x)
 
 #ifdef PCIE2_APP_ADDRESS
 	if (!(ath_reg_rd(RST_BOOTSTRAP_ADDRESS) & RST_BOOTSTRAP_PCIE_RC_EP_SELECT_MASK)) {
@@ -425,7 +426,7 @@ pci_init_board (void)
 void
 pci_rc2_init_board (void)
 {
-#if defined(CONFIG_MACH_QCA956x)
+#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 	ath_reg_rmw_clear(GPIO_OE_ADDRESS, 0x1);
         udelay(10000);
         ath_reg_rmw_set(GPIO_OUT_FUNCTION0_ADDRESS, GPIO_OUT_FUNCTION0_ENABLE_GPIO_0_SET(0x73));

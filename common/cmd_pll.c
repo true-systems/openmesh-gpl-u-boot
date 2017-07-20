@@ -25,7 +25,7 @@
 
 #ifndef CONFIG_ATH_EMULATION
 #if (CONFIG_COMMANDS & CFG_CMD_PLL)
-#if defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
+#if defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 int do_pll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 {
 	extern env_t	*env_ptr;

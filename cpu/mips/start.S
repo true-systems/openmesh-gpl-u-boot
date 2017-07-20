@@ -279,7 +279,7 @@ reset:
 	mtc0	zero, $26
 	mtc0	zero, $27
 	mtc0	zero, $28
-#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
+#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 	mtc0	zero, $29	# C0_TagHi
 	mtc0	zero, $28, 2	# C0_DTagLo
 	mtc0	zero, $29, 2	# C0_DTagHi
@@ -352,7 +352,7 @@ reset:
 
 #ifndef COMPRESSED_UBOOT
 
-#if (defined(CONFIG_MACH_HORNET) && defined(CONFIG_HORNET_1_1_WAR)) || defined(CONFIG_MACH_QCA956x)
+#if (defined(CONFIG_MACH_HORNET) && defined(CONFIG_HORNET_1_1_WAR)) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 /**************************************************************************/
 /*
  * WAR: Hornet 1.1 currently need a reset once we boot to let the resetb has
@@ -409,7 +409,7 @@ rel_start:
 #if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
 	/* REMAP_DISABLE */
 	li	a0,	KSEG1ADDR(ATH_SPI_CLOCK)
-#if defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
+#if defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 	li	t0,	0x246
 #elif defined(CONFIG_WASP_SUPPORT)
 	li	t0,	0x243
@@ -575,7 +575,7 @@ in_ram:
 
 	.end	relocate_code
 
-#if !defined(CONFIG_MACH_QCA955x) && !defined(CONFIG_MACH_QCA953x) && !defined(CONFIG_MACH_QCA956x)
+#if !defined(CONFIG_MACH_QCA955x) && !defined(CONFIG_MACH_QCA953x) && !defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 #if !defined(CONFIG_WASP_SUPPORT) && defined(CONFIG_AR7240)
 /*
  * void ar7240_ddr_tap_init(void)

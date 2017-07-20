@@ -3345,6 +3345,91 @@ ifdef FLASH_SIZE
 endif
 	@./mkconfig -a board956x mips mips board956x atheros
 
+board550x_config: unconfig
+	@echo '#define CONFIG_ATHEROS		1'	>include/config.h
+	@echo '#define CONFIG_MACH_QCN550x	1'	>>include/config.h
+	@echo '#define CFG_INIT_STACK_IN_SRAM	1'	>>include/config.h
+	@echo '#define CONFIG_'`echo $(CFG_BOARD_TYPE) | tr [a-z] [A-Z] | sed s/-/_/g`'	1' >>include/config.h
+	@echo '#define __CONFIG_BOARD_NAME $(CFG_BOARD_TYPE)' >>include/config.h
+	@echo '#define CONFIG_BOARD_NAME "$(CFG_BOARD_TYPE)"' >>include/config.h
+ifdef pll
+	@echo '#define CFG_PLL_FREQ		$(pll)'	>>include/config.h
+else
+	@echo '#define CFG_PLL_FREQ		CFG_PLL_750_400_250'	>>include/config.h
+endif
+ifdef ddr_cas
+	@echo '#define CFG_DDR2_DRAGONFLY_CAS_LATENCY		$(ddr_cas)'	>>include/config.h
+endif
+ifneq (,$(findstring $(CFG_BOARD_TYPE),cus249 tb753)) #{
+	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
+	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
+endif #}
+ifneq (,$(findstring $(CFG_BOARD_TYPE),ap151 ap151-020 tb754)) #{
+	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
+	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
+endif #}
+ifneq (,$(findstring $(CFG_BOARD_TYPE), apjet01 tb755)) #{
+	@echo '#define CFG_ATH_GMAC_NMACS	1'	>>include/config.h
+	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
+	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
+	@echo '#define ATH_S17_MAC0_SGMII	1'	>>include/config.h
+endif #}
+ifeq ($(ATH_DUAL_FLASH),1)
+	@echo '#define CONFIG_ATH_NAND_SUPPORT	1'	>>include/config.h
+ifeq ($(ATH_SPI_NAND),1)
+	@echo '#define ATH_SPI_NAND		1'	>>include/config.h
+	@echo '#define CONFIG_ATH_SPI_NAND_CS_GPIO  $(ATH_SPI_NAND_CS_GPIO) '>> include/config.h
+endif
+endif
+
+ifneq (,$(findstring $(CFG_BOARD_TYPE), apjet01)) #{
+	@echo '#define UART_RX18_TX22           1'      >>include/config.h
+endif #}
+ifeq ($(CFG_BOARD_TYPE), ap151-020)
+	@echo '#define UART_RX24_TX20           1'      >>include/config.h
+endif
+ifeq ($(CFG_BOARD_TYPE), ap151)
+	@echo '#define UART_RX18_TX20           1'      >>include/config.h
+endif
+ifneq (,$(findstring $(CFG_BOARD_TYPE), tb755)) #{
+	@echo '#define UART_RX20_TX22           1'      >>include/config.h
+endif #}
+
+ifneq (,$(findstring $(CFG_BOARD_TYPE), tb753 tb754)) #{
+	@echo '#define TEST_BOARD_UART          1'      >>include/config.h
+endif #}
+
+ifneq (,$(findstring $(CFG_BOARD_TYPE),dragonflyemu)) #{
+	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
+	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
+	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
+endif #}
+
+ifeq ($(CFG_BOARD_TYPE), apjet01)
+	@echo '#define CONFIG_ATHRS_GMAC_SGMII	1'	>>include/config.h
+endif
+
+ifeq ($(ETH_CONFIG), _s27)
+	@echo '#define CFG_ATHRS27_PHY		1'	>>include/config.h
+endif
+
+ifeq ($(ETH_CONFIG), _s17)
+	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
+endif
+
+ifeq ($(ETH_CONFIG), _s17_hwaccel)
+	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
+endif
+
+ifeq ($(ATH_SGMII_FORCED),1)
+	@echo '#define ATH_SGMII_FORCED_MODE    1'	>>include/config.h
+endif
+
+ifdef FLASH_SIZE
+	@echo '#define FLASH_SIZE	$(FLASH_SIZE)'	>>include/config.h
+endif
+	@./mkconfig -a board550x mips mips board550x atheros
+
 
 ap138_config: 	unconfig
 	@echo '#define CONFIG_ATHEROS		1'	>include/config.h
