@@ -707,35 +707,35 @@ if (CFG_ATH_GMAC_NMACS == 1){
  */
 rddata = ath_reg_rd(GPIO_IN_ENABLE3_ADDRESS)&
 		 ~GPIO_IN_ENABLE3_MII_GE1_MDI_MASK;
-rddata |= GPIO_IN_ENABLE3_MII_GE1_MDI_SET(4);
+rddata |= GPIO_IN_ENABLE3_MII_GE1_MDI_SET(0xa);
 ath_reg_wr(GPIO_IN_ENABLE3_ADDRESS, rddata);
 
 /*
  * GPIO 4 as MDO
  */
-rddata = ath_reg_rd(GPIO_OUT_FUNCTION1_ADDRESS) &
-		 ~ (GPIO_OUT_FUNCTION1_ENABLE_GPIO_4_MASK);
-rddata |= (GPIO_OUT_FUNCTION1_ENABLE_GPIO_4_SET(0x20));
-ath_reg_wr(GPIO_OUT_FUNCTION1_ADDRESS, rddata);
+rddata = ath_reg_rd(GPIO_OUT_FUNCTION2_ADDRESS) &
+		 ~ (GPIO_OUT_FUNCTION2_ENABLE_GPIO_10_MASK);
+rddata |= (GPIO_OUT_FUNCTION2_ENABLE_GPIO_10_SET(0x20));
+ath_reg_wr(GPIO_OUT_FUNCTION2_ADDRESS, rddata);
 
 /*
  * GPIO 4 as MDO
  */
 rddata = ath_reg_rd(GPIO_OE_ADDRESS);
-rddata &= ~(1<<4);
+rddata &= ~(1<<10);
 ath_reg_wr(GPIO_OE_ADDRESS, rddata);
 
 /*
  * GPIO 3 as MDC
  */
 rddata = ath_reg_rd(GPIO_OE_ADDRESS);
-rddata &= ~(1<<3);
+rddata &= ~(1<<9);
 ath_reg_wr(GPIO_OE_ADDRESS, rddata);
 
-rddata = ath_reg_rd(GPIO_OUT_FUNCTION0_ADDRESS) &
-	   ~ (GPIO_OUT_FUNCTION0_ENABLE_GPIO_3_MASK);
-rddata |= GPIO_OUT_FUNCTION0_ENABLE_GPIO_3_SET(0x21);
-ath_reg_wr(GPIO_OUT_FUNCTION0_ADDRESS, rddata);
+rddata = ath_reg_rd(GPIO_OUT_FUNCTION2_ADDRESS) &
+	   ~ (GPIO_OUT_FUNCTION2_ENABLE_GPIO_9_MASK);
+rddata |= GPIO_OUT_FUNCTION2_ENABLE_GPIO_9_SET(0x21);
+ath_reg_wr(GPIO_OUT_FUNCTION2_ADDRESS, rddata);
 
 }
 #endif /* CONFIG_ATHRS17_PHY */
@@ -812,14 +812,14 @@ int ath_gmac_enet_initialize(bd_t * bis)
 #if defined(CONFIG_ATHRS17_PHY)
 	if ( CFG_ATH_GMAC_NMACS == 1) {
 		//   S17 SWITCH RESET
-		val = ath_reg_rd(GPIO_OE_ADDRESS) & ~(1 << 11);
+		val = ath_reg_rd(GPIO_OE_ADDRESS) & ~(1 << 3);
 		ath_reg_wr(GPIO_OE_ADDRESS, val);
 		udelay(1000 * 100);
-		ath_reg_rmw_set(GPIO_OUT_ADDRESS, ( 1 << 11));
+		ath_reg_rmw_set(GPIO_OUT_ADDRESS, ( 1 << 3));
 		udelay(1000 * 100);
-		ath_reg_rmw_clear(GPIO_OUT_ADDRESS, ( 1 << 11));
+		ath_reg_rmw_clear(GPIO_OUT_ADDRESS, ( 1 << 3));
 		udelay(1000 * 100);
-		ath_reg_rmw_set(GPIO_OUT_ADDRESS, ( 1 << 11));
+		ath_reg_rmw_set(GPIO_OUT_ADDRESS, ( 1 << 3));
 	}
 #endif
 	for (i = 0;i < CFG_ATH_GMAC_NMACS;i++) {
