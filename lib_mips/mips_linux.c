@@ -268,7 +268,7 @@ static void linux_params_init (ulong start, char *line)
 
 	next = line;
 #if defined(CONFIG_AR9100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
-	if (strstr(line, "mem=")) {
+	if (line && strstr(line, "mem=")) {
 		memstr[0] = 0;
 		memsize = simple_strtoul((strstr(line, "mem=") + 4), NULL, 10);
 	} else {
