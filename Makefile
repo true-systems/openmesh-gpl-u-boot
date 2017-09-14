@@ -3383,7 +3383,7 @@ endif
 endif
 
 ifneq (,$(findstring $(CFG_BOARD_TYPE), apjet01)) #{
-	@echo '#define UART_RX18_TX22           1'      >>include/config.h
+	@echo '#define UART_RX18_TX19           1'      >>include/config.h
 endif #}
 ifeq ($(CFG_BOARD_TYPE), ap151-020)
 	@echo '#define UART_RX24_TX20           1'      >>include/config.h

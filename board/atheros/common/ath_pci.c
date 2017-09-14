@@ -427,9 +427,15 @@ void
 pci_rc2_init_board (void)
 {
 #if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
-	ath_reg_rmw_clear(GPIO_OE_ADDRESS, 0x1);
+#if defined(CONFIG_MACH_QCA956x)
+	ath_reg_rmw_clear(GPIO_OE_ADDRESS, 0x01);
         udelay(10000);
         ath_reg_rmw_set(GPIO_OUT_FUNCTION0_ADDRESS, GPIO_OUT_FUNCTION0_ENABLE_GPIO_0_SET(0x73));
+#elif defined(CONFIG_MACH_QCN550x)
+	ath_reg_rmw_clear(GPIO_OE_ADDRESS, 0x20);
+        udelay(10000);
+        ath_reg_rmw_set(GPIO_OUT_FUNCTION1_ADDRESS, GPIO_OUT_FUNCTION1_ENABLE_GPIO_5_SET(0x73));
+#endif
         udelay(10000);
         ath_reg_rmw_set(RST_RESET_ADDRESS,RST_RESET_PCIE_PHY_RESET_SET(1) |
                                           RST_RESET_PCIE_RESET_SET(1));

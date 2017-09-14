@@ -148,7 +148,21 @@ int serial_init(void)
 	val = ath_reg_rd(GPIO_SPARE_ADDRESS);
 	ath_reg_wr(GPIO_SPARE_ADDRESS, (val | 0x8402));
 
+#elif CONFIG_MACH_QCN550x
+#if defined(UART_RX18_TX19)
+	val = (ath_reg_rd(GPIO_OE_ADDRESS) & (~0x080000)) | 0x40000;
+	ath_reg_wr(GPIO_OE_ADDRESS, val);
 
+	ath_reg_rmw_clear(GPIO_OUT_FUNCTION4_ADDRESS,
+			GPIO_OUT_FUNCTION4_ENABLE_GPIO_19_MASK);
+	ath_reg_rmw_set(GPIO_OUT_FUNCTION4_ADDRESS,
+			GPIO_OUT_FUNCTION4_ENABLE_GPIO_19_SET(0x16));
+	ath_reg_rmw_clear(GPIO_IN_ENABLE0_ADDRESS,
+			GPIO_IN_ENABLE0_UART_SIN_MASK);
+
+	ath_reg_rmw_set(GPIO_IN_ENABLE0_ADDRESS,
+			GPIO_IN_ENABLE0_UART_SIN_SET(0x12));
+#endif
 #else
 	ath_reg_rmw_set(GPIO_OUT_FUNCTION2_ADDRESS,
 			GPIO_OUT_FUNCTION2_ENABLE_GPIO_10_SET(0x16));
