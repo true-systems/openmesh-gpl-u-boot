@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- *
- */
-
 #include <common.h>
 #include <command.h>
 #include <asm/mipsregs.h>
@@ -25,7 +8,6 @@
 
 extern void ar7240_ddr_initial_config(uint32_t refresh);
 extern int ar7240_ddr_find_size(void);
-extern void hornet_ddr_tap_init(void);
 
 #ifdef CONFIG_HORNET_EMU
 extern void ar7240_ddr_initial_config_for_fpga(void);
@@ -43,7 +25,7 @@ ar7240_usb_initial_config(void)
 void
 ar7240_usb_otp_config(void)
 {
-    unsigned int addr, reg_val, reg_usb = 0;
+    unsigned int addr, reg_val, reg_usb;
     int time_out, status, usb_valid;
     
     for (addr = 0xb8114014; ;addr -= 0x10) {
@@ -98,6 +80,8 @@ void ar7240_gpio_config(void)
 	
     /* Set HORNET_BOOTSTRAP_STATUS BIT18 to ensure that software can control GPIO26 and GPIO27 */
     //ar7240_reg_wr (HORNET_BOOTSTRAP_STATUS, (ar7240_reg_rd(HORNET_BOOTSTRAP_STATUS) | (0x1<<18)));
+#ifdef CONFIG_GPIO_CUSTOM
+#endif
 }
 
 int
@@ -112,7 +96,7 @@ ar7240_mem_config(void)
     //ar7240_ddr_initial_config(CFG_DDR_REFRESH_VAL);
 #endif
 
-/* Default tap values for starting the tap_init*/
+    /* Default tap values for starting the tap_init*/
     ar7240_reg_wr (AR7240_DDR_TAP_CONTROL0, CFG_DDR_TAP0_VAL);
     ar7240_reg_wr (AR7240_DDR_TAP_CONTROL1, CFG_DDR_TAP1_VAL);
 
@@ -145,16 +129,68 @@ long int initdram(int board_type)
 int checkboard (char *board_string)
 {
 #if (BOARD_STRING == WAPI)
-    strcpy(board_string, "AP121 (ar9331) U-boot");
+    strcpy(board_string, BOARD_NAME" (ar9331) U-boot");
 #else
-    strcpy(board_string, "AP121-2MB (ar9330) U-boot");
+    strcpy(board_string, BOARD_NAME" (ar9330) U-boot");
 #endif
     return 0;
 }
 #else
 int checkboard (void)
 {
-    printf("AP121 (ar9330) U-boot\n");
+    printf(BOARD_NAME" (ar9330) U-boot\n");
     return 0;
 }
 #endif /* #ifdef COMPRESSED_UBOOT */
+
+#ifdef CONFIG_GPIO_CUSTOM
+int gpio_custom (int opcode)
+{
+    int rcode = 0;
+    static int cmd = -1;
+
+    switch (opcode) {
+        case 0:
+            if (0) {
+                cmd = 0;
+            }
+            else {
+                cmd = -1;
+            }
+            rcode = cmd >= 0;
+            break;
+        case 1:
+            switch (cmd) {
+                case 0:
+                {
+                    char key[] = "netretry", *val = NULL, *s = NULL;
+                    int i = -1;
+
+                    if ((s = getenv (key)) != NULL && (val = malloc (strlen (s) + 1)) != NULL) {
+                        strcpy (val, s);
+                    }
+                    setenv (key, "no");
+                    s = getenv ("factory_boot") != NULL? "run factory_boot": "boot 0";
+                    for (i = 3; i-- > 0 && run_command (s, 0) == -1;) {
+                        printf ("Retry%s\n", i > 0? "...": " count exceeded!");
+                        if (i <= 0) {
+                            run_command ("boot", 0);
+                        }
+                    }
+                    if (val != NULL) {
+                        setenv (key, val);
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+            cmd = -1;
+            break;
+        default:
+            break;
+    }
+
+    return rcode;
+}
+#endif

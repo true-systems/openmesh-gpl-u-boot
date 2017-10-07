@@ -4,7 +4,7 @@
  *
  * (C) Copyright 2001 Sysgo Real-Time Solutions, GmbH <www.elinos.com>
  * Andreas Heppel <aheppel@sysgo.de>
- *
+
  * See file CREDITS for list of people who contributed to this
  * project.
  *
@@ -65,7 +65,7 @@ uchar (*env_get_char)(int) = env_get_char_init;
 #define XMK_STR(x)	#x
 #define MK_STR(x)	XMK_STR(x)
 
-uchar default_environment[] = {
+uchar _default_environment[] = {
 #ifdef	CONFIG_BOOTARGS
 	"bootargs="	CONFIG_BOOTARGS			"\0"
 #endif
@@ -139,11 +139,11 @@ uchar default_environment[] = {
 	CONFIG_EXTRA_ENV_SETTINGS
 #endif
 	"\0"
-};
+}, *default_environment = _default_environment;
 
-#if defined(CFG_ENV_IS_IN_NAND)		/* Environment is in Nand Flash */
-int default_environment_size = sizeof(default_environment);
-#endif
+int _default_environment_size = sizeof(_default_environment), 
+	default_environment_size = sizeof(_default_environment);
+int default_environment_init = 0;
 
 void env_crc_update (void)
 {
@@ -227,6 +227,52 @@ void env_relocate (void)
 	 */
 	env_get_char = env_get_char_memory;
 
+	if (!default_environment_init)
+	{
+		char envstart_str[] = "!@Environment@!";
+		char envend_str[] = "!@EnvironmentEnd@!";
+		int envstart_strlen = sizeof(envstart_str) - 1;
+		int envend_strlen = sizeof(envend_str) - 1;
+		char *ptr[] = {CFG_FLASH_BASE, NULL}, *tmp = NULL;
+		int cond = 0;
+
+		default_environment = _default_environment;
+		for (cond = 0, ptr[1] = CFG_FLASH_BASE + UBOOT_FLASH_SIZE - envstart_strlen; 
+			ptr[0] < ptr[1] && (*ptr[0]++ != ';' || (memcmp (ptr[0], envstart_str, envstart_strlen) != 0 || !(cond = 1))););
+		if (cond) {
+			for (cond = 0, tmp = ptr[0] += envstart_strlen, ptr[1] = CFG_FLASH_BASE + UBOOT_FLASH_SIZE - envend_strlen; 
+				ptr[0] < ptr[1] && (*ptr[0]++ != ';' || (memcmp (ptr[0], envend_str, envend_strlen) != 0 || !(cond = 1))););
+			if (cond) {
+				char *eptr[] = {NULL, NULL};
+				int len = 0;
+					ptr[1] = ptr[0] - 1, ptr[0] = tmp, tmp = NULL;
+				if ((eptr[1] = eptr[0] = (char *)malloc(ptr[1] - ptr[0] + 1)) != NULL) {
+					while (++ptr[0] < ptr[1]) {
+						switch(*ptr[0]) {
+							case '\r':
+							case '\n':
+								if (tmp != NULL) {
+									memcpy (eptr[1], tmp, len = ptr[0] - tmp);
+									*(eptr[1] += len + 1) = '\0';
+									tmp = NULL;
+								}
+								break;
+							default:
+								if (tmp == NULL) {
+									tmp = ptr[0];
+								}
+								break;
+						}
+					}
+					*eptr[1]++ = '\0';
+					default_environment = eptr[0];
+					default_environment_size = eptr[1] - eptr[0];
+				}
+			}
+		}
+		default_environment_init = 1;
+	}
+
 	if (gd->env_valid == 0) {
 #if defined(CONFIG_GTH)	|| defined(CFG_ENV_IS_NOWHERE)	/* Environment not changable */
 		puts ("Using default environment\n\n");
@@ -235,7 +281,7 @@ void env_relocate (void)
 		SHOW_BOOT_PROGRESS (-1);
 #endif
 
-		if (sizeof(default_environment) > ENV_SIZE)
+		if (default_environment_size > ENV_SIZE)
 		{
 			puts ("*** Error - default environment is too large\n\n");
 			return;
@@ -244,11 +290,13 @@ void env_relocate (void)
 		memset (env_ptr, 0, sizeof(env_t));
 		memcpy (env_ptr->data,
 			default_environment,
-			sizeof(default_environment));
+			default_environment_size);
 #ifdef CFG_REDUNDAND_ENVIRONMENT
 		env_ptr->flags = 0xFF;
 #endif
 		env_crc_update ();
+		saveenv ();
+		flash_sect_protect (0, CFG_FLASH_BASE, CFG_FLASH_BASE + CFG_FLASH_SIZE);
 		gd->env_valid = 1;
 	}
 	else {

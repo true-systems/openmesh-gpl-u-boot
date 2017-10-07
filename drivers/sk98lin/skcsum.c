@@ -2,8 +2,8 @@
  *
  * Name:	skcsum.c
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.10 $
- * Date:	$Date: 2002/04/11 10:02:04 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/09/27 $
  * Purpose:	Store/verify Internet checksum in send/receive packets.
  *
  ******************************************************************************/
@@ -78,7 +78,7 @@
 
 #ifndef lint
 static const char SysKonnectFileId[] = "@(#)"
-	"$Id: skcsum.c,v 1.10 2002/04/11 10:02:04 rwahl Exp $"
+	"$Id: //depot/sw/releases/9.5.3/boot/u-boot/drivers/sk98lin/skcsum.c#1 $"
 	" (C) SysKonnect.";
 #endif	/* !lint */
 

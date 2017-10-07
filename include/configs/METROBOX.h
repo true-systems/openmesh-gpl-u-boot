@@ -25,7 +25,7 @@
  ***********************************************************************/
 
 /*
- * $Id: METROBOX.h,v 1.21 2005/06/03 15:05:25 tsawyer Exp $
+ * $Id: //depot/sw/releases/9.5.3/boot/u-boot/include/configs/METROBOX.h#1 $
  *
  *
  * $Log: METROBOX.h,v $
