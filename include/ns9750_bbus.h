@@ -3,7 +3,7 @@
  * Copyright (C) 2004 by FS Forth-Systeme GmbH.
  * All rights reserved.
  *
- * $Id: ns9750_bbus.h,v 1.1 2004/02/16 10:37:20 mpietrek Exp $
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/ns9750_bbus.h#1 $
  * @Author: Markus Pietrek
  * @Descr: Definitions for BBus usage
  * @References: [1] NS9750 Hardware Reference Manual/December 2003 Chap. 10

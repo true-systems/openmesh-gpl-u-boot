@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------------------
  * Filename:      mini_inflate.c
- * Version:       $Id: mini_inflate.c,v 1.3 2002/01/24 22:58:42 rfeany Exp $
+ * Version:       $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/fs/jffs2/mini_inflate.c#1 $
  * Copyright:     Copyright (C) 2001, Russ Dill
  * Author:        Russ Dill <Russ.Dill@asu.edu>
  * Description:   Mini inflate implementation (RFC 1951)

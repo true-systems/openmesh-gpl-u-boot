@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/bedbug/ppc.h#1 $ */
 
 #ifndef _PPC_H
 #define _PPC_H

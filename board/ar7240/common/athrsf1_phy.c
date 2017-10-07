@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Qualcomm Atheros, Inc.
+ * Copyright (c) 2008, Atheros Communications Inc.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -126,7 +126,6 @@ static athrPhyInfo_t athrPhyInfo[] = {
  
 /* Forward references */
 BOOL athr_phy_is_link_alive(int phyUnit);
-unsigned int last_phy_speed;
 
 void athr_enable_linkIntrs(int ethUnit) 
 {
@@ -310,37 +309,22 @@ athr_phy_speed(int ethUnit,int phyUnit)
 
         switch(phyHwStatus) {
         case 0:
-            if (last_phy_speed != phyHwStatus) {
-                phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_ADDRESS, 0x5);
-                phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_DATA, 0x147);
-                last_phy_speed = phyHwStatus;
-            }
             return _10BASET;
         case 1:
-            if (last_phy_speed != phyHwStatus) {
-                phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_ADDRESS, 0x5);
-                phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_DATA, 0x147);
-                last_phy_speed = phyHwStatus;
-            }
+            phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_ADDRESS, 0x5);
+            phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_DATA, 0x147);
             return _100BASET;
         case 2:
-            if (last_phy_speed != phyHwStatus) {
-                phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_ADDRESS, 0x5);
-                phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_DATA, 0x0);
-                last_phy_speed = phyHwStatus;
-            }
+            phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_ADDRESS, 0x5);
+            phy_reg_write(0, phyAddr, ATHR_DEBUG_PORT_DATA, 0x0);
             return _1000BASET;
         default:
             printf("Unkown speed read!\n");
         }
     }
 
-    if (last_phy_speed != phyHwStatus)
-    {
-        phy_reg_write(0, ATHR_PHYADDR(phyUnit), ATHR_DEBUG_PORT_ADDRESS, 0x0);
-        phy_reg_write(0, ATHR_PHYADDR(phyUnit), ATHR_DEBUG_PORT_DATA, 0x14e);
-        last_phy_speed = phyHwStatus;
-    }
+    phy_reg_write(0, ATHR_PHYADDR(phyUnit), ATHR_DEBUG_PORT_ADDRESS, 0x0);
+    phy_reg_write(0, ATHR_PHYADDR(phyUnit), ATHR_DEBUG_PORT_DATA, 0x14e);
 
 
     //printf("athr_phy_speed: link down, returning 10t\n");

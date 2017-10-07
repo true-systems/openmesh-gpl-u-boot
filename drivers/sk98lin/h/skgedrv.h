@@ -2,8 +2,8 @@
  *
  * Name:	skgedrv.h
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.6 $
- * Date:	$Date: 2002/07/15 15:38:01 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/01/04 $
  * Purpose:	Interface with the driver
  *
  ******************************************************************************/

@@ -7,7 +7,7 @@
  * For licensing information, see the file 'LICENCE' in the
  * jffs2 directory.
  *
- * $Id: compr_lzari.c,v 1.3 2004/06/23 16:34:39 havasi Exp $
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/fs/jffs2/compr_lzari.c#1 $
  *
  */
 

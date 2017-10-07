@@ -1,18 +1,9 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
+/*
+ * This file is subject to the terms and conditions of the GNU General Public
+ * License.  See the file "COPYING" in the main directory of this archive
+ * for more details.
+ *
+ * Copyright © 2007 Atheros Communications, Inc.,  All Rights Reserved.
  */
 
 /*
@@ -134,7 +125,7 @@ static athrPhyInfo_t athrPhyInfo[] = {
 static uint8_t athr17_init_flag = 0;
 
 //#define ATHR_PHY_MAX (sizeof(ipPhyInfo) / sizeof(ipPhyInfo[0]))
-#define ATHR_PHY_MAX 5
+#define ATHR_PHY_MAX 1
 
 /* Range of valid PHY IDs is [MIN..MAX] */
 #define ATHR_ID_MIN 0
@@ -190,12 +181,6 @@ void athrs17_reg_init()
     
     if (athr17_init_flag)
         return;
-
-    athrs17_reg_write(0x624 , 0x7f7f7f7f);
-    athrs17_reg_write(0x10  , 0x40000000);
-    athrs17_reg_write(0x4   , 0x07600000);
-    athrs17_reg_write(0xc   , 0x01000000);
-    athrs17_reg_write(0x7c  , 0x0000007e);
 
     /* AR8327/AR8328 v1.0 fixup */
     if ((athrs17_reg_read(0x0) & 0xffff) == 0x1201)
@@ -351,14 +336,19 @@ athrs17_phy_setup(int ethUnit)
 	/* Enable RGMII */
 	phy_reg_write(0,phyUnit,0x1d,0x12);
 	phy_reg_write(0,phyUnit,0x1e,0x8);
-	/* Tx delay on PHY */
+#endif
+	/* Enable Tx delay on PHY */
 	phy_reg_write(0,phyUnit,0x1d,0x5);
 	phy_reg_write(0,phyUnit,0x1e,0x100);
         
-	/* Rx delay on PHY */
+	/* Enable Rx delay on PHY */
 	phy_reg_write(0,phyUnit,0x1d,0x0);
 	phy_reg_write(0,phyUnit,0x1e,0x8000);
-#endif
+	
+	/* Set GTX clock delay on PHY */
+	phy_reg_write(0,phyUnit,0x1d,0xb);
+	phy_reg_write(0,phyUnit,0x1e,0xbc20);
+
         if (athrs17_phy_is_link_alive(phyUnit)) {
             liveLinks++;
             ATHR_IS_PHY_ALIVE(phyUnit) = TRUE;
@@ -443,9 +433,6 @@ athrs17_phy_speed(int ethUnit)
     uint32_t  phyBase;
     uint32_t  phyAddr;
     int       ii = 200;
-
-    if (ethUnit == ENET_UNIT_GE0)
-        return _1000BASET;
 
     for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
         if (!ATHR_IS_ETHUNIT(phyUnit, ethUnit)) {
@@ -633,12 +620,5 @@ athrs17_reg_write(uint32_t reg_addr, uint32_t reg_val)
     phy_reg_write(0, phy_addr, phy_reg, phy_val); 
 }
 
-unsigned int s17_rd_phy(unsigned int phy_addr, unsigned int reg_addr)
-{
-    return ((uint32_t) phy_reg_read(0, phy_addr, reg_addr));
-}
 
-void s17_wr_phy(unsigned int phy_addr, unsigned int reg_addr, unsigned int write_data)
-{
-    phy_reg_write(0, phy_addr, reg_addr, write_data);
-}
+

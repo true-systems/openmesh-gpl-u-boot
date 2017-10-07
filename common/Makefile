@@ -30,7 +30,7 @@ AOBJS	=
 ifeq ($(COMPRESSED_UBOOT),1)
 COBJS	= main.o circbuf.o \
 	  cmd_boot.o cmd_bootm.o \
-	  cmd_cache.o cmd_console.o \
+	  cmd_cache.o cmd_console.o cmd_custom.o \
 	  cmd_date.o cmd_dcr.o cmd_display.o cmd_doc.o \
 	  cmd_eeprom.o \
 	  cmd_flash.o \
@@ -50,7 +50,7 @@ else
 COBJS	= main.o ACEX1K.o altera.o bedbug.o circbuf.o \
 	  cmd_ace.o cmd_autoscript.o \
 	  cmd_bdinfo.o cmd_bedbug.o cmd_bmp.o cmd_boot.o cmd_bootm.o \
-	  cmd_cache.o cmd_console.o \
+	  cmd_cache.o cmd_console.o cmd_custom.o \
 	  cmd_date.o cmd_dcr.o cmd_diag.o cmd_display.o cmd_doc.o cmd_dtt.o \
 	  cmd_eeprom.o cmd_elf.o cmd_ext2.o \
 	  cmd_fat.o cmd_fdc.o cmd_fdos.o cmd_flash.o cmd_fpga.o \

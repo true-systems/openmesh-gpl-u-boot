@@ -1,18 +1,22 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
+/*
+ * Atheror AR7240 series processor SOC registers
+ *
+ * (C) Copyright 2008 Atheros Communications, Inc.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307 USA
  */
 
 #ifndef _AR7240_SOC_H
@@ -430,8 +434,6 @@
 #define AR7240_GPIO_INT_PENDING         AR7240_GPIO_BASE+0x20
 #define AR7240_GPIO_INT_MASK            AR7240_GPIO_BASE+0x24
 #define AR7240_GPIO_FUNC                AR7240_GPIO_BASE+0x28
-#define AR7240_GPIO_FUNC4               AR7240_GPIO_BASE+0x3c
-#define AR7240_GPIO_FUNC5               AR7240_GPIO_BASE+0x40
 
 /*
  * IRQ Map.
@@ -524,7 +526,6 @@
 #define HORNET_BOOTSTRAP_STATUS       AR7240_RESET_BASE+0xac /* Hornet's bootstrap register */
 #define AR7240_REV_ID                 (AR7240_RESET_BASE + 0x90)
 #define AR7240_REV_ID_MASK            0xffff
-#define AR7240_REV_ID_MASK_MINOR      0xfu
 #define HORNET_REV_ID_MASK            0xfff
 #define AR9344_REV_ID_MASK            0xfff0	/* Ignore minor id */
 #define HORNET_BOOTSTRAP_SEL_25M_40M_MASK   0x00000001 /* Hornet's bootstrap register */
@@ -648,7 +649,7 @@
    
 #define is_ar933x_12()  (((ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK) == AR9330_REV_1_2) || \
                             ((ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK) == AR9331_REV_1_2))
-
+       
 
 #define is_ar933x() (is_ar9330() || is_ar9331())
 
@@ -683,8 +684,6 @@
 #else
 #define is_s16()	0
 #endif
-
-#define is_ar934x_12_or_later() (is_ar934x() && ((ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK_MINOR) >= 2))
 
 /*
  * AR7240_RESET bit defines

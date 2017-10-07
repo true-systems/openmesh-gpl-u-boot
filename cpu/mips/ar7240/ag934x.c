@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <config.h>
 #include <common.h>
 #include <malloc.h>
@@ -38,9 +21,9 @@
 #define ag7240_unit2mac(_unit)     ag7240_macs[(_unit)]
 #define ag7240_name2mac(name)	   strcmp(name,"eth0") ? ag7240_unit2mac(1) : ag7240_unit2mac(0)
 
-int ag7240_miiphy_read(char *devname, uint32_t phaddr,
-	       uint8_t reg, uint16_t *data);
-int ag7240_miiphy_write(char *devname, uint32_t phaddr,
+uint16_t ag7240_miiphy_read(char *devname, uint32_t phaddr,
+	       uint8_t reg);
+void  ag7240_miiphy_write(char *devname, uint32_t phaddr,
 	        uint8_t reg, uint16_t data);
 
 ag7240_mac_t *ag7240_macs[CFG_AG7240_NMACS];
@@ -273,9 +256,11 @@ void ag7240_mii_setup(ag7240_mac_t *mac)
                  ag7240_reg_wr(mac, AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
             }
             /* Virian */
-            mgmt_cfg_val = 0x4;
-            ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
-            ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
+            if (CFG_AG7240_NMACS > 1) {
+                 mgmt_cfg_val = 0x4;
+                 ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
+                 ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
+            }
             printf("Virian MDC CFG Value ==> %x\n",mgmt_cfg_val);
 
         }
@@ -321,6 +306,8 @@ static void ag7240_hw_start(ag7240_mac_t *mac)
 
     if(mac->mac_unit)
     {
+        ag7240_reg_wr(mac, AG7240_MAC_CFG1, (AG7240_MAC_CFG1_RX_EN |
+            AG7240_MAC_CFG1_TX_EN));
         ag7240_reg_rmw_set(mac, AG7240_MAC_CFG2, (AG7240_MAC_CFG2_PAD_CRC_EN |
             AG7240_MAC_CFG2_LEN_CHECK | AG7240_MAC_CFG2_IF_1000));
     }
@@ -331,6 +318,7 @@ static void ag7240_hw_start(ag7240_mac_t *mac)
    }
    ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_0, 0x1f00);
 
+   ag7240_mii_setup(mac);
 
     ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_1, 0x10ffff);
     ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_2, 0xAAA0555);
@@ -377,7 +365,7 @@ static int ag7240_check_link(ag7240_mac_t *mac)
            ag7240_set_mac_if(mac, 1);
            ag7240_reg_rmw_set(mac, AG7240_MAC_FIFO_CFG_5, (1 << 19));
            if (is_ar7242() && (mac->mac_unit == 0)) {
-               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1c000000);
+               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1a000000);
 	   }
 #ifdef CONFIG_F1E_PHY
            if (is_wasp() && (mac->mac_unit == 0)) {
@@ -393,10 +381,14 @@ static int ag7240_check_link(ag7240_mac_t *mac)
                ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x06000000);
 	   }
 #endif
+#ifndef CONFIG_ATHRS17_PHY
           if (is_wasp() && mac->mac_unit == 0 && is_f1e() ) {
+#endif
               ar7240_reg_rmw_set(AG7240_ETH_CFG,AG7240_ETH_CFG_RXD_DELAY);
               ar7240_reg_rmw_set(AG7240_ETH_CFG,AG7240_ETH_CFG_RDV_DELAY);
+#ifndef CONFIG_ATHRS17_PHY
           }
+#endif
 
           break;
 
@@ -406,11 +398,15 @@ static int ag7240_check_link(ag7240_mac_t *mac)
            ag7240_reg_rmw_clear(mac, AG7240_MAC_FIFO_CFG_5, (1 << 19));
            if ((is_ar7242() || is_wasp()) && (mac->mac_unit == 0) && !is_f2e())
                ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x0101);
-	
+
+#ifndef CONFIG_ATHRS17_PHY
            if (is_wasp() && mac->mac_unit == 0 && is_f1e()) {
+#endif
                ar7240_reg_rmw_clear(AG7240_ETH_CFG,AG7240_ETH_CFG_RXD_DELAY);
                ar7240_reg_rmw_clear(AG7240_ETH_CFG,AG7240_ETH_CFG_RDV_DELAY);
+#ifndef CONFIG_ATHRS17_PHY
            }
+#endif
            break;
 
        case _10BASET:
@@ -419,13 +415,16 @@ static int ag7240_check_link(ag7240_mac_t *mac)
            ag7240_reg_rmw_clear(mac, AG7240_MAC_FIFO_CFG_5, (1 << 19));
 
            if ((is_ar7242() || is_wasp()) && (mac->mac_unit == 0) && !is_f2e())
-               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1616);
+               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1313);
 
+#ifndef CONFIG_ATHRS17_PHY
            if (is_wasp() && mac->mac_unit == 0 && is_f1e()) {
+#endif
                ar7240_reg_rmw_clear(AG7240_ETH_CFG,AG7240_ETH_CFG_RXD_DELAY);
                ar7240_reg_rmw_clear(AG7240_ETH_CFG,AG7240_ETH_CFG_RDV_DELAY);
-               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1313);
+#ifndef CONFIG_ATHRS17_PHY
            }
+#endif
 	   if (is_f2e()) {
                ar7240_reg_rmw_clear(AG7240_ETH_CFG, AG7240_ETH_CFG_RMII_HISPD_GE0);
            }
@@ -643,7 +642,7 @@ static void ag7240_get_ethaddr(struct eth_device *dev)
     }
 #endif  /* CONFIG_ATH_NAND_BR */
     /* Use fixed address if the above address is invalid */
-    if (mac[0] != 0x00 || (mac[0] == 0xff && mac[5] == 0xff)) {
+    if (mac[0] == 0xff && mac[5] == 0xff) {
 #else
     if (1) {
 #endif 
@@ -689,7 +688,7 @@ int ag7240_enet_initialize(bd_t * bis)
     memset(ag7240_macs[i], 0, sizeof(ag7240_macs[i]));
     memset(dev[i], 0, sizeof(dev[i]));
 
-    snprintf(dev[i]->name, sizeof(dev[i]->name), "eth%d", i);
+    sprintf(dev[i]->name, "eth%d", i);
     ag7240_get_ethaddr(dev[i]);
 
     ag7240_macs[i]->mac_unit = i;
@@ -703,20 +702,6 @@ int ag7240_enet_initialize(bd_t * bis)
     dev[i]->recv = ag7240_recv;
     dev[i]->priv = (void *)ag7240_macs[i];
     }
-#if !defined(CONFIG_ATH_NAND_BR)
-    mask = AR7240_RESET_GE1_PHY;
-    ar7240_reg_rmw_set(AR7240_RESET, mask);
-    udelay(1000 * 100);
-    ar7240_reg_rmw_clear(AR7240_RESET, mask);
-    udelay(100);
-#endif
-    mask = AR7240_RESET_GE0_PHY;
-    ar7240_reg_rmw_set(AR7240_RESET, mask);
-    udelay(1000 * 100);
-    ar7240_reg_rmw_clear(AR7240_RESET, mask);
-    udelay(100);
-    
-    
     for (i = 0;i < CFG_AG7240_NMACS;i++) {
         eth_register(dev[i]);
 #if(CONFIG_COMMANDS & CFG_CMD_MII)
@@ -727,7 +712,13 @@ int ag7240_enet_initialize(bd_t * bis)
                 | AG7240_MAC_CFG1_RX_RST | AG7240_MAC_CFG1_TX_RST);
 
         if(!i) {
-           mask = (AR7240_RESET_GE0_MAC  | AR7240_RESET_GE1_MAC);
+#ifdef CONFIG_ATH_NAND_BR
+           mask = (AR7240_RESET_GE0_MAC | AR7240_RESET_GE0_PHY |
+                    AR7240_RESET_GE1_MAC);
+#else
+           mask = (AR7240_RESET_GE0_MAC | AR7240_RESET_GE0_PHY |
+                    AR7240_RESET_GE1_MAC | AR7240_RESET_GE1_PHY);
+#endif
 
            if (is_ar7241() || is_ar7242() ||  is_wasp())
                mask = mask | AR7240_RESET_GE0_MDIO | AR7240_RESET_GE1_MDIO;
@@ -743,7 +734,24 @@ int ag7240_enet_initialize(bd_t * bis)
            udelay(10 * 1000);
         }
 
-	ag7240_mii_setup(ag7240_macs[i]);
+        ag7240_hw_start(ag7240_macs[i]);
+        ag7240_setup_fifos(ag7240_macs[i]);
+
+        udelay(100 * 1000);
+
+        {
+            unsigned char *mac = dev[i]->enetaddr;
+
+            printf("%s: %02x:%02x:%02x:%02x:%02x:%02x\n", dev[i]->name,
+                   mac[0] & 0xff, mac[1] & 0xff, mac[2] & 0xff,
+                   mac[3] & 0xff, mac[4] & 0xff, mac[5] & 0xff);
+        }
+        mac_l = (dev[i]->enetaddr[4] << 8) | (dev[i]->enetaddr[5]);
+        mac_h = (dev[i]->enetaddr[0] << 24) | (dev[i]->enetaddr[1] << 16) |
+            (dev[i]->enetaddr[2] << 8) | (dev[i]->enetaddr[3] << 0);
+
+        ag7240_reg_wr(ag7240_macs[i], AG7240_GE_MAC_ADDR1, mac_l);
+        ag7240_reg_wr(ag7240_macs[i], AG7240_GE_MAC_ADDR2, mac_h);
 
         /* if using header for register configuration, we have to     */
         /* configure s26 register after frame transmission is enabled */
@@ -789,25 +797,6 @@ int ag7240_enet_initialize(bd_t * bis)
             athrs27_reg_init_lan();
 #endif
         }
-        ag7240_hw_start(ag7240_macs[i]);
-        ag7240_setup_fifos(ag7240_macs[i]);
-
-        udelay(100 * 1000);
-
-        {
-            unsigned char *mac = dev[i]->enetaddr;
-
-            printf("%s: %02x:%02x:%02x:%02x:%02x:%02x\n", dev[i]->name,
-                   mac[0] & 0xff, mac[1] & 0xff, mac[2] & 0xff,
-                   mac[3] & 0xff, mac[4] & 0xff, mac[5] & 0xff);
-        }
-        mac_l = (dev[i]->enetaddr[4] << 8) | (dev[i]->enetaddr[5]);
-        mac_h = (dev[i]->enetaddr[0] << 24) | (dev[i]->enetaddr[1] << 16) |
-            (dev[i]->enetaddr[2] << 8) | (dev[i]->enetaddr[3] << 0);
-
-        ag7240_reg_wr(ag7240_macs[i], AG7240_GE_MAC_ADDR1, mac_l);
-        ag7240_reg_wr(ag7240_macs[i], AG7240_GE_MAC_ADDR2, mac_h);
-
 
         ag7240_phy_setup(ag7240_macs[i]->mac_unit);
         printf("%s up\n",dev[i]->name);
@@ -817,8 +806,8 @@ int ag7240_enet_initialize(bd_t * bis)
 }
 
 #if (CONFIG_COMMANDS & CFG_CMD_MII)
-int
-ag7240_miiphy_read(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t *data)
+uint16_t
+ag7240_miiphy_read(char *devname, uint32_t phy_addr, uint8_t reg)
 {
     ag7240_mac_t *mac   = ag7240_name2mac(devname);
     uint16_t      addr  = (phy_addr << AG7240_ADDR_SHIFT) | reg, val;
@@ -856,13 +845,10 @@ ag7240_miiphy_read(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t *data
     val = ag7240_reg_rd(mac, AG7240_MII_MGMT_STATUS);
     ag7240_reg_wr(mac, AG7240_MII_MGMT_CMD, 0x0);
 
-    if(data != NULL)
-        *data = val; 
-
     return val;
 }
 
-int
+void
 ag7240_miiphy_write(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t data)
 {
     ag7240_mac_t *mac = ag7240_name2mac(devname);
@@ -893,7 +879,5 @@ ag7240_miiphy_write(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t data
 
     if(ii==0)
         printf("Error!!! Leave ag7240_miiphy_write without polling correct status!\n");
-    
-    return 0; 
 }
 #endif		/* CONFIG_COMMANDS & CFG_CMD_MII */

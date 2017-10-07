@@ -36,7 +36,7 @@ DECLARE_GLOBAL_DATA_PTR;
 
 env_t *env_ptr = NULL;
 
-extern uchar default_environment[];
+extern uchar *default_environment;
 extern int default_environment_size;
 
 

@@ -1,20 +1,8 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
+/*
+ * linux/drivers/mtd/nand/ath_nand.c
+ * vim: tabstop=8 : noexpandtab
+ * Derived from alauda.c
  */
-
 #include <common.h>
 #include <command.h>
 #include <asm/addrspace.h>
@@ -86,37 +74,6 @@
 #define ATH_NF_STATUS_OK	0x40	//0xc0
 #define ATH_NF_RD_STATUS_MASK	0x47	//0xc7
 
-#define ATH_NF_COMMAND_CMD_2(x)		(((x) & 0xff) << 24)	// A code of the third command in a sequence.
-#define ATH_NF_COMMAND_CMD_1(x)		(((x) & 0xff) << 16)	// A code of the second command in a sequence.
-#define ATH_NF_COMMAND_CMD_0(x)		(((x) & 0xff) <<  8)	// A code of the first command in a sequence.
-#define ATH_NF_COMMAND_ADDR_SEL		(1 << 7)		// Address register select flag:
-								// 0 ­ the address register 0 selected
-								// 1 ­ the address register 1 selected
-#define ATH_NF_COMMAND_INPUT_SEL_DMA	(1 << 6) 		// Input module select flag:
-								// 0 ­ select the SIU module as input
-								// 1 ­ select the DMA module as input
-#define ATH_NF_COMMAND_CMD_SEQ_0	0x00
-#define ATH_NF_COMMAND_CMD_SEQ_1	0x21
-#define ATH_NF_COMMAND_CMD_SEQ_2	0x22
-#define ATH_NF_COMMAND_CMD_SEQ_3	0x03
-#define ATH_NF_COMMAND_CMD_SEQ_4	0x24
-#define ATH_NF_COMMAND_CMD_SEQ_5	0x25
-#define ATH_NF_COMMAND_CMD_SEQ_6	0x26
-#define ATH_NF_COMMAND_CMD_SEQ_7	0x27
-#define ATH_NF_COMMAND_CMD_SEQ_8	0x08
-#define ATH_NF_COMMAND_CMD_SEQ_9	0x29
-#define ATH_NF_COMMAND_CMD_SEQ_10	0x2A
-#define ATH_NF_COMMAND_CMD_SEQ_11	0x2B
-#define ATH_NF_COMMAND_CMD_SEQ_12	0x0C
-#define ATH_NF_COMMAND_CMD_SEQ_13	0x0D
-#define ATH_NF_COMMAND_CMD_SEQ_14	0x0E
-#define ATH_NF_COMMAND_CMD_SEQ_15	0x2F
-#define ATH_NF_COMMAND_CMD_SEQ_16	0x30
-#define ATH_NF_COMMAND_CMD_SEQ_17	0x11
-#define ATH_NF_COMMAND_CMD_SEQ_18	0x32
-#define ATH_NF_COMMAND_CMD_SEQ_19	0x13
-
-
 #define ATH_NF_CTRL_SMALL_BLOCK_EN	(1 << 21)
 
 #define ATH_NF_CTRL_ADDR_CYCLE1_0	(0 << 18)
@@ -166,12 +123,12 @@
 #define ATH_NF_DMA_CTRL_DMA_DIR_READ	(1 << 6)
 #define ATH_NF_DMA_CTRL_DMA_MODE_SG	(1 << 5)
 /*
- * 000 - incrementing precise burst of precisely four transfers
- * 001 - stream burst (address const)
- * 010 - single transfer (address increment)
- * 011 - burst of unspecified length (address increment)
- * 100 - incrementing precise burst of precisely eight transfers
- * 101 - incrementing precise burst of precisely sixteen transfers
+ * 000 ­ incrementing precise burst of precisely four transfers
+ * 001 ­ stream burst (address const)
+ * 010 ­ single transfer (address increment)
+ * 011 ­ burst of unspecified length (address increment)
+ * 100 ­ incrementing precise burst of precisely eight transfers
+ * 101 ­ incrementing precise burst of precisely sixteen transfers
  */
 #define ATH_NF_DMA_CTRL_DMA_BURST_0	(0 << 2)
 #define ATH_NF_DMA_CTRL_DMA_BURST_1	(1 << 2)
@@ -213,20 +170,6 @@
 #define ATH_NAND_BLK_GOOD	0x1
 #define ATH_NAND_BLK_BAD	0x2
 #define ATH_NAND_BLK_ERASED	0x3
-
-#define ATH_NF_GENERIC_SEQ_CTRL_COL_ADDR	(1 << 17)
-#define ATH_NF_GENERIC_SEQ_CTRL_DATA_EN		(1 << 16)
-#define ATH_NF_GENERIC_SEQ_CTRL_CMD3_CODE(x)	(((x) & 0xff) << 8)
-#define ATH_NF_GENERIC_SEQ_CTRL_DEL_EN(x)	(((x) & 3) << 6)
-#define ATH_NF_GENERIC_SEQ_CTRL_CMD3_EN		(1 << 5)
-#define ATH_NF_GENERIC_SEQ_CTRL_CMD2_EN		(1 << 4)
-#define ATH_NF_GENERIC_SEQ_CTRL_ADDR1_EN	(1 << 3)
-#define ATH_NF_GENERIC_SEQ_CTRL_CMD1_EN		(1 << 2)
-#define ATH_NF_GENERIC_SEQ_CTRL_ADDR0_EN	(1 << 1)
-#define ATH_NF_GENERIC_SEQ_CTRL_CMD0_EN		(1 << 0)
-
-#define ATH_NAND_JFFS2_ECC_OFF	0x04	// Give 4 bytes for Factory Bad Block Marker
-#define ATH_NAND_JFFS2_ECC_LEN	0x10	// Space for JFFS2 Clean Marker
 
 /*
  * Note: The byte positions might not match the spec.
@@ -315,31 +258,26 @@ uint64_t ath_plane_size[] = {
 };
 
 typedef struct {
-	uint8_t		vid,
-			did,
-			b3,
-			addrcyc,
-			small,
-			spare;	// for small block;
-	uint16_t	pgsz;	// for small block
-	uint32_t	blk;	// for small block
+	uint8_t vid,
+		did,
+		b3,
+		addrcyc,
+		pgsz,
+		blk,
+		spare;
 } ath_nand_vend_data_t;
 
-#define is_small_block_device(x)	((x)->entry && (x)->entry->small)
-
 ath_nand_vend_data_t ath_nand_arr[] = {
-	{ 0x20, 0xda, 0x10, 5, },	// NU2g3B2D
-	{ 0x20, 0xf1, 0x00, 4, },	// NU1g3B2C
-	{ 0x20, 0xdc, 0x10, 5, },	// NU4g3B2D
-	{ 0x20, 0xd3, 0x10, 5, },	// NU8g3F2A
-	{ 0x20, 0xd3, 0x14, 5, },	// NU8g3C2B
-	{ 0xad, 0xf1, 0x00, 4, },	// HY1g2b
-	{ 0xad, 0xda, 0x10, 5, },	// HY2g2b
-	{ 0xec, 0xf1, 0x00, 4, },	// Samsung 3,3V 8-bit [128MB]
-	{ 0x98, 0xd1, 0x90, 4, },	// Toshiba
-	{ 0xad, 0x76, 0xad, 5, 1, 16, 512, 16 << 10 },	// Hynix 64MB NAND Flash
-	{ 0xad, 0x36, 0xad, 5, 1, 16, 512, 16 << 10 },	// Hynix 64MB NAND Flash
-	{ 0x20, 0x76, 0x20, 5, 1, 16, 512, 16 << 10 },	// ST Micro 64MB NAND Flash
+	{ 0x20, 0xda, 0x10, 5, 3, 1, 1 },	// NU2g3B2D
+	{ 0x20, 0xf1, 0x00, 4, 3, 1, 1 },	// NU1g3B2C
+	{ 0x20, 0xdc, 0x10, 5, 3, 1, 1 },	// NU4g3B2D
+	{ 0x20, 0xd3, 0x10, 5, 4, 1, 1 },	// NU8g3F2A
+	{ 0x20, 0xd3, 0x14, 5, 3, 2, 1 },	// NU8g3C2B
+	{ 0xad, 0xf1, 0x00, 4, 3, 1, 1 },	// HY1g2b
+	{ 0xad, 0xda, 0x10, 5, 3, 1, 1 },	// HY2g2b
+	{ 0xec, 0xf1, 0x00, 4, 3, 1, 1 },	// Samsung 3,3V 8-bit [128MB]
+	{ 0x98, 0xd1, 0x90, 4, 3, 1, 1 },	// Toshiba
+	//{ 0x2c, 0x48, 0x04, 5, 4, 3, 1 },	// Micron 16GBit MLC
 };
 
 #define NUM_ARRAY_ENTRIES(a)	(sizeof((a)) / sizeof((a)[0]))
@@ -359,8 +297,6 @@ typedef struct {
 	struct mtd_partition	*partitions;
 
 	unsigned		*bbt;
-
-	ath_nand_vend_data_t	*entry;
 
 	unsigned		ba0,
 				ba1,
@@ -390,73 +326,6 @@ uint8_t	ath_nand_io_buf[24 << 10] __attribute__((aligned(4096)));
 #define get_ath_nand_io_buf()	ath_nand_io_buf
 
 #define	bbt_index	(sizeof(*sc->bbt) * 8 / 2)
-
-/*
- * MTD layer assumes the NAND device as a linear array of bytes.
- * However, the NAND devices are organised into blocks, pages,
- * spare area etc. Hence, the address provided by Linux has to
- * converted to format expected by the devices.
- *
- * [in] mtd: MTD info pointer
- * [in] addr: Linear Address as provided by MTD layer
- * [out] addr0: Value to be set into ADDR0_0 register
- * [out] addr1: Value to be set into ADDR0_1 register
- * [in] small_block_erase: Address conversion for small block
- *	is different. Hence, special case it.
- */
-inline void
-ath_nand_conv_addr(struct mtd_info *mtd, loff_t addr, uint32_t *addr0,
-			uint32_t *addr1, int small_block_erase)
-{
-	ath_nand_sc_t		*sc = mtd->priv;
-
-	if (is_small_block_device(sc) && small_block_erase) {
-		/*
-		 * The block address loading is accomplished three
-		 * cycles. Erase is a SEQ_14 type command. Hence, the
-		 * controller starts shifting from ADDR_0[16:32] &
-		 * ADDR_1 based on the number of address cycles in our
-		 * case... The device data sheet assumes to have 3
-		 * address cycles for having page address + block
-		 * address for erase. Ideally, SMALL_BLOCK_EN in the
-		 * NF_CTRL register should help but, that doesn't seem
-		 * to work as expected. Hence, the following
-		 * conversion.
-		 */
-
-		// Get the block no.
-		uint32_t b = (addr >> mtd->erasesize_shift);
-
-		*addr0 = (b & 0xfff) << 21;
-		*addr1 = (b >> 11) & 0x1;
-	} else if (is_small_block_device(sc)) {
-		/* +-----+----+----+----+----+----+----+----+----+
-		 * |cycle|I/O7|I/O6|I/O5|I/O4|I/O3|I/O2|I/O1|I/O0|
-		 * +-----+----+----+----+----+----+----+----+----+
-		 * | 1st | A7 | A6 | A5 | A4 | A3 | A2 | A1 | A0 |
-		 * | 2nd |A16 |A15 |A14 |A13 |A12 |A11 |A10 | A9 |
-		 * | 3rd |A24 |A23 |A22 |A21 |A20 |A19 |A18 |A17 |
-		 * | 4th | x  | x  | x  | x  | x  | x  | x  |A25 |
-		 * +-----+----+----+----+----+----+----+----+----+
-		 */
-		addr &= ~(mtd->writesize_mask);
-		*addr0 = ((addr & 0xff) |
-			  ((addr >> 1) & (~0xffu))) & ((1 << 25) - 1);
-		*addr1 = 0;
-	} else {
-		/* +-----+---+---+---+---+---+---+---+---+
-		 * |Cycle|IO0|IO1|IO2|IO3|IO4|IO5|IO6|IO7|
-		 * +-----+---+---+---+---+---+---+---+---+
-		 * | 1st | A0| A1| A2| A3| A4| A5| A6| A7|
-		 * | 2nd | A8| A9|A10|A11| x | x | x | x |
-		 * | 3rd |A12|A13|A14|A15|A16|A17|A18|A19|
-		 * | 4th |A20|A21|A22|A23|A24|A25|A26|A27|
-		 * +-----+---+---+---+---+---+---+---+---+
-		 */
-		*addr0 = ((addr >> mtd->writesize_shift) << 16);
-		*addr1 = ((addr >> (mtd->writesize_shift + 16)) & 0xf);
-	}
-}
 
 inline unsigned
 ath_nand_get_blk_state(struct mtd_info *mtd, loff_t b)
@@ -497,13 +366,13 @@ ath_nand_status(ath_nand_sc_t *sc, unsigned *ecc)
 
 	rddata = ath_reg_rd(ATH_NF_STATUS);
 	for (i = 0; i < ATH_NF_STATUS_RETRY && rddata != 0xff; i++) {
-		udelay(5);
+		udelay(25);
 		rddata = ath_reg_rd(ATH_NF_STATUS);
 	}
 
 	dmastatus = ath_reg_rd(ATH_NF_DMA_CTRL);
 	for (j = 0; j < ATH_NF_STATUS_RETRY && !(dmastatus & 1); j++) {
-		udelay(5);
+		udelay(25);
 		dmastatus = ath_reg_rd(ATH_NF_DMA_CTRL);
 	}
 
@@ -516,7 +385,6 @@ ath_nand_status(ath_nand_sc_t *sc, unsigned *ecc)
 		*ecc = ath_reg_rd(ATH_NF_ECC_CTRL);
 	}
 	ath_nand_clear_int_status();
-	ath_reg_wr(ATH_NF_GENERIC_SEQ_CTRL, 0);
 	ath_reg_wr(ATH_NF_COMMAND, 0x07024);	// READ STATUS
 	while (ath_nand_get_cmd_end_status() == 0);
 	rddata = ath_reg_rd(ATH_NF_RD_STATUS);
@@ -525,7 +393,7 @@ ath_nand_status(ath_nand_sc_t *sc, unsigned *ecc)
 }
 
 static unsigned
-ath_check_all_0xff(ath_nand_sc_t *sc, unsigned addr0, unsigned addr1, unsigned *all_0xff)
+ath_check_all_0xff(ath_nand_sc_t *sc, unsigned addr0, unsigned addr1)
 {
 	uint8_t		*pa, *buf = ath_nand_io_buf, *end;
 	struct mtd_info	*mtd = sc->mtd;
@@ -546,7 +414,7 @@ ath_check_all_0xff(ath_nand_sc_t *sc, unsigned addr0, unsigned addr1, unsigned *
 	ath_reg_wr(ATH_NF_DMA_ADDR, (unsigned)pa);
 	ath_reg_wr(ATH_NF_COMMAND, 0x30006a);	// Read page
 	while (ath_nand_get_cmd_end_status() == 0);
-
+	udelay(1000);
 	i = ath_nand_status(sc, NULL) & ATH_NF_RD_STATUS_MASK;
 	memcpy(buf, pa, count);	// cache sync equivalent
 	if (i != ATH_NF_STATUS_OK) {
@@ -554,8 +422,6 @@ ath_check_all_0xff(ath_nand_sc_t *sc, unsigned addr0, unsigned addr1, unsigned *
 	}
 	end = buf + count;
 	for (buf += sc->ecc_offset; (*buf == 0xff) && buf != end; buf ++);
-
-	*all_0xff = 1;
 
 	if (buf == end) {
 		/* This page was read without ECC. From the spare area
@@ -587,6 +453,19 @@ retry:
 	ath_reg_wr(ATH_NF_DMA_ADDR, (unsigned)buf);
 	ath_reg_wr(ATH_NF_DMA_COUNT, count);
 
+	{
+		unsigned x0, x1;
+		x0 = ath_reg_rd(ATH_NF_ADDR0_0);
+		x1 = ath_reg_rd(ATH_NF_ADDR0_1);
+
+		if (x0 != addr0 || x1 != addr1) {
+			printf("=== reg write failed buf = %p ===\n", buf);
+			printf("%s: 0x%x 0x%x, 0x%x 0x%x\n", __func__,
+				x0, x1, addr0, addr1);
+			printf("========================\n");
+			panic("Register writes to NAND failed\n");
+		}
+	}
 #if ATH_NF_HW_ECC
 	if (ecc_needed && sc->ecc_offset && (count & sc->mtd->writesize_mask) == 0) {
 		/*
@@ -594,6 +473,7 @@ retry:
 		 * Cannot be used for non-page-sized read/write
 		 */
 		ath_reg_wr(ATH_NF_ECC_OFFSET, sc->ecc_offset);
+		//ath_reg_wr(ATH_NF_ECC_CTRL, 0x20e0);
 		ath_reg_wr(ATH_NF_ECC_CTRL, ATH_NF_ECC_CTRL_ERR_THRESH(4) |
 						ATH_NF_ECC_CTRL_ECC_4_BITS);
 		ath_reg_wr(ATH_NF_CTRL, sc->nf_ctrl | ATH_NF_CTRL_ECC_EN);
@@ -608,28 +488,11 @@ retry:
 	}
 
 	if (rd) {	// Read Page
-		if (is_small_block_device(sc)) {
-			ath_reg_wr(ATH_NF_DMA_CTRL,
-						ATH_NF_DMA_CTRL_DMA_START |
-						ATH_NF_DMA_CTRL_DMA_DIR_READ |
-						ATH_NF_DMA_CTRL_DMA_BURST_3);
-			ath_reg_wr(ATH_NF_GENERIC_SEQ_CTRL,
-						ATH_NF_GENERIC_SEQ_CTRL_COL_ADDR |
-						ATH_NF_GENERIC_SEQ_CTRL_DATA_EN |
-						ATH_NF_GENERIC_SEQ_CTRL_DEL_EN(1) |
-						ATH_NF_GENERIC_SEQ_CTRL_ADDR0_EN |
-						ATH_NF_GENERIC_SEQ_CTRL_CMD0_EN);
-			ath_reg_wr(ATH_NF_COMMAND,
-						ATH_NF_COMMAND_CMD_SEQ_18 |
-						ATH_NF_COMMAND_INPUT_SEL_DMA |
-						ATH_NF_COMMAND_CMD_0(0));
-		} else {
-			ath_reg_wr(ATH_NF_DMA_CTRL,
-						ATH_NF_DMA_CTRL_DMA_START |
-						ATH_NF_DMA_CTRL_DMA_DIR_READ |
-						ATH_NF_DMA_CTRL_DMA_BURST_3);
-			ath_reg_wr(ATH_NF_COMMAND, 0x30006a);
-		}
+		ath_reg_wr(ATH_NF_DMA_CTRL,
+					ATH_NF_DMA_CTRL_DMA_START |
+					ATH_NF_DMA_CTRL_DMA_DIR_READ |
+					ATH_NF_DMA_CTRL_DMA_BURST_3);
+		ath_reg_wr(ATH_NF_COMMAND, 0x30006a);
 	} else {	// Write Page
 		ath_reg_wr(ATH_NF_MEM_CTRL, 0xff00);	// Remove write protect
 		ath_reg_wr(ATH_NF_DMA_CTRL,
@@ -643,7 +506,7 @@ retry:
 
 	//printk(KERN_DEBUG "%s(%c): 0x%x 0x%x 0x%x 0x%p\n", __func__,
 	//	rd ? 'r' : 'w', addr0, addr1, count, buf);
-
+	udelay(1000);
 	rddata = (tmp = ath_nand_status(sc, &ecc)) & ATH_NF_RD_STATUS_MASK;
 	if ((rddata != ATH_NF_STATUS_OK) && (i < ATH_MAX_RETRY)) {
 		i++;
@@ -664,11 +527,12 @@ retry:
 
 		ath_reg_wr(DDR_WB_FLUSH_USB_ADDRESS, 1);
 		while (ath_reg_rd(DDR_WB_FLUSH_USB_ADDRESS) & 1);
-		udelay(2);
+		udelay(50);
 
 		if (ecc_needed && (ecc & ATH_NF_ECC_ERROR)) {
 			if (rd && all_0xff == 0) {
-				if (ath_check_all_0xff(sc, addr0, addr1, &all_0xff)) {
+				all_0xff = 1;
+				if (ath_check_all_0xff(sc, addr0, addr1)) {
 					return ATH_NF_STATUS_OK;
 				}
 			}
@@ -715,7 +579,7 @@ ath_nand_rw_buff(struct mtd_info *mtd, int rd, uint8_t *buf,
 	*iodone = 0;
 
 	while (len) {
-		uint32_t c, ba0, ba1;
+		unsigned c, ba0, ba1;
 
 		if (ath_nand_block_isbad(mtd, addr)) {
 			printk("Skipping bad block[0x%x]\n", (unsigned)addr);
@@ -725,7 +589,14 @@ ath_nand_rw_buff(struct mtd_info *mtd, int rd, uint8_t *buf,
 
 		c = (addr & mtd->writesize_mask);
 
-		ath_nand_conv_addr(mtd, addr, &ba0, &ba1, 0);
+		/*
+		 * addr format:
+		 * a0 - a11 - xxxx - a19 - a27 == 32 bits, will be in ba0
+		 * a28 - a31 - xxxxxxxxxxxxxxxx == 4 bits, will be in ba1 in lsb
+		 */
+
+		ba0 = ((addr >> mtd->writesize_shift) << 16);
+		ba1 = ((addr >> (mtd->writesize_shift + 16)) & 0xf);
 
 		if (c) {
 			iolen = mtd->writesize - c;
@@ -755,17 +626,19 @@ ath_nand_rw_buff(struct mtd_info *mtd, int rd, uint8_t *buf,
 		}
 
 		pa = (void *)virt_to_phys(ath_nand_io_buf);
-
-		flush_cache((unsigned)ath_nand_io_buf, mtd->writesize);
+		if (!rd) {
+			flush_cache((unsigned)ath_nand_io_buf,
+				mtd->writesize);
+		}
 
 		//printk("%s(%c): 0x%x 0x%x 0x%x 0x%p\n", __func__,
 		//	rd ? 'r' : 'w', ba0, ba1, iolen, pa);
 
 		ret = ath_nand_rw_page(sc, rd, ba0, ba1, mtd->writesize, pa, ecc_needed);
 
-		flush_cache((unsigned)ath_nand_io_buf, mtd->writesize);
 
 		if (rd) {
+			memcpy(ath_nand_io_buf, KSEG1ADDR(pa), mtd->writesize);	// cache sync equivalent
 			memcpy(buf, ath_nand_io_buf + c, iolen);
 		}
 skip_write_for_all_0xff:
@@ -848,7 +721,7 @@ ath_nand_block_erase(ath_nand_sc_t *sc, unsigned addr0, unsigned addr1)
 	ath_reg_wr(ATH_NF_MEM_CTRL, 0x0000);	// Enable write protect
 
 	if (rddata != ATH_NF_STATUS_OK) {
-		printk("Erase Failed. status = 0x%x\n", rddata);
+		printk("Erase Failed. status = 0x%x", rddata);
 		return 1;
 	}
 	return 0;
@@ -877,19 +750,20 @@ ath_nand_erase(struct mtd_info *mtd, struct erase_info *instr)
 	printk("%s: 0x%x %u\n", __func__, s_first, n);
 
 	for (j = 0, i = s_first; j < n; j++, i += mtd->erasesize) {
-		uint32_t ba0, ba1;
+		ulong ba0, ba1;
 
 		if (ath_nand_block_isbad(mtd, i)) {
 			bad ++;
 			continue;
 		}
 
-		ath_nand_conv_addr(mtd, i, &ba0, &ba1, 1);
+		ba0 = ((i >> mtd->writesize_shift) << 16);
+		ba1 = ((i >> (mtd->writesize_shift + 16)) & 0xf);
 
 		printk("\b\b\b\b%4d", j);
 
 		if ((ret = ath_nand_block_erase(sc, ba0, ba1)) != 0) {
-			printf("%s: erase failed 0x%x 0x%x 0x%x %x "
+			iodbg("%s: erase failed 0x%llx 0x%x 0x%x %llu "
 				"%lx %lx\n", __func__, instr->addr, n,
 				mtd->erasesize, i, ba1, ba0);
 			break;
@@ -935,11 +809,12 @@ ath_nand_rw_oob(struct mtd_info *mtd, int rd, loff_t addr,
 {
 	unsigned	ret = ATH_NF_STATUS_OK;
 	unsigned char	*pa;
-	uint32_t	ba0, ba1;
+	unsigned	ba0, ba1;
 	uint8_t		*oob = ath_nand_io_buf + mtd->writesize;
 	ath_nand_sc_t	*sc = mtd->priv;
 
-	ath_nand_conv_addr(mtd, addr, &ba0, &ba1, 0);
+	ba0 = ((addr >> mtd->writesize_shift) << 16);
+	ba1 = ((addr >> (mtd->writesize_shift + 16)) & 0xf);
 
 	if (!rd) {
 		if (ops->datbuf) {
@@ -976,6 +851,7 @@ ath_nand_rw_oob(struct mtd_info *mtd, int rd, loff_t addr,
 		return 1;
 	}
 
+
 	if (rd) {
 		memcpy(ath_nand_io_buf, KSEG1ADDR(pa), mtd->writesize + mtd->oobsize);	// for reads...
 
@@ -995,6 +871,7 @@ ath_nand_rw_oob(struct mtd_info *mtd, int rd, loff_t addr,
 	//	ath_nand_dump_buf(addr, ops->datbuf, ops->len);
 	//	ath_nand_dump_buf(addr, ops->oobbuf, ops->ooblen);
 	//}
+
 
 	if (ops->datbuf) {
 		ops->retlen = ops->len;
@@ -1326,6 +1203,7 @@ ath_nand_hw_init(ath_nand_sc_t *sc, void *p)
 
 	// NAND Mem Control Reg
 	ath_reg_wr(ATH_NF_MEM_CTRL, 0xff00);
+	//ath_reg_wr(ATH_NF_MEM_CTRL, 0x0000);
 
 	// Reset Command
 	ath_reg_wr(ATH_NF_COMMAND, 0xff00);
@@ -1372,7 +1250,6 @@ ath_nand_hw_init(ath_nand_sc_t *sc, void *p)
 
 		entry = nand_get_entry((ath_nand_id_t *)p, ath_nand_arr, NUM_ATH_NAND);
 		if (entry) {
-			//sc->entry = entry;
 			sc->nf_ctrl = ATH_NF_CTRL_ADDR_CYCLE0(entry->addrcyc);
 		} else if (nand_param_page(sc, sc->onfi, sizeof(sc->onfi)) == 0) {
 			rddata = sc->onfi[ONFI_NUM_ADDR_CYCLES];
@@ -1408,13 +1285,7 @@ ath_nand_ecc_init(struct mtd_info *mtd)
 #if ATH_NF_HW_ECC
 	ath_nand_sc_t		*sc = mtd->priv;
 
-	if (is_small_block_device(sc)) {
-		// ECC cannot be supported...
-		sc->ecc_offset = 0;
-	} else {
-		sc->ecc_offset = mtd->writesize + ATH_NAND_JFFS2_ECC_OFF +
-						ATH_NAND_JFFS2_ECC_LEN;
-	}
+	sc->ecc_offset = mtd->writesize + 20;
 #else
 	sc->ecc_offset = 0;
 #endif
@@ -1439,7 +1310,7 @@ ath_nand_set_ns(struct mtd_info *mtd)
 		return;
 	}
 
-	snprintf(ns, sizeof(ns), "-0x%x-0x%x", mtd->erasesize, mtd->writesize);
+	sprintf(ns, "-0x%x-0x%x", mtd->erasesize, mtd->writesize);
 	setenv(ATH_NAND_SPEC, ns);
 	printf("set " ATH_NAND_SPEC " %s\n", ns);
 }
@@ -1495,18 +1366,7 @@ static ulong ath_nand_probe(void)
 		mtd->size	= ath_plane_size[sc->nid.pls] << sc->nid.pn;
 	}
 
-	if (is_small_block_device(sc)) {
-		mtd->writesize		= sc->entry->pgsz;
-		mtd->writesize_shift	= ffs(mtd->writesize) - 1;
-		mtd->writesize_mask	= mtd->writesize - 1;
-
-		mtd->erasesize		= sc->entry->blk;
-		mtd->erasesize_shift	= ffs(mtd->erasesize) - 1;
-		mtd->erasesize_mask	= mtd->erasesize - 1;
-
-		mtd->oobsize		= sc->entry->spare;
-		mtd->oobavail		= mtd->oobsize;
-	} else if (!sc->onfi[0]) {
+	if (!sc->onfi[0]) {
 		mtd->writesize_shift	= 10 + sc->nid.ps;
 		mtd->writesize		= (1 << mtd->writesize_shift);
 		mtd->writesize_mask	= (mtd->writesize - 1);

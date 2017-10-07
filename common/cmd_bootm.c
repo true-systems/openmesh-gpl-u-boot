@@ -318,7 +318,7 @@ int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	dcache_disable();
 #endif
 
-#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
+#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240)
 	/*
 	 * Flush everything, restore caches for linux
 	 */
@@ -1060,17 +1060,68 @@ int do_bootd (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	return rcode;
 }
 
-U_BOOT_CMD(
- 	boot,	1,	1,	do_bootd,
- 	"boot    - boot default, i.e., run 'bootcmd'\n",
-	NULL
-);
-
 /* keep old command name "bootd" for backward compatibility */
 U_BOOT_CMD(
  	bootd, 1,	1,	do_bootd,
  	"bootd   - boot default, i.e., run 'bootcmd'\n",
 	NULL
+);
+
+int do_boot (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
+{
+	int rcode = 0;
+
+	if (argc > 1) {
+		static char *str[] = {"bootcmd", "bootargs"};
+		char *val[] = {NULL, NULL};
+		char *arg[] = {argv[1], NULL};
+		char key[32], *s;
+		int i = -1;
+
+		while (!rcode && ++i < 2) {
+			if ((s = getenv (str[i])) != NULL && !(rcode = (val[i] = malloc (strlen (s) + 1)) == NULL)) {
+				strcpy (val[i], s);
+			}
+		}
+		for(rcode? (arg[0] = NULL): (rcode = 1); 
+			rcode && arg[0] != NULL && ((arg[1] = strchr (arg[0], ',')) != NULL && (*arg[1] = '\0'), 1); arg[0] = arg[1] != NULL? arg[1] + 1: NULL) {
+			if (strlen (arg[0]) <= 16) {
+				for (i = 0; i < 2; i++) {
+					if (sprintf (key, "%s_%s", str[i], arg[0]) > 0 && getenv (key) != NULL) {
+						setenv (str[i], NULL), setenv (str[i], getenv (key));
+					}
+					else {
+						setenv (str[i], val[i]);
+					}
+				}
+				rcode = do_bootd (cmdtp, 0, 0, NULL);
+			}
+			else {
+				break;
+			}
+		}
+		if (i == 2) {
+			while (i-- > 0) {
+				setenv (str[i], val[i]);
+			}
+		}
+		while (++i < 2) {
+			if (val[i] != NULL) {
+				free (val[i]), val[i] = NULL;
+			}
+		}
+	}
+	else {
+		rcode = do_bootd (cmdtp, 0, 0, NULL);
+	}
+
+	return rcode;
+}
+
+U_BOOT_CMD(
+ 	boot,	2,	1,	do_boot,
+ 	"boot    - boot default, i.e., run 'bootcmd'\n",
+	"[seq[,seq]...]\n"
 );
 
 #endif

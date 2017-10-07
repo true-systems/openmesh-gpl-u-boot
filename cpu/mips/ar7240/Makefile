@@ -1,20 +1,3 @@
-#
-# Copyright (c) 2014 Qualcomm Atheros, Inc.
-#
-# Permission to use, copy, modify, and/or distribute this software for any
-# purpose with or without fee is hereby granted, provided that the above
-# copyright notice and this permission notice appear in all copies.
-# 
-# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-#
-#
-
 include $(TOPDIR)/config.mk
 
 LIB	= lib$(SOC).a
@@ -34,29 +17,13 @@ endif
 ifneq ($(BUILD_EMU), )
 OBJS    += hornet_ag7240.o
 else
-ifneq ($(findstring db12x,$(BOARD)),)
+ifeq ($(BOARD), db12x)
 OBJS    += ag934x.o
 else
-ifneq ($(findstring reh132,$(BOARD)),)
-OBJS    += ag934x.o
-else
-ifneq ($(findstring dhp,$(BOARD)),)
-OBJS    += ag934x.o
-else
-ifneq ($(findstring aph,$(BOARD)),)
-OBJS    += ag934x.o
-else
-ifneq ($(findstring ap123,$(BOARD)),)
-OBJS    += ag934x.o
-else
-ifneq ($(findstring ap120,$(BOARD)),)
+ifeq ($(BOARD),ap123)
 OBJS    += ag934x.o
 else
 OBJS    += ag7240.o
-endif
-endif
-endif
-endif
 endif
 endif
 endif

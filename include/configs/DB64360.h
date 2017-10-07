@@ -29,7 +29,7 @@
  * (c) 2002 Datentechnik AG - Project: Dino
  *
  *
- * $Id: DB64360.h,v 1.3 2003/04/26 04:58:13 brad Exp $
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/configs/DB64360.h#1 $
  *
   ************************************************************************/
 

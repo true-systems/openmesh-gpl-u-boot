@@ -4,7 +4,7 @@
  *  Author: Vladimir Shebordaev, Igor Oblakov
  *  Copyright:  MontaVista Software Inc.
  *
- *  $Id: mmc_pxa.h,v 0.3.1.6 2002/09/25 19:25:48 ted Exp ted $
+ *  $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/asm-arm/arch-pxa/mmc.h#1 $
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2 as

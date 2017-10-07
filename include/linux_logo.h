@@ -1,4 +1,4 @@
-/* $Id: linux_logo.h,v 1.5 1998/07/30 16:30:58 jj Exp $
+/* $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/linux_logo.h#1 $
  * include/linux/linux_logo.h: This is a linux logo
  *                             to be displayed on boot.
  *

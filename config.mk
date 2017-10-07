@@ -115,7 +115,7 @@ RANLIB	= $(CROSS_COMPILE)RANLIB
 .depend : CC = @$(CROSS_COMPILE)gcc
 
 RELFLAGS= $(PLATFORM_RELFLAGS)
-DBGFLAGS= -g #-DDEBUG
+#DBGFLAGS= -g #-DDEBUG
 OPTFLAGS= -Os #-fomit-frame-pointer
 ifndef LDSCRIPT
 #LDSCRIPT := $(TOPDIR)/board/$(BOARDDIR)/u-boot.lds.debug
@@ -164,6 +164,14 @@ endif
 ifeq ($(ARCH),nios)
 ifeq ($(findstring 2.9,$(shell $(CC) --version)),2.9)
 CFLAGS := $(CPPFLAGS) -Wall -Wno-trigraphs
+endif
+endif
+
+ifeq ($(BUILD_TYPE),jffs2)
+CFLAGS += -DROOTFS=1
+else
+ifeq ($(BUILD_TYPE),squashfs)
+CFLAGS += -DROOTFS=2
 endif
 endif
 
@@ -229,19 +237,19 @@ export quiet Q V
 
 %.s:	%.S
 ifneq ($(V),1)
-	@echo [CPP] $(abspath $(CURDIR)/$<)
+	@echo [CPP] $(CURDIR)/$<
 endif
 	$(Q)$(CPP) $(AFLAGS) -o $@ $(CURDIR)/$<
 
 %.o:	%.S
 ifneq ($(V),1)
-	@echo [CC] $(abspath $(CURDIR)/$<)
+	@echo [CC] $(CURDIR)/$<
 endif
 	$(Q)$(CC) $(AFLAGS) -c -o $@ $(CURDIR)/$<
 
 %.o:	%.c
 ifneq ($(V),1)
-	@echo [CC] $(abspath $(CURDIR)/$<)
+	@echo [CC] $(CURDIR)/$<
 endif
 	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
 

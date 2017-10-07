@@ -1,4 +1,4 @@
-/* $Id: posix_types.h,v 1.6 2000/02/04 23:32:54 ralf Exp $
+/* $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/asm-mips/posix_types.h#1 $
  *
  * This file is subject to the terms and conditions of the GNU General Public
  * License.  See the file "COPYING" in the main directory of this archive

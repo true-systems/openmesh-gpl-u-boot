@@ -36,19 +36,10 @@
 #include <ar7240_soc.h>
 #endif
 
-#if defined(CONFIG_ATHEROS)
-#include <asm/addrspace.h>
-#include <atheros.h>
-#endif
-
 
 int do_reset(cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 {
-#if defined(CONFIG_ATHEROS)
-	while (1) {
-		ath_reg_wr(RST_RESET_ADDRESS, RST_RESET_FULL_CHIP_RESET_SET(1));
-	}
-#elif defined(CONFIG_INCA_IP)
+#if defined(CONFIG_INCA_IP)
 	*INCA_IP_WDT_RST_REQ = 0x3f;
 #elif defined(CONFIG_PURPLE) || defined(CONFIG_TB0229)
 	void (*f)(void) = (void *) 0xbfc00000;

@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <config.h>
 #include <version.h>
 #include <asm/regdef.h>
@@ -154,7 +137,6 @@ otp_loop1:
     nop
     li  t8, 0x80000080
     and t9, t7, t8
-default_pmu:
     li  t5, 0x80             /* default 0x031c4386 */
     bne t8, t9, otp_end
 otp_loop1_end:
@@ -165,13 +147,6 @@ fetch_otp:
     and t2, t1 , t7         /* USB */
     and t5, t1 , t8         /* PMU */
 
-check_pmu:
-    li t0, 0x4                         /* PMU range should be 0x4~0xa */
-    bgt t0, t5, default_pmu
-    nop
-    li t0, 0xa                         /* PMU range should be 0x4~0xa */
-    blt t0, t5, default_pmu
-    nop
     li  t0, 0x4
     sll t5, t5, t0
 
