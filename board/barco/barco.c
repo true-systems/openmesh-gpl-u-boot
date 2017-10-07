@@ -3,9 +3,9 @@
  * Unless otherwise specified, Copyright (C) 2004-2005 Barco Control Rooms
  *
  * $Source: /home/services/cvs/firmware/ppc/u-boot-1.1.2/board/barco/barco.c,v $
- * $Revision: 1.4 $
- * $Author: mleeman $
- * $Date: 2005/03/02 16:40:20 $
+ * $Revision: #1 $
+ * $Author: lance $
+ * $Date: 2012/09/27 $
  *
  * Last ChangeLog Entry
  * $Log: barco.c,v $

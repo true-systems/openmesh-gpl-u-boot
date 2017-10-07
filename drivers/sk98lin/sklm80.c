@@ -2,8 +2,8 @@
  *
  * Name:	sklm80.c
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.20 $
- * Date:	$Date: 2002/08/13 09:16:27 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/09/27 $
  * Purpose:	Funktions to access Voltage and Temperature Sensor (LM80)
  *
  ******************************************************************************/
@@ -106,7 +106,7 @@
 	LM80 functions
 */
 static const char SysKonnectFileId[] =
-	"$Id: sklm80.c,v 1.20 2002/08/13 09:16:27 rschmidt Exp $" ;
+	"$Id: //depot/sw/releases/9.5.3/boot/u-boot/drivers/sk98lin/sklm80.c#1 $" ;
 
 #include "h/skdrv1st.h"		/* Driver Specific Definitions */
 #include "h/lm80.h"

@@ -1,18 +1,9 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
+/*
+ * This file is subject to the terms and conditions of the GNU General Public
+ * License.  See the file "COPYING" in the main directory of this archive
+ * for more details.
+ *
+ * Copyright © 2007 Atheros Communications, Inc.,  All Rights Reserved.
  */
 
 /*
@@ -55,8 +46,10 @@ typedef enum {
 #define TRUE    1
 #define FALSE   0
 
-#define ATHR_PHY0_ADDR   0x0
-#define ATHR_PHY1_ADDR   0x1
+//#define ATHR_PHY0_ADDR   0x0 AY001
+//#define ATHR_PHY1_ADDR   0x1 AY001
+#define ATHR_PHY0_ADDR   0x5
+#define ATHR_PHY1_ADDR   0x0
 #define ATHR_PHY2_ADDR   0x2
 #define ATHR_PHY3_ADDR   0x3
 #define ATHR_PHY4_ADDR   0x4
@@ -79,13 +72,8 @@ typedef struct {
 } athrPhyInfo_t;
 
 #if defined(ATH_S17_MAC0_SGMII)
-#if (CFG_ATH_GMAC_NMACS == 1) /* QCA9563 only have 1 GMAC working */
-#define ENET_UNIT            ENET_UNIT_GE0
-#define ENET_UNIT_WAN        ENET_UNIT_GE0
-#else
 #define ENET_UNIT            ENET_UNIT_GE1
 #define ENET_UNIT_WAN        ENET_UNIT_GE0
-#endif
 #else
 #define ENET_UNIT            ENET_UNIT_GE0
 #define ENET_UNIT_WAN        ENET_UNIT_GE1
@@ -152,7 +140,11 @@ static athrPhyInfo_t athrPhyInfo[] = {
 static uint8_t athr17_init_flag = 0;
 
 //#define ATHR_PHY_MAX (sizeof(ipPhyInfo) / sizeof(ipPhyInfo[0]))
-#define ATHR_PHY_MAX 5
+//#ifdef ATHRS17_VER_1_0
+#define ATHR_PHY_MAX 1
+//#else
+//#define ATHR_PHY_MAX 5 AY001
+//#endif
 
 /* Range of valid PHY IDs is [MIN..MAX] */
 #define ATHR_ID_MIN 0
@@ -183,7 +175,7 @@ static void phy_mode_setup(void);
 
 static void phy_mode_setup(void)
 {
-#ifdef ATHRS17_VER_1_0
+//#ifdef ATHRS17_VER_1_0
 	/*work around for phy4 rgmii mode*/
 	phy_reg_write(ATHR_PHYBASE(ATHR_IND_PHY), ATHR_PHYADDR(ATHR_IND_PHY), 29, 18);
 	phy_reg_write(ATHR_PHYBASE(ATHR_IND_PHY), ATHR_PHYADDR(ATHR_IND_PHY), 30, 0x480c);
@@ -195,7 +187,7 @@ static void phy_mode_setup(void)
 	/*tx delay*/
 	phy_reg_write(ATHR_PHYBASE(ATHR_IND_PHY), ATHR_PHYADDR(ATHR_IND_PHY), 29, 5);
 	phy_reg_write(ATHR_PHYBASE(ATHR_IND_PHY), ATHR_PHYADDR(ATHR_IND_PHY), 30, 0x3d47);
-#endif
+//#endif
 }
 /*
  * V-lan configuration given by Switch team
@@ -231,15 +223,6 @@ void athrs17_vlan_config()
 
 void athrs17_reg_init_wan(void)
 {
-	uint32_t sgmii_ctrl_value;
-
-	/* SGMII control reg value based on switch id  */
-	if ((athrs17_reg_read(S17_MASK_CTRL_REG) & 0xFFFF) >= S17C_V1_DEVICEID) {
-		sgmii_ctrl_value = 0xc74164de;
-	} else {
-		sgmii_ctrl_value = 0xc74164d0;
-	}
-
 
 #ifdef ATH_S17_MAC0_SGMII
 	athrs17_reg_write(S17_P6PAD_MODE_REG,0x07600000);
@@ -249,7 +232,7 @@ void athrs17_reg_init_wan(void)
            athrs17_reg_read(S17_P6PAD_MODE_REG)|S17_MAC6_SGMII_EN);
 #endif
 	athrs17_reg_write(S17_P6STATUS_REG, S17_PORT_STATUS_AZ_DEFAULT);
-	athrs17_reg_write(S17_SGMII_CTRL_REG , sgmii_ctrl_value); /* SGMII control */
+	athrs17_reg_write(S17_SGMII_CTRL_REG , 0xc74164d0); /* SGMII control */
          
         athrs17_vlan_config();
 	printf("%s done\n",__func__);
@@ -259,29 +242,19 @@ void athrs17_reg_init_wan(void)
 void athrs17_reg_init()
 {
 	int phy_addr = 0;
-	uint32_t sgmii_ctrl_value;
+
 	/* if using header for register configuration, we have to     */
 	/* configure s17 register after frame transmission is enabled */
 
-	if ((athrs17_reg_read(S17_MASK_CTRL_REG) & 0xFFFF) >= S17C_V1_DEVICEID) {
-		sgmii_ctrl_value = 0xc74164de;
-	} else {
-		sgmii_ctrl_value = 0xc74164d0;
-	}
-	if (athr17_init_flag) {
+	if (athr17_init_flag)
 		return;
-	}
-
-#if (CFG_ATH_GMAC_NMACS == 1)	
-		athrs17_reg_write(S17_P0PAD_MODE_REG, S17_MAC0_SGMII_EN);
-		athrs17_reg_write(S17_SGMII_CTRL_REG , sgmii_ctrl_value); /* SGMII control  */
-		athrs17_reg_write(S17_GLOFW_CTRL1_REG,	0x7f7f7f7f);
-#else
 	if (is_drqfn()) {
 		athrs17_reg_write(S17_P0PAD_MODE_REG, S17_MAC0_SGMII_EN);
-		athrs17_reg_write(S17_SGMII_CTRL_REG , sgmii_ctrl_value); /* SGMII control  */
-	} else {
+		athrs17_reg_write(S17_SGMII_CTRL_REG , 0xc74164d0); /* SGMII control  */
+        } else {
+//#ifndef ATHRS17_VER_1_0
 		athrs17_reg_write(S17_GLOFW_CTRL1_REG,	0x7f7f7f7f);
+//#endif
 		/* 
                  * If defined S17 Mac0 sgmii val of 0x4(S17_P0PAD_MODE_REG)
                  * should be configured as 0x80
@@ -289,12 +262,16 @@ void athrs17_reg_init()
 #ifdef ATH_S17_MAC0_SGMII
 		athrs17_reg_write(S17_P0PAD_MODE_REG,	0x80080);
 #else
+//#ifndef ATHRS17_VER_1_0
 		athrs17_reg_write(S17_P0PAD_MODE_REG,	0x07680000);
+//#endif
 #endif
+//#ifndef ATHRS17_VER_1_0
 		athrs17_reg_write(S17_P6PAD_MODE_REG,	0x01000000);
-	}
-#endif	/* CFG_ATH_GMAC_NMACS == 1 */
+//#endif
 
+		
+	}
 /*
  * Values suggested by the swich team when s17 in sgmii configuration
  * operates in forced mode.
@@ -303,9 +280,13 @@ void athrs17_reg_init()
 #ifdef ATH_SGMII_FORCED_MODE
 	athrs17_reg_write(S17_PWS_REG, 0x602613a0);
 #else
+//#ifndef ATHRS17_VER_1_0
 	athrs17_reg_write(S17_PWS_REG,	0x40000000);
+//#endif
 #endif
+//#ifndef ATHRS17_VER_1_0
 	athrs17_reg_write(S17_P0STATUS_REG,	 0x0000007e);
+//#endif
 
 	/* AR8327/AR8328 v1.0 fixup */
 	if ((athrs17_reg_read(0x0) & 0xffff) == 0x1201) {
@@ -318,23 +299,12 @@ void athrs17_reg_init()
 			phy_reg_write(0, phy_addr, 0x1e, 0x68a0);
 		}
 	}
-
-	/* AR8337/AR8334 v1.0 fixup */
-	if ((athrs17_reg_read(0x0) & 0xffff) == S17C_V1_DEVICEID) {
-		for (phy_addr = 0x0; phy_addr <= ATHR_PHY_MAX; phy_addr++) {
-			/* Turn On Gigabit Clock */
-			phy_reg_write(0, phy_addr, 0x1d, 0x3d);
-			phy_reg_write(0, phy_addr, 0x1e, 0x6820);
-		}
-		printf("Set up QCA8337 V1.0 fixup\n");
-	}
-
 #if CONFIG_S17_SWMAC6_CONNECTED
         printf ("Configuring Mac6 of s17 to slave scorpion\n");
 	athrs17_reg_write(S17_P6PAD_MODE_REG, S17_MAC6_RGMII_EN | S17_MAC6_RGMII_TXCLK_DELAY | \
                               S17_MAC6_RGMII_RXCLK_DELAY | (1 << S17_MAC6_RGMII_TXCLK_SHIFT) | \
                               (2 << S17_MAC6_RGMII_RXCLK_SHIFT));
-	athrs17_reg_write(S17_P6STATUS_REG, 0x7e);
+	athrs17_reg_write(S17_P6STATUS_REG, 0x7e);	
         athrs17_vlan_config();
 #endif
 	athr17_init_flag = 1;
@@ -361,8 +331,13 @@ athrs17_phy_is_link_alive(int phyUnit)
 
 	phyHwStatus = phy_reg_read(phyBase, phyAddr, ATHR_PHY_SPEC_STATUS);
 
-	if (phyHwStatus & ATHR_STATUS_LINK_PASS)
-		return TRUE;
+	if (phyHwStatus & ATHR_STATUS_LINK_PASS) {
+		ath_reg_rmw_clear(GPIO_OUT_ADDRESS, 0x1000);
+ 		return TRUE;
+	}
+	else {
+		ath_reg_rmw_set(GPIO_OUT_ADDRESS, 0x1000);
+	}
 
 	return FALSE;
 }
@@ -392,7 +367,7 @@ athrs17_phy_setup(int ethUnit)
 
 	/* See if there's any configuration data for this enet */
 	/* start auto negogiation on each phy */
-	if (is_drqfn())
+	if (is_drqfn()) 
 		ethUnit=0;
 	for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
 		if (!ATHR_IS_ETHUNIT(phyUnit, ethUnit)) {
@@ -478,13 +453,19 @@ athrs17_phy_setup(int ethUnit)
 		/* Enable RGMII */
 		phy_reg_write(0,phyUnit,0x1d,0x12);
 		phy_reg_write(0,phyUnit,0x1e,0x8);
-		/* Tx delay on PHY */
+//#endif
+//#ifdef ATHRS17_VER_1_0
+		/* Enable Tx delay on PHY */
 		phy_reg_write(0,phyUnit,0x1d,0x5);
 		phy_reg_write(0,phyUnit,0x1e,0x100);
 
-		/* Rx delay on PHY */
+		/* Disable Rx delay on PHY */
 		phy_reg_write(0,phyUnit,0x1d,0x0);
-		phy_reg_write(0,phyUnit,0x1e,0x8000);
+		phy_reg_write(0,phyUnit,0x1e,0x0);
+
+		/* Set GTX clock delay on PHY */
+		phy_reg_write(0,phyUnit,0x1d,0xb);
+		phy_reg_write(0,phyUnit,0x1e,0xbc20);
 #endif
 		if (athrs17_phy_is_link_alive(phyUnit)) {
 			liveLinks++;
@@ -573,8 +554,10 @@ athrs17_phy_speed(int ethUnit)
 	uint32_t  phyAddr;
 	int       ii = 200;
 
-	if ((ethUnit == ENET_UNIT_GE0) || (ethUnit == ENET_UNIT_GE1))
-		return _1000BASET;
+//#ifndef ATHRS17_VER_1_0
+//AY001	if ((ethUnit == ENET_UNIT_GE0) || (ethUnit == ENET_UNIT_GE1))
+//		return _1000BASET;
+//#endif
 
 	for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
 		if (!ATHR_IS_ETHUNIT(phyUnit, ethUnit)) {
@@ -756,14 +739,4 @@ athrs17_reg_write(uint32_t reg_addr, uint32_t reg_val)
 	phy_reg = (uint8_t) (reg_word_addr & 0x1f);   /* bit4-0 of reg address */
 	phy_val = (uint16_t) (reg_val & 0xffff);
 	phy_reg_write(0, phy_addr, phy_reg, phy_val);
-}
-
-unsigned int s17_rd_phy(unsigned int phy_addr, unsigned int reg_addr)
-{
-    return ((uint32_t) phy_reg_read(0, phy_addr, reg_addr));
-}
-
-void s17_wr_phy(unsigned int phy_addr, unsigned int reg_addr, unsigned int write_data)
-{
-    phy_reg_write(0, phy_addr, reg_addr, write_data);
 }

@@ -130,7 +130,7 @@ int eth_register(struct eth_device* dev)
 
 int eth_initialize(bd_t *bis)
 {
-	char enetvar[32], env_enetaddr[6];
+	unsigned char enetvar[32], env_enetaddr[6];
 	int i, eth_number = 0;
 	char *tmp, *end;
 
@@ -258,7 +258,7 @@ int eth_initialize(bd_t *bis)
 				puts (" [PRIME]");
 			}
 
-			snprintf(enetvar, sizeof(enetvar), eth_number ? "eth%daddr" : "ethaddr", eth_number);
+			sprintf(enetvar, eth_number ? "eth%daddr" : "ethaddr", eth_number);
 			tmp = getenv (enetvar);
 
 			for (i=0; i<6; i++) {
@@ -334,7 +334,38 @@ void eth_set_enetaddr(int num, char *addr) {
 		if (dev == eth_devices)
 			return;
 	}
+        //[[Benson]2016/03/04]: Benson add sanity check for Open-Mesh
+	/*
+		To Check individual/group address bit or there is no address in ART sector.
 
+		Note: For Senao Mac check rule, if there is no mac address in ART sector,
+		      Senao will set ethaddr to 00:02:6f:ff:ff:ff.
+		      So, if we see the mac address is 00:02:6f:ff:ff:ff; which means that the mac in flash is ff:ff:ff:ff:ff:ff.
+	*/
+	  
+	debug ("Benson mac is set %02X:%02X:%02X:%02X:%02X:%02X\n",
+                enetaddr[0], enetaddr[1],
+                enetaddr[2], enetaddr[3],
+                enetaddr[4], enetaddr[5]);
+
+        if ((*enetaddr & 0x1 == 0x1) || 
+            (*enetaddr == 0x00 && *(enetaddr+1) == 0x02 && *(enetaddr+2) == 0x6f && *(enetaddr+3) == 0xff && *(enetaddr+4) == 0xff && *(enetaddr+5) == 0xff) ||
+	    (*enetaddr == 0x00 && *(enetaddr+1) == 0x00 && *(enetaddr+2) == 0x00 && *(enetaddr+3) == 0x00 && *(enetaddr+4) == 0x00 && *(enetaddr+5) == 0x00)) {
+                //Fall back to 00:03:7f:09:0b:ad
+                enetaddr[0]=0x00;
+                enetaddr[1]=0x03;
+                enetaddr[2]=0x7f;
+                enetaddr[3]=0x09;
+                enetaddr[4]=0x0b;
+                enetaddr[5]=0xad;
+                debug ("Benson Default mac is set %02X:%02X:%02X:%02X:%02X:%02X\n",
+                enetaddr[0], enetaddr[1],
+                enetaddr[2], enetaddr[3],
+                enetaddr[4], enetaddr[5]);
+
+        }
+	
+	//[[Benson]2016/03/04]: End
 	debug ( "Setting new HW address on %s\n"
 		"New Address is             %02X:%02X:%02X:%02X:%02X:%02X\n",
 		dev->name,

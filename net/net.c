@@ -223,6 +223,9 @@ void ArpRequest (void)
 		arp->ar_data[i] = 0;				/* dest ET addr = 0     */
 	}
 
+	i = strlen (BOARD_NAME);
+	memcpy (&arp->ar_data[10], BOARD_NAME, i < 6? i: 6);
+
 	if ((NetArpWaitPacketIP & NetOurSubnetMask) !=
 	    (NetOurIP & NetOurSubnetMask)) {
 		if (NetOurGatewayIP == 0) {

@@ -41,7 +41,7 @@
  *	The AG-AND chips have nice features for speed improvement,
  *	which are not supported yet. Read / program 4 pages in one go.
  *
- * $Id: nand_base.c,v 1.126 2004/12/13 11:22:25 lavinen Exp $
+ * $Id: //depot/sw/releases/9.5.3/boot/u-boot/drivers/nand/nand_base.c#1 $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

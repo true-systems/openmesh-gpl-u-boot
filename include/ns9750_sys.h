@@ -3,7 +3,7 @@
  * Copyright (C) 2004 by FS Forth-Systeme GmbH.
  * All rights reserved.
  *
- * $Id: ns9750_sys.h,v 1.1 2004/02/16 10:37:20 mpietrek Exp $
+ * $Id: //depot/sw/releases/9.5.3/boot/u-boot/include/ns9750_sys.h#1 $
  * @Author: Markus Pietrek
  * @Descr: Definitions for SYS Control Module
  * @References: [1] NS9750 Hardware Reference Manual/December 2003 Chap. 4

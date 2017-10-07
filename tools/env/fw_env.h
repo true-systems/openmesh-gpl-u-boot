@@ -40,7 +40,10 @@
 #define DEVICE2_ESIZE     0x4000
 
 #define CONFIG_BAUDRATE		115200
-#define CONFIG_BOOTDELAY	5	/* autoboot after 5 seconds	*/
+//[[Benson]OCEDO]: 2014/11/25 change boot delay time to 1 sec
+//#define CONFIG_BOOTDELAY	5	/* autoboot after 5 seconds	*/
+#define CONFIG_BOOTDELAY	1
+//[[Benson]OCEDO]: 2014/11/25
 #define CONFIG_BOOTCOMMAND							\
 	"bootp; " 								\
 	"setenv bootargs root=/dev/nfs nfsroot=${serverip}:${rootpath} " 	\

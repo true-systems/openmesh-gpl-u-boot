@@ -742,22 +742,7 @@ U_BOOT_CMD(
 	"erase all\n    - erase all FLASH banks\n"
 );
 
-#if defined(CONFIG_ATH_SPI_CS1_GPIO) || defined(ATH_DUAL_NOR)
-int do_flselect (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
-{
-	if (argc < 2)
-		return -1;
 
-	flash_select((int)simple_strtoul(argv[1], NULL, 16));
-
-	return 0;
-}
-
-U_BOOT_CMD(
-	flselect,	2,	1,	do_flselect,
-	"\n",
-);
-#endif
 
 #undef	TMP_ERASE
 #undef	TMP_PROT_ON

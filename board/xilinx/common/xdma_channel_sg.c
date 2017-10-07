@@ -1,4 +1,4 @@
-/* $Id: xdma_channel_sg.c,v 1.6 2003/02/03 19:50:33 moleres Exp $ */
+/* $Id: //depot/sw/releases/9.5.3/boot/u-boot/board/xilinx/common/xdma_channel_sg.c#1 $ */
 /******************************************************************************
 *
 *     Author: Xilinx, Inc.

@@ -29,7 +29,7 @@
  * (c) 2002 Datentechnik AG - Project: Dino
  *
  *
- * $Id: DB64360.h,v 1.3 2003/04/26 04:58:13 brad Exp $
+ * $Id: //depot/sw/releases/9.5.3/boot/u-boot/include/configs/DB64360.h#1 $
  *
   ************************************************************************/
 

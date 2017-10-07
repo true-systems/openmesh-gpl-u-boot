@@ -42,6 +42,20 @@ U_BOOT_CMD(
 	NULL
 );
 
+int
+do_chkinvt (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
+{
+        printf ("\n chk invert \n");
+        return 0;
+}
+
+U_BOOT_CMD(
+        chkinvt,        1,              1,      do_chkinvt,
+        "chkinvt - print monitor version\n",
+        NULL
+);
+
+
 #if (CONFIG_COMMANDS & CFG_CMD_ECHO)
 
 int
