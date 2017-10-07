@@ -1,4 +1,4 @@
-/* $Id: xipif_v1_23_b.h,v 1.1 2002/03/18 23:24:52 linnj Exp $ */
+/* $Id: //depot/sw/releases/9.5.3/boot/u-boot/board/xilinx/common/xipif_v1_23_b.h#1 $ */
 /******************************************************************************
 *
 *	XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS"

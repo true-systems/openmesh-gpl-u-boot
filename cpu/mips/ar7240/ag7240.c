@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <config.h>
 #include <common.h>
 #include <malloc.h>
@@ -140,7 +123,7 @@ void ag7240_mii_setup(ag7240_mac_t *mac)
 {
     u32 mgmt_cfg_val;
     u32 cpu_freq,ddr_freq,ahb_freq;
-    u32 check_cnt;
+    u32 check_cnt,revid_val;
 #ifdef CFG_ATHRS27_PHY
     if (is_wasp()) {
         printf("WASP ----> S27 PHY \n");
@@ -218,9 +201,11 @@ void ag7240_mii_setup(ag7240_mac_t *mac)
                  ag7240_reg_wr(mac, AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
             }
             /* Virian */
-            mgmt_cfg_val = 0x4;
-            ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
-            ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
+            if (CFG_AG7240_NMACS > 1) {
+                 mgmt_cfg_val = 0x4;
+                 ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
+                 ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
+            }
             printf("Virian MDC CFG Value ==> %x\n",mgmt_cfg_val);
 
         }
@@ -264,7 +249,11 @@ void ag7240_mii_setup(ag7240_mac_t *mac)
 static void ag7240_hw_start(ag7240_mac_t *mac)
 {
 
+#ifdef CONFIG_AR7242_RGMII_PHY
+    if(mac->mac_unit || (mac->mac_unit == 0 && is_ar7242()))
+#else
     if(mac->mac_unit)
+#endif
     {
         ag7240_reg_wr(mac, AG7240_MAC_CFG1, (AG7240_MAC_CFG1_RX_EN |
             AG7240_MAC_CFG1_TX_EN));
@@ -305,11 +294,11 @@ static void ag7240_hw_start(ag7240_mac_t *mac)
 
 static int ag7240_check_link(ag7240_mac_t *mac)
 {
-    u32 link, duplex, speed;
+    u32 link, duplex, speed, fdx;
 
-    ag7240_phy_link(mac->mac_unit, (int *)&link);
-    ag7240_phy_duplex(mac->mac_unit, (int *)&duplex);
-    ag7240_phy_speed(mac->mac_unit, (int *)&speed);
+    ag7240_phy_link(mac->mac_unit, &link);
+    ag7240_phy_duplex(mac->mac_unit, &duplex);
+    ag7240_phy_speed(mac->mac_unit, &speed);
 
     mac->link = link;
 #ifdef SUPPORT_PLC
@@ -330,7 +319,7 @@ static int ag7240_check_link(ag7240_mac_t *mac)
            ag7240_set_mac_if(mac, 1);
            ag7240_reg_rmw_set(mac, AG7240_MAC_FIFO_CFG_5, (1 << 19));
            if (is_ar7242() && (mac->mac_unit == 0)) {
-               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1c000000);
+               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1a000000);
 	   }
 #ifdef CONFIG_F1E_PHY
            if (is_wasp() && (mac->mac_unit == 0)) {
@@ -356,7 +345,7 @@ static int ag7240_check_link(ag7240_mac_t *mac)
            ag7240_set_mac_speed(mac, 0);
            ag7240_reg_rmw_clear(mac, AG7240_MAC_FIFO_CFG_5, (1 << 19));
            if ((is_ar7242() || is_wasp()) && (mac->mac_unit == 0))
-               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1616);
+               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1313);
            break;
 
        default:
@@ -466,9 +455,7 @@ static void ag7240_halt(struct eth_device *dev)
 unsigned char *
 ag7240_mac_addr_loc(void)
 {
-#ifndef BOARDCAL
-    extern flash_info_t flash_info[];
-#endif
+	extern flash_info_t flash_info[];
 
 #ifdef BOARDCAL
     /*
@@ -502,7 +489,7 @@ static void ag7240_get_ethaddr(struct eth_device *dev)
         return;
     }
     /* Use fixed address if the above address is invalid */
-    if (mac[0] != 0x00 || (mac[0] == 0xff && mac[5] == 0xff)) {
+    if (mac[0] == 0xff && mac[5] == 0xff) {
 #else
     if (1) {
 #endif 
@@ -640,8 +627,12 @@ int ag7240_enet_initialize(bd_t * bis)
                 printf("s27 reg init \n");
                 athrs27_reg_init();
 #endif
+#if defined(CONFIG_F1E_PHY) || defined(CONFIG_AR7242_RGMII_PHY)
 #ifdef CONFIG_F1E_PHY
                printf("F1Phy reg init \n");
+#else
+               printf("RGMII reg init \n");
+#endif
                athr_reg_init();
 #endif
             }

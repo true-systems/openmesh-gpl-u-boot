@@ -88,7 +88,6 @@ static int envmatch (uchar *, int);
 static const unsigned long baudrate_table[] = CFG_BAUDRATE_TABLE;
 #define	N_BAUDRATES (sizeof(baudrate_table) / sizeof(baudrate_table[0]))
 
-
 /************************************************************************
  * Command interface: print one or all environment variables
  */
@@ -570,7 +569,6 @@ envmatch (uchar *s1, int i2)
 
 
 /**************************************************/
-
 U_BOOT_CMD(
 	printenv, CFG_MAXARGS, 1,	do_printenv,
 	"printenv- print environment variables\n",

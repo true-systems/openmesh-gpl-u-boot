@@ -35,7 +35,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * MODULE:        $Id:$
+ * MODULE:        $Id: //depot/sw/releases/9.5.3/boot/u-boot/drivers/s3c4510b_uart.c#1 $
  * Description:   UART/Serial interface for Samsung S3C4510B SoC
  * Runtime Env:   ARM7TDMI
  * Change History:

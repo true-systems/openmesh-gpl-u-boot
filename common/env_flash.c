@@ -68,6 +68,7 @@ static env_t *flash_addr = (env_t *)CFG_ENV_ADDR;
 #else /* ! ENV_IS_EMBEDDED */
 
 env_t *env_ptr = (env_t *)CFG_ENV_ADDR;
+
 #ifdef CMD_SAVEENV
 static env_t *flash_addr = (env_t *)CFG_ENV_ADDR;
 #endif
@@ -85,7 +86,7 @@ static ulong end_addr_new = CFG_ENV_ADDR_REDUND + CFG_ENV_SECT_SIZE - 1;
 #define OBSOLETE_FLAG 0
 #endif /* CFG_ENV_ADDR_REDUND */
 
-extern uchar default_environment[];
+extern uchar *default_environment;
 extern int default_environment_size;
 
 

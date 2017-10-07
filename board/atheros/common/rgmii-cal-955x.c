@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 //#include <gmac_defines.h>
 //#include <prototypes.h>
 
@@ -30,6 +13,7 @@
 #include <atheros.h>
 #include "qca-eth-955x.h"
 #include "qca-eth-955x_phy.h"
+#include "../../atheros/common/phy.h" 
 
 #ifdef ATH_RGMII_CAL
 
@@ -37,7 +21,7 @@
 #define node_tx_buf_len		100	// No of bytes per packet to be looped back
 
 #define DEBUG		0
-#define DEBUG_1 	1
+#define DEBUG_1 	0
 
 #define GE0_PEMSTAT_RBYT	(0x9c + ATH_GE0_BASE)
 #define GE0_PEMSTAT_RPKT	(0xA0 + ATH_GE0_BASE)
@@ -189,7 +173,6 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 	unsigned int j;
 	unsigned int k, l, m;
 	unsigned int rddata, error = 0;
-    volatile unsigned int * rd_register;
 	unsigned int node_rx_buf_len = 1600;
 	unsigned int node_rx_buf_len1;
 	unsigned int *node_tx_desc_ptr = (unsigned int *)0xa0280000;
@@ -211,11 +194,8 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 	unsigned int tx_fix = 0;
 
 
-	// GIGE Enable
-	ath_reg_wr(ETH_XMII_ADDRESS,	ETH_XMII_TX_INVERT_SET(0x1) |
-					ETH_XMII_RX_DELAY_SET(0x2) |
-					ETH_XMII_TX_DELAY_SET(0x1) |
-					ETH_XMII_GIGE_SET(0x1));
+	// 100M Enable
+	ath_reg_wr(ETH_XMII_ADDRESS, 0x80000101);
 
 	while ((ath_reg_rd(SGMII_SERDES_ADDRESS) & SGMII_SERDES_LOCK_DETECT_STATUS_SET(1)) == 0) {
 		printf("TEST: WAIT FOR LOCK\n");
@@ -226,15 +206,13 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 	// MAC INITS
 	// RGMII Enable on GE0
 	//eth_init();
-	init_s17_lpbk();
-	athrs17_reg_write(0x30, 1);
-
-	ath_reg_wr(ETH_CFG_ADDRESS,	ETH_CFG_ETH_RXDV_DELAY_SET(0x3) |
-					ETH_CFG_ETH_RXD_DELAY_SET(0x3) |
-					ETH_CFG_RGMII_GE0_SET(0x1));
+	//init_s17_lpbk();
+	//athrs17_reg_write(0x30, 1);
+	phy_reg_write(0x0, 0x5, 0x0, 0x6100);  //for 100Mbps loopback
+	ath_reg_wr(ETH_CFG_ADDRESS,0x0003c001);
 
 	ath_reg_rmw_clear(RST_RESET_ADDRESS, RST_RESET_GE0_MAC_RESET_MASK);	// Bringing GE0 out of RESET
-	ath_gmac_reg_wr(mac, ATH_MAC_CFG2, 0x7235);	//for 1000mbps
+	ath_gmac_reg_wr(mac, ATH_MAC_CFG2, 0x7135);	//for 100Mbps
 	//ath_reg_wr(GE0_MAC_CONFIG_2,0x7135);  //for 100mbps
 	ath_gmac_reg_wr(mac, ATH_MAC_IFCTL, 0x00000);
 	ath_gmac_reg_wr(mac, ATH_MAC_CFG1, 0x005);
@@ -248,7 +226,7 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 	ath_gmac_reg_wr(mac, ATH_MAC_FIFO_CFG_3, 0x1f00140);
 	ath_gmac_reg_wr(mac, ATH_MAC_FIFO_CFG_4, 0x1000);
 	//ath_reg_wr(GE0_FIFO_CFG_REG_5, 0xbefff); //enable drop
-	ath_gmac_reg_wr(mac, ATH_MAC_FIFO_CFG_5, 0xfffff);	//for 1000Mbps
+	ath_gmac_reg_wr(mac, ATH_MAC_FIFO_CFG_5, 0x7ffff);	//for 100Mbps
 	//ath_reg_wr(GE0_FIFO_CFG_REG_5, 0x7ffff);//for 100Mbps
 
 	//************
@@ -262,6 +240,7 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 #if DEBUG
 	printf("TEST: Inits Done\n");
 #endif
+		udelay(100000);
 	// Set Up Transmit Descriptor Table
 
 	for (i = 0; i < NUM_DESCRIPTORS; i++) {
@@ -302,6 +281,7 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 		pass = 1;
 		// fail due to checks in rx etc. this is not the same as !pass
 		fail = 0;
+#if 0
 
 		// GIGE_QUAD  - 0
 		// TX_INVERT  - 0
@@ -359,6 +339,7 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 			printf("TEST: ETH_XMII - 0x%08x\n", rddata);
 #endif
 		}
+#endif
 		xmii[l] = rddata;
 
 		// counts when to print out counter stats
@@ -368,24 +349,24 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 		ath_gmac_reg_wr(mac, ATH_DMA_RX_CTRL, 0x1);	// enable dma rx
 		ath_gmac_reg_wr(mac, ATH_DMA_TX_CTRL, 0x1);	// enable dma tx
 
-        rd_register = node_tx_desc_ptr + (NUM_DESCRIPTORS - 1) * 0x3 + 0x1; 
-        rddata = (*(rd_register) & (1 << 31));
+		rddata = (*(node_tx_desc_ptr + (NUM_DESCRIPTORS - 1) * 0x3 + 0x1) & (1 << 31));
 		while (rddata != (1 << 31))
-			rddata = (*(rd_register) & (1 << 31));
+			rddata = (*(node_tx_desc_ptr + (NUM_DESCRIPTORS - 1) * 0x3 + 0x1) & (1 << 31));
 #if DEBUG
 		printf("TEST: Tx Done \n");
 #endif
 
 		to = 0;
-        rd_register = node_rx_desc_ptr + (NUM_DESCS - 1) * 0x3 + 0x1;
-		rddata = (*(rd_register) & (1 << 31));
+		rddata = (*(node_rx_desc_ptr + (NUM_DESCS - 1) * 0x3 + 0x1) & (1 << 31));
 		while (rddata != 0x0) {
-			rddata = (*(rd_register) & (1 << 31));
+			rddata = (*(node_rx_desc_ptr + (NUM_DESCS - 1) * 0x3 + 0x1) & (1 << 31));
 			to++;
 			if (to > 100000) {
-#if DEBUG
-				printf("TEST: ERROR!! Atleast 1 packet in GE0 not seen.\n");
-#endif
+//#if DEBUG
+				//printf("TEST: ERROR!! Atleast 1 packet in GE0 not seen.\n");
+//#endif
+				ath_reg_wr(ETH_XMII_ADDRESS,ETH_XMII_TX_INVERT_SET(!(ath_reg_rd(ETH_XMII_ADDRESS)>>31))|0x0101);
+				//printf("ath_reg_rd(ETH_XMII_ADDRESS)=%x\n",ath_reg_rd(ETH_XMII_ADDRESS));
 				fail = 1;
 				break;
 			}
@@ -469,7 +450,7 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 	tx_fix = xmii_val;
 
 	old_lgst = 0;
-
+#if 0
 	// Using the previously arrived at value of TX Calib we calibrate RX DELAYS. For this we use RX DAT and EN Delays
 	for (l = 0; l < 16; l++) {
 		// initialize pass. this will be made zero if there is a failure in packet reception compare
@@ -506,19 +487,18 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 		node_rx_buf_len = 0x0;
 		ath_gmac_reg_wr(mac, ATH_DMA_RX_CTRL, 0x1);	// enable dma rx
 		ath_gmac_reg_wr(mac, ATH_DMA_TX_CTRL, 0x1);	// enable dma tx
-        rd_register = node_tx_desc_ptr + (NUM_DESCRIPTORS - 1) * 0x3 + 0x1;
-		rddata = (*(rd_register) & (1 << 31));
+
+		rddata = (*(node_tx_desc_ptr + (NUM_DESCRIPTORS - 1) * 0x3 + 0x1) & (1 << 31));
 		while (rddata != (1 << 31))
-			rddata = (*(rd_register) & (1 << 31));
+			rddata = (*(node_tx_desc_ptr + (NUM_DESCRIPTORS - 1) * 0x3 + 0x1) & (1 << 31));
 #if DEBUG
 		printf("TEST: Tx Done \n");
 #endif
 
 		to = 0;
-        rd_register = node_rx_desc_ptr + (NUM_DESCS - 1) * 0x3 + 0x1;
-		rddata = (*(rd_register) & (1 << 31));
+		rddata = (*(node_rx_desc_ptr + (NUM_DESCS - 1) * 0x3 + 0x1) & (1 << 31));
 		while (rddata != 0x0) {
-			rddata = (*(rd_register) & (1 << 31));
+			rddata = (*(node_rx_desc_ptr + (NUM_DESCS - 1) * 0x3 + 0x1) & (1 << 31));
 			to++;
 			if (to > 100000) {
 #if DEBUG
@@ -605,15 +585,16 @@ void rgmii_calib(ath_gmac_mac_t * mac)
 			}
 		}
 	}
+#endif
 	// And write to these registers.
 #if DEBUG_1
 	printf("TEST: FINAL XMII VAL after RX Calibration - 0x%08x\n", xmii_val);
 #endif
-	ath_reg_wr(ETH_XMII_ADDRESS, xmii_val);
+//	ath_reg_wr(ETH_XMII_ADDRESS, xmii_val);
 #if DEBUG_1
 	printf("TEST: FINAL ETH_CFG VAL after RX Calibration - 0x%08x\n", eth_cfg_val);
 #endif
-	ath_reg_wr(ETH_CFG_ADDRESS, eth_cfg_val);
+//	ath_reg_wr(ETH_CFG_ADDRESS, eth_cfg_val);
 	ath_gmac_reg_wr(mac,ATH_MAC_CFG1,1<<31);
 
 }

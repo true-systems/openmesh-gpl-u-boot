@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <config.h>
 #include <common.h>
 #include <malloc.h>
@@ -39,8 +22,9 @@
 #define ath_gmac_unit2mac(_unit)     ath_gmac_macs[(_unit)]
 #define ath_gmac_name2mac(name)	   is_drqfn() ? ath_gmac_unit2mac(1):strcmp(name,"eth0") ? ath_gmac_unit2mac(1) : ath_gmac_unit2mac(0)
 
-int ath_gmac_miiphy_read(char *devname, uint32_t phaddr, uint8_t reg, uint16_t *data);
-int ath_gmac_miiphy_write(char *devname, uint32_t phaddr, uint8_t reg, uint16_t data);
+uint16_t ath_gmac_miiphy_read(char *devname, uint32_t phaddr, uint8_t reg);
+void  ath_gmac_miiphy_write(char *devname, uint32_t phaddr, uint8_t reg, uint16_t data);
+extern void ath_sys_frequency(uint32_t *, uint32_t *, uint32_t *);
 
 #ifndef CFG_ATH_GMAC_NMACS
 #define CFG_ATH_GMAC_NMACS	1
@@ -56,7 +40,6 @@ extern int athr_vir_phy_is_fdx(int unit);
 extern int athr_vir_phy_speed(int unit);
 extern void athr_vir_reg_init(void);
 #endif
-
 #ifdef  CONFIG_ATHRS17_PHY
 extern void athrs17_reg_init(void);
 extern void athrs17_reg_init_wan(void);
@@ -207,12 +190,10 @@ void ath_gmac_mii_setup(ath_gmac_mac_t *mac)
 		ath_gmac_reg_wr(mac, ATH_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
 		ath_gmac_reg_wr(mac, ATH_MAC_MII_MGMT_CFG, mgmt_cfg_val);
 		return;
-
-
         }
         if (is_vir_phy()) {
         	printf("Scorpion ---->VIR PHY*\n");
-		
+
 		ath_reg_wr(ATH_ETH_CFG, ETH_CFG_ETH_RXDV_DELAY_SET(3) |
 					ETH_CFG_ETH_RXD_DELAY_SET(3)|
 					ETH_CFG_RGMII_GE0_SET(1));
@@ -223,7 +204,7 @@ void ath_gmac_mii_setup(ath_gmac_mac_t *mac)
 		udelay(1000);
 		ath_gmac_reg_wr(mac, ATH_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
 		ath_gmac_reg_wr(mac, ATH_MAC_MII_MGMT_CFG, mgmt_cfg_val);
-		
+
                 return;
 	}
 
@@ -484,24 +465,42 @@ static int ath_gmac_check_link(ath_gmac_mac_t *mac)
 		return 0;
 	}
 
+//nyk        rgmii_cal_alg()
+
 	switch (speed)
 	{
 		case _1000BASET:
 			ath_gmac_set_mac_if(mac, 1);
 			ath_gmac_reg_rmw_set(mac, ATH_MAC_FIFO_CFG_5, (1 << 19));
+#if 0
+//nyk
+                      //  ath_reg_wr(ETH_XMII_ADDRESS, ETH_XMII_PHASE1_COUNT_SET(1) |
+                       //             ETH_XMII_PHASE0_COUNT_SET(1));
+                        ath_reg_wr(ETH_XMII_ADDRESS, ETH_XMII_TX_INVERT_SET(1) |
+                                    ETH_XMII_RX_DELAY_SET(3) | ETH_XMII_TX_DELAY_SET(3)|
+                                    ETH_XMII_GIGE_SET(1)| ETH_XMII_PHASE1_COUNT_SET(1)|
+                                    ETH_XMII_PHASE0_COUNT_SET(1));
 
+//nyk
+#endif
+			ath_reg_rmw_clear(ETH_XMII_ADDRESS,0xfffffff);	//Ben
+			ath_reg_rmw_set(ETH_XMII_ADDRESS, 0xe000000);	//Ben
 			if (is_ar8033() && mac->mac_unit == 1) {
 				ath_reg_wr(ETH_SGMII_ADDRESS, ETH_SGMII_GIGE_SET(1) |
                                            ETH_SGMII_CLK_SEL_SET(1));
 			}
-	
+
 			break;
 
 		case _100BASET:
 			ath_gmac_set_mac_if(mac, 0);
 			ath_gmac_set_mac_speed(mac, 1);
 			ath_gmac_reg_rmw_clear(mac, ATH_MAC_FIFO_CFG_5, (1 << 19));
-
+//                        ath_reg_rmw_clear(ETH_XMII_ADDRESS,0xfffffff);                                  //Ben
+//                        ath_reg_rmw_set(ETH_XMII_ADDRESS, 0x0101);   //Ben
+//			ath_reg_wr(ETH_XMII_ADDRESS, ETH_XMII_TX_INVERT_SET(1)| 0x0101) ; //AY001
+                        ath_reg_wr(ETH_XMII_ADDRESS, (ath_reg_rd(ETH_XMII_ADDRESS) &~0xfffffff) | 0x0101);
+                        ath_reg_wr(ATH_ETH_CFG, 0x1);
                         if (is_ar8033() && mac->mac_unit == 1) {
                         	ath_reg_wr(ETH_SGMII_ADDRESS, ETH_SGMII_PHASE0_COUNT_SET(1) |
                                            ETH_SGMII_PHASE1_COUNT_SET(1));
@@ -513,7 +512,12 @@ static int ath_gmac_check_link(ath_gmac_mac_t *mac)
 			ath_gmac_set_mac_if(mac, 0);
 			ath_gmac_set_mac_speed(mac, 0);
 			ath_gmac_reg_rmw_clear(mac, ATH_MAC_FIFO_CFG_5, (1 << 19));
-
+                        //ath_reg_rmw_clear(ETH_XMII_ADDRESS,0xffff);                                  //Ben
+//                        ath_reg_rmw_clear(ETH_XMII_ADDRESS,0xe << 24);                                  //Ben
+                        //ath_reg_rmw_set(ETH_XMII_ADDRESS, 0x1313);   //Ben
+//			ath_reg_wr(ETH_XMII_ADDRESS, ETH_XMII_TX_INVERT_SET(1)| 0x1313) ; //AY001
+                        ath_reg_wr(ETH_XMII_ADDRESS, (ath_reg_rd(ETH_XMII_ADDRESS) &~0xfffffff) | 0x1313);
+                        ath_reg_wr(ATH_ETH_CFG, 0x4);
 			if (is_ar8033() && mac->mac_unit == 1) {
 				ath_reg_wr(ETH_SGMII_ADDRESS, ETH_SGMII_PHASE0_COUNT_SET(19) |
                                            ETH_SGMII_PHASE1_COUNT_SET(19));
@@ -723,21 +727,24 @@ static void ath_gmac_get_ethaddr(struct eth_device *dev)
 	}
 #endif  /* CONFIG_ATH_NAND_BR */
 	/* Use fixed address if the above address is invalid */
-	if (mac[0] != 0x00 || (mac[0] == 0xff && mac[5] == 0xff))
+	//if (mac[0] == 0xff && mac[5] == 0xff)
+        if ((*mac & 0x1 == 0x1) ||
+            (*mac == 0x00 && *(mac+1) == 0x02 && *(mac+2) == 0x6f && *(mac+3) == 0xff && *(mac+4) == 0xff && *(mac+5) == 0xff) ||
+            (*mac == 0x00 && *(mac+1) == 0x00 && *(mac+2) == 0x00 && *(mac+3) == 0x00 && *(mac+4) == 0x00 && *(mac+5) == 0x00)) 
 #else
 	if (1)
 #endif
 	{
-			mac[0] = 0x00;
-			mac[1] = 0x03;
-			mac[2] = 0x7f;
-			mac[3] = 0x09;
-			mac[4] = 0x0b;
-			mac[5] = 0xad;
-			printf("No valid address in Flash. Using fixed address\n");
-		} else {
-			printf("Fetching MAC Address from 0x%p\n", __func__, eeprom);
-		}
+		mac[0] = 0x00;
+		mac[1] = 0x03;
+		mac[2] = 0x7f;
+		mac[3] = 0x09;
+		mac[4] = 0x0b;
+		mac[5] = 0xad;
+		printf("No valid address in Flash. Using fixed address\n");
+	} else {
+		printf("Fetching MAC Address from 8033 0x%p\n", __func__, eeprom);
+	}
 }
 
 void
@@ -769,7 +776,6 @@ athr_mgmt_init(void)
 	printf ("%s ::done\n",__func__);
 }
 
-
 int ath_gmac_enet_initialize(bd_t * bis)
 {
 	struct eth_device *dev[CFG_ATH_GMAC_NMACS];
@@ -795,7 +801,7 @@ int ath_gmac_enet_initialize(bd_t * bis)
 		memset(ath_gmac_macs[i], 0, sizeof(ath_gmac_macs[i]));
 		memset(dev[i], 0, sizeof(dev[i]));
 
-		snprintf(dev[i]->name, sizeof(dev[i]->name), "eth%d", i);
+		sprintf(dev[i]->name, "eth%d", i);
 		ath_gmac_get_ethaddr(dev[i]);
 
 		ath_gmac_macs[i]->mac_unit = i;
@@ -859,7 +865,9 @@ int ath_gmac_enet_initialize(bd_t * bis)
 
 		if (ath_gmac_macs[i]->mac_unit == 0) { /* WAN Phy */
 #ifdef  CONFIG_ATHRS17_PHY
+                        //rgmii_calib(ath_gmac_macs[i]); //nyk
 			athrs17_reg_init();
+                        //rgmii_calib(ath_gmac_macs[i]); //nyk
 #endif
 
 #ifdef CONFIG_VIR_PHY
@@ -876,10 +884,13 @@ int ath_gmac_enet_initialize(bd_t * bis)
 
 #if defined(CONFIG_MGMT_INIT) && defined (CONFIG_ATHR_SWITCH_ONLY_MODE)
 			athrs17_reg_init();
+                       
 #elif defined (CONFIG_ATHRS17_PHY) && !defined(CFG_DUAL_PHY_SUPPORT)
 			athrs17_reg_init_wan();
 #endif
 		}
+                //rgmii_calib(ath_gmac_macs[i]); //nyk
+
 #ifdef CONFIG_ATHRS_GMAC_SGMII
 	/*
          * MAC unit 1 or drqfn package call sgmii setup.
@@ -897,9 +908,9 @@ int ath_gmac_enet_initialize(bd_t * bis)
 		{
 			unsigned char *mac = dev[i]->enetaddr;
 
-			printf("%s: %02x:%02x:%02x:%02x:%02x:%02x\n", dev[i]->name,
-					mac[0] & 0xff, mac[1] & 0xff, mac[2] & 0xff,
-					mac[3] & 0xff, mac[4] & 0xff, mac[5] & 0xff);
+			//printf("%s: %02x:%02x:%02x:%02x:%02x:%02x\n", dev[i]->name,
+			//		mac[0] & 0xff, mac[1] & 0xff, mac[2] & 0xff,
+			//		mac[3] & 0xff, mac[4] & 0xff, mac[5] & 0xff);
 		}
 		mac_l = (dev[i]->enetaddr[4] << 8) | (dev[i]->enetaddr[5]);
 		mac_h = (dev[i]->enetaddr[0] << 24) | (dev[i]->enetaddr[1] << 16) |
@@ -911,6 +922,7 @@ int ath_gmac_enet_initialize(bd_t * bis)
 
 	ath_gmac_phy_setup(ath_gmac_macs[i]->mac_unit);
 		printf("%s up\n",dev[i]->name);
+                //rgmii_calib(ath_gmac_macs[i]); //nyk
 	}
 
 
@@ -918,8 +930,8 @@ int ath_gmac_enet_initialize(bd_t * bis)
 }
 
 #if (CONFIG_COMMANDS & CFG_CMD_MII)
-int
-ath_gmac_miiphy_read(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t *data)
+uint16_t
+ath_gmac_miiphy_read(char *devname, uint32_t phy_addr, uint8_t reg)
 {
 	ath_gmac_mac_t *mac   = ath_gmac_name2mac(devname);
 	uint16_t      addr  = (phy_addr << ATH_ADDR_SHIFT) | reg, val;
@@ -959,12 +971,10 @@ ath_gmac_miiphy_read(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t *da
 	val = ath_gmac_reg_rd(mac, ATH_MII_MGMT_STATUS);
 	ath_gmac_reg_wr(mac, ATH_MII_MGMT_CMD, 0x0);
 
-        if (data != NULL)
-	    *data = val; 
 	return val;
 }
 
-int
+void
 ath_gmac_miiphy_write(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t data)
 {
 	ath_gmac_mac_t *mac   = ath_gmac_name2mac(devname);
@@ -994,6 +1004,5 @@ ath_gmac_miiphy_write(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t da
 
 	if (ii == 0)
 		printf("Error!!! Leave ath_gmac_miiphy_write without polling correct status!\n");
-	return 0; 
 }
 #endif		/* CONFIG_COMMANDS & CFG_CMD_MII */

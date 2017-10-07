@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: //depot/sw/releases/9.5.3/boot/u-boot/common/bedbug.c#1 $ */
 
 #include <common.h>
 

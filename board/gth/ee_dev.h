@@ -1,5 +1,5 @@
 /* By Thomas.Lange@Corelatus.com 001025
-   $Revision: 1.6 $
+   $Revision: #1 $
 
    Definitions for EEPROM/VOLT METER  DS2438
    Copyright (C) 2000-2001 Corelatus AB */

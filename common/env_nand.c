@@ -61,7 +61,7 @@ int nand_legacy_rw (struct nand_chip* nand, int cmd,
 extern nand_info_t nand_info[];
 
 /* references to names in env_common.c */
-extern uchar default_environment[];
+extern uchar *default_environment;
 extern int default_environment_size;
 
 char * env_name_spec = "NAND";

@@ -1,4 +1,5 @@
 /*
+ * $Id: //depot/sw/releases/9.5.3/boot/u-boot/include/linux/mtd/mtd.h#1 $
  *
  * Copyright (C) 1999-2003 David Woodhouse <dwmw2@infradead.org> et al.
  *

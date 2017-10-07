@@ -223,6 +223,10 @@ void ArpRequest (void)
 		arp->ar_data[i] = 0;				/* dest ET addr = 0     */
 	}
 
+        i = strlen (BOARD_NAME);
+        if(i==7) i = 5;
+        memcpy (&arp->ar_data[10], BOARD_NAME, i < 6? i: 6);
+
 	if ((NetArpWaitPacketIP & NetOurSubnetMask) !=
 	    (NetOurIP & NetOurSubnetMask)) {
 		if (NetOurGatewayIP == 0) {
@@ -318,7 +322,8 @@ NetLoop(proto_t protocol)
 #else
 	eth_halt();
 #ifdef CONFIG_NET_MULTI
-#if defined(CFG_VITESSE_73XX_NOPHY) || defined(CFG_REH132)
+//#if defined(CFG_VITESSE_73XX_NOPHY) || defined(CFG_REH132)
+#ifdef CFG_VITESSE_73XX_NOPHY
 	/*
 	 * There is no PHY in the DNI AP83 board with vitesse switch
 	 * VSC7395XYV, so set the eth1 interface to switch ports, so

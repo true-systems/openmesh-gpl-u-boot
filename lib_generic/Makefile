@@ -26,12 +26,12 @@ include $(TOPDIR)/config.mk
 LIB	= libgeneric.a
 
 ifeq ($(COMPRESSED_UBOOT),1)
-OBJS    = crc32.o ctype.o display_options.o ldiv.o \
+OBJS    = crc32.o md5.o ctype.o display_options.o ldiv.o \
 			string.o vsprintf.o LzmaWrapper.o LzmaDecode.o
 else
 OBJS	= bzlib.o bzlib_crctable.o bzlib_decompress.o \
 	  bzlib_randtable.o bzlib_huffman.o \
-	  crc32.o ctype.o display_options.o ldiv.o \
+	  crc32.o md5.o sha256.o rsa-mod-exp.o rsa-checksum.o rsaverify.o ctype.o display_options.o ldiv.o \
 	  string.o vsprintf.o zlib.o LzmaDecode.o LzmaWrapper.o
 endif
 

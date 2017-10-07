@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: //depot/sw/releases/9.5.3/boot/u-boot/include/bedbug/ppc.h#1 $ */
 
 #ifndef _PPC_H
 #define _PPC_H
