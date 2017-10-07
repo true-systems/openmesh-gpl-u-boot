@@ -30,6 +30,8 @@
 
 #if (CONFIG_COMMANDS & CFG_CMD_NET)
 
+extern int modifies;
+
 
 extern int do_bootm (cmd_tbl_t *, int, int, char *[]);
 
@@ -205,7 +207,19 @@ netboot_common (proto_t proto, cmd_tbl_t *cmdtp, int argc, char *argv[])
 		char *local_args[2];
 		local_args[0] = argv[0];
 		local_args[1] = NULL;
-
+#ifdef HAS_OPERATION_SELECTION/*add */
+      if(modifies) {
+         setenv("autostart", "no");
+         setenv ("bootfile", BootFile);
+      #ifdef DEBUG         
+         s = getenv("bootfile");
+              printf("save bootfile= %s\n", s);
+      #endif        
+#if (CONFIG_COMMANDS & CFG_CMD_ENV)
+         saveenv();             
+#endif
+      }
+#endif      
 		printf ("Automatic boot of image at addr 0x%08lX ...\n",
 			load_addr);
 		rcode = do_bootm (cmdtp, 0, 1, local_args);

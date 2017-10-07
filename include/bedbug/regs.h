@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/bedbug/regs.h#1 $ */
 
 #ifndef _REGS_H
 #define _REGS_H

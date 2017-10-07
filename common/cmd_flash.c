@@ -726,7 +726,30 @@ U_BOOT_CMD(
 	"protect off all\n    - make all FLASH banks writable\n"
 );
 
+
 #endif /* #ifndef COMPRESSED_UBOOT */
+
+int get_addr_boundary (ulong *addr)
+{
+        int i;
+        flash_info_t *info = &flash_info[0];
+
+        if ((*addr) > info->start[0] + info->size - 1) {
+                printf("Error: out of flash address range\n");
+                return -1;
+        }
+        for (i = 0; i < info->sector_count; i++) {
+                if (i == info->sector_count -1) {
+                        *addr = info->start[0] + info->size - 1;
+                        return 0;
+                }
+                if (info->start[i] < (*addr) && (*addr) <= info->start[i+1]) {
+                        *addr = info->start[i+1] - 1;
+                        return 0;
+                }
+        }
+        return -1;
+}
 
 U_BOOT_CMD(
 	erase,   3,   1,  do_flerase,
@@ -742,22 +765,7 @@ U_BOOT_CMD(
 	"erase all\n    - erase all FLASH banks\n"
 );
 
-#if defined(CONFIG_ATH_SPI_CS1_GPIO) || defined(ATH_DUAL_NOR)
-int do_flselect (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
-{
-	if (argc < 2)
-		return -1;
 
-	flash_select((int)simple_strtoul(argv[1], NULL, 16));
-
-	return 0;
-}
-
-U_BOOT_CMD(
-	flselect,	2,	1,	do_flselect,
-	"\n",
-);
-#endif
 
 #undef	TMP_ERASE
 #undef	TMP_PROT_ON

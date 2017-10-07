@@ -32,6 +32,7 @@
 
 #define RVECENT(f,n) \
    b f; nop
+
 #define XVECENT(f,bev) \
    b f     ;           \
    li k0,bev
@@ -212,7 +213,7 @@ reset:
 	mtc0	zero, $26
 	mtc0	zero, $27
 	mtc0	zero, $28
-#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
 	mtc0	zero, $29	# C0_TagHi
 	mtc0	zero, $28, 2	# C0_DTagLo
 	mtc0	zero, $29, 2	# C0_DTagHi
@@ -253,7 +254,7 @@ reset:
 	lw      t1, 0(ra)
 	move	gp, t1
 
-#if (defined(CONFIG_MACH_HORNET) && defined(CONFIG_HORNET_1_1_WAR)) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#if (defined(CONFIG_MACH_HORNET) && defined(CONFIG_HORNET_1_1_WAR)) || defined(CONFIG_MACH_QCA956x)
 /**************************************************************************/
 /*
  * WAR: Hornet 1.1 currently need a reset once we boot to let the resetb has
@@ -291,7 +292,7 @@ normal_path:
 
 	/* Initialize any external memory.
 	 */
-#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
 	la      t9, lowlevel_init
 	jalr    t9
 	nop
@@ -323,7 +324,7 @@ rel_start:
 	li	a0, AR7100_SPI_CLOCK
 	li	t0, 0x43
 	sw	t0, 0(a0)
-#elif defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#elif defined(CONFIG_MACH_QCA956x)
 	/* REMAP_DISABLE */
 	li	a0, AR7100_SPI_CLOCK
 	li	t0, 0x46
@@ -545,7 +546,7 @@ _CHANGE_TAPS:
 	li	t1,	0xfa5de83f		// 4 Row Address Bits, 4 Column Address Bits, 2 BA bits
 	sw	t1,	0x002c(t0)		// PERF_MASK_ADDR_0_ADDRESS
 
-#if defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#ifdef CONFIG_MACH_QCA953x
 	li	t1,	0x0000ffff
 	sw	t1,	0x0070(t0)		// PERF_COMP_AHB_GE0_1_ADDRESS
 
@@ -678,12 +679,14 @@ _load_center_tap:
 	srl	t3,	t3,	0x1
 	li	t4,	0x3f
 	and	t3,	t3,	t4
+
 _load_tap_into_reg:
 	li	t0,	0xb8000000
 	sw	t3,	0x1c(t0)		// TAP_CONTROL_0_ADDRESS
 	sw	t3,	0x20(t0)		// TAP_CONTROL_1_ADDRESS
 	sw	t3,	0x24(t0)		// TAP_CONTROL_2_ADDRESS
 	sw	t3,	0x28(t0)		// TAP_CONTROL_3_ADDRESS
+
 	jr	ra
 	nop
 

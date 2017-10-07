@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #ifndef __BOARD_955X_H
 #define __BOARD_955X_H
 
@@ -27,10 +10,8 @@
 #include <atheros.h>
 
 #ifndef FLASH_SIZE
-#define FLASH_SIZE 8
+#define FLASH_SIZE 16
 #endif
-
-#define CONFIG_SYS_VSNPRINTF
 /*-----------------------------------------------------------------------
  * FLASH and environment organization
  */
@@ -147,8 +128,8 @@
 #		define CFG_ENV_ADDR	0x00040000
 #	else //dual flash
 #		define ATH_U_CMD	gen_cmd(lu, 0x9f000000, ATH_U_FILE)
-#		define MTDPARTS_DEFAULT "mtdparts=ath-nor0:320k(u-boot-and-env);ath-nand:512k(pad),1280k(uImage),7m(rootfs),128k(dummy),128k(caldata)"
-#		define ATH_ROOT_DEV	"31:03"
+#		define MTDPARTS_DEFAULT "mtdparts=ath-nor0:320k(u-boot-and-env),6336k(free);ath-nand:256k(u-boot),256k(u-boot-env),1280k(uImage),7m(rootfs),128k(dummy),128k(caldata)"
+#		define ATH_ROOT_DEV	"31:05"
 #		define CFG_ENV_ADDR	0x9f040000
 #	endif
 #	define ATH_F_FILE		fs_name(${bc}-nand-jffs2)
@@ -211,7 +192,7 @@
 #	define CONFIG_BOOTCOMMAND	"nboot 0x81000000 0 0x80000"
 #else
 #	define CFG_ENV_ADDR		0x9f040000
-#	define CONFIG_BOOTCOMMAND	"bootm 0x9f680000"
+#	define CONFIG_BOOTCOMMAND	"bootm 0x9f070000"
 #endif
 
 
@@ -286,7 +267,7 @@
 #	define CFG_ENV_SIZE			CFG_FLASH_SECTOR_SIZE
 #endif
 
-#define DEBUG
+//#define DEBUG
 
 #ifdef COMPRESSED_UBOOT
 #undef  CFG_ENV_IS_IN_FLASH
@@ -296,9 +277,9 @@
 
 #define CONFIG_COMMANDS			(ATH_CFG_COMMANDS | ATH_EXTRA_CMD)
 
-#define CONFIG_IPADDR			192.168.1.1
-#define CONFIG_SERVERIP			192.168.1.10
-#define CONFIG_ETHADDR			0x00:0xaa:0xbb:0xcc:0xdd:0xee
+#define CONFIG_IPADDR			192.168.99.9
+#define CONFIG_SERVERIP			192.168.99.8
+#define CONFIG_ETHADDR "00:AA:BB:CC:DD:10"
 #define CFG_FAULT_ECHO_LINK_DOWN	1
 
 #define CFG_PHY_ADDR			0
@@ -325,5 +306,9 @@
 #define ATH_ART_PCICFG_OFFSET		12
 
 #include <cmd_confdefs.h>
+
+#ifdef HAS_OPENMESH_PATCH
+#include "openmesh_env.h"
+#endif
 
 #endif	/* __BOARD_955X_H */

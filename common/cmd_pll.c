@@ -1,18 +1,7 @@
-/* 
- * Copyright (c) 2014, 2016 The Linux Foundation. All rights reserved.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
+/*
+ * Copyright (c) 2012 Qualcomm Atheros, Inc..
+ * All Rights Reserved.
+ * Qualcomm Atheros Confidential and Proprietary.
  */
 
 #include <common.h>
@@ -25,7 +14,7 @@
 
 #ifndef CONFIG_ATH_EMULATION
 #if (CONFIG_COMMANDS & CFG_CMD_PLL)
-#if defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#if defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
 int do_pll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 {
 	extern env_t	*env_ptr;
@@ -35,7 +24,7 @@ int do_pll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	unsigned	*val;
 
 	if (argc != 2 && argc != 5) {
-		printf ("Usage:\n%s\n", cmdtp->usage);
+		printf(cmdtp->usage);
 		return -1;
 	}
 
@@ -59,7 +48,7 @@ int do_pll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		val[4] = simple_strtoul(argv[4], NULL, 16);
 		printf("Setting 0x%x 0x%x 0x%x 0x%x\n", val[1], val[2], val[3], val[4]);
 	} else {
-		printf ("Usage:\n%s\n", cmdtp->usage);
+		printf(cmdtp->usage);
 		return -1;
 	}
 
@@ -91,7 +80,7 @@ int do_srifpll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	unsigned	*val;
 
 	if (argc != 2 && argc != 3) {
-		printf ("Usage:\n%s\n", cmdtp->usage);
+		printf(cmdtp->usage);
 		return -1;
 	}
 
@@ -110,7 +99,7 @@ int do_srifpll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		val[2] = simple_strtoul(argv[2], NULL, 16);
 		printf("Setting 0x%x 0x%x\n", val[1], val[2]);
 	} else {
-		printf ("Usage:\n%s\n", cmdtp->usage);
+		printf(cmdtp->usage);
 		return -1;
 	}
 
@@ -130,7 +119,7 @@ int do_pll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	unsigned	*val;
 
 	if (argc != 2 && argc != 6) {
-		printf("%s\n",cmdtp->usage);
+		printf(cmdtp->usage);
 		return -1;
 	}
 
@@ -155,7 +144,7 @@ int do_pll (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		val[5] = simple_strtoul(argv[5], NULL, 16);
 		printf("Setting 0x%x 0x%x 0x%x 0x%x 0x%x\n", val[1], val[2], val[3], val[4], val[5]);
 	} else {
-		printf("%s\n",cmdtp->usage);
+		printf(cmdtp->usage);
 		return -1;
 	}
 

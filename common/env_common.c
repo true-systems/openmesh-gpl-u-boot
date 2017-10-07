@@ -4,7 +4,7 @@
  *
  * (C) Copyright 2001 Sysgo Real-Time Solutions, GmbH <www.elinos.com>
  * Andreas Heppel <aheppel@sysgo.de>
- *
+
  * See file CREDITS for list of people who contributed to this
  * project.
  *
@@ -45,6 +45,7 @@ DECLARE_GLOBAL_DATA_PTR;
 #endif
 
 #undef DEBUG_ENV
+//	#define DEBUG_ENV
 #ifdef DEBUG_ENV
 #define DEBUGF(fmt,args...) printf(fmt ,##args)
 #else
@@ -70,7 +71,11 @@ uchar default_environment[] = {
 	"bootargs="	CONFIG_BOOTARGS			"\0"
 #endif
 #ifdef	CONFIG_BOOTCOMMAND
+#if 0
+// 	"bootcmd=" "run load_rootfs; run boot_script"		"\0"
+#else
 	"bootcmd="	CONFIG_BOOTCOMMAND		"\0"
+#endif
 #endif
 #ifdef	CONFIG_RAMBOOTCOMMAND
 	"ramboot="	CONFIG_RAMBOOTCOMMAND		"\0"
@@ -100,10 +105,18 @@ uchar default_environment[] = {
 	"eth3addr="	MK_STR(CONFIG_ETH3ADDR)		"\0"
 #endif
 #ifdef	CONFIG_IPADDR
+#if 0
+	"ipaddr=" "192.168.1.1"					"\0"
+#else
 	"ipaddr="	MK_STR(CONFIG_IPADDR)		"\0"
 #endif
+#endif
 #ifdef	CONFIG_SERVERIP
+#if 0
+	"serverip=" "192.168.1.33"				"\0"
+#else
 	"serverip="	MK_STR(CONFIG_SERVERIP)		"\0"
+#endif
 #endif
 #ifdef	CFG_AUTOLOAD
 	"autoload="	CFG_AUTOLOAD			"\0"
@@ -135,19 +148,31 @@ uchar default_environment[] = {
 #if defined(CONFIG_PCI_BOOTDELAY) && (CONFIG_PCI_BOOTDELAY > 0)
 	"pcidelay="	MK_STR(CONFIG_PCI_BOOTDELAY)	"\0"
 #endif
+
+
 #ifdef  CONFIG_EXTRA_ENV_SETTINGS
 	CONFIG_EXTRA_ENV_SETTINGS
+#endif
+#ifdef  CONFIG_OPENMESH_EXTRA_ENV_SETTINGS
+	CONFIG_OPENMESH_EXTRA_ENV_SETTINGS
 #endif
 	"\0"
 };
 
-#if defined(CFG_ENV_IS_IN_NAND)		/* Environment is in Nand Flash */
+#if defined(CFG_ENV_IS_IN_NAND)	|| defined(HAS_OPENMESH_PATCH)	/* Environment is in Nand Flash */
 int default_environment_size = sizeof(default_environment);
 #endif
 
 void env_crc_update (void)
 {
-	env_ptr->crc = crc32(0, env_ptr->data, ENV_SIZE);
+//	env_ptr->crc = crc32(0, env_ptr->data, (0x1000 - 4)); // Roger test
+ 	//env_ptr->crc = crc32(0, env_ptr->data, ENV_SIZE);
+#ifndef HAS_OPENMESH_PATCH
+       env_ptr->crc = crc32(0, env_ptr->data, (0x1000 - 4)); // Roger test
+       //env_ptr->crc = crc32(0, env_ptr->data, ENV_SIZE);
+#else
+       env_ptr->crc = crc32(0, env_ptr->data, ENV_SIZE);
+#endif
 }
 
 static uchar env_get_char_init (int index)
@@ -250,6 +275,9 @@ void env_relocate (void)
 #endif
 		env_crc_update ();
 		gd->env_valid = 1;
+#ifdef SAVE_DEF_ENV_VARIABLE
+		saveenv();
+#endif
 	}
 	else {
 		env_relocate_spec ();

@@ -3,9 +3,9 @@
  * Unless otherwise specified, Copyright (C) 2004-2005 Barco Control Rooms
  *
  * $Source: /home/services/cvs/firmware/ppc/u-boot-1.1.2/board/barco/speed.h,v $
- * $Revision: 1.2 $
- * $Author: mleeman $
- * $Date: 2005/02/21 12:48:58 $
+ * $Revision: #1 $
+ * $Author: lance $
+ * $Date: 2012/09/21 $
  *
  * Last ChangeLog Entry
  * $Log: speed.h,v $

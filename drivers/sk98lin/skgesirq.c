@@ -2,8 +2,8 @@
  *
  * Name:	skgesirq.c
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.83 $
- * Date:	$Date: 2003/02/05 15:10:59 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/09/21 $
  * Purpose:	Special IRQ module
  *
  ******************************************************************************/
@@ -366,7 +366,7 @@
  */
 
 static const char SysKonnectFileId[] =
-	"$Id: skgesirq.c,v 1.83 2003/02/05 15:10:59 rschmidt Exp $" ;
+	"$Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/drivers/sk98lin/skgesirq.c#1 $" ;
 
 #include "h/skdrv1st.h"		/* Driver Specific Definitions */
 #include "h/skgepnmi.h"		/* PNMI Definitions */

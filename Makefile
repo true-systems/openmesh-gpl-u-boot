@@ -40,7 +40,8 @@ HOSTOS := $(shell uname -s | tr '[:upper:]' '[:lower:]' | \
 	    sed -e 's/\(cygwin\).*/cygwin/')
 
 export	HOSTARCH HOSTOS
-
+export SUFFIX=o.sdk
+# export SUFFIX=o
 # Deal with colliding definitions from tcsh etc.
 VENDOR=
 
@@ -49,14 +50,27 @@ VENDOR=
 TOPDIR	:= $(shell if [ "$$PWD" != "" ]; then echo $$PWD; else pwd; fi)
 export	TOPDIR
 
+
+
+# add by cfho@edimax
+#ifeq (profile.mk,$(wildcard profile.mk))
+#include $(TOPDIR)/profile.mk
+#include $(TOPDIR)/func.mk
+#endif
+
 ifndef COMPRESSED_UBOOT
 COMPRESSED_UBOOT = 0
-endif 
+endif
 
 ifeq (include/config.mk,$(wildcard include/config.mk))
 # load ARCH, BOARD, and CPU configuration
 include include/config.mk
 export	ARCH CPU BOARD VENDOR SOC
+
+CROSS_COMPILE=/opt/gcc-4.3.3/build_mips/staging_dir/usr/bin/mips-linux-
+
+include $(TOPDIR)/profile.mk
+
 ifndef CROSS_COMPILE
 ifeq ($(HOSTARCH),ppc)
 CROSS_COMPILE =
@@ -184,13 +198,14 @@ SUBDIRS	= tools \
 #########################################################################
 #########################################################################
 
-ALL = u-boot.srec u-boot.bin System.map prog_free.bin
+ALL = u-boot.srec u-boot.bin System.map
 
 ifeq ($(COMPRESSED_UBOOT),1)
-all:		$(ALL) tuboot.bin
+all:	clean	$(ALL) tuboot.bin copybin2tftpboot
 else
-all:		$(ALL)
+all:	clean	$(ALL) copybin2tftpboot
 endif
+
 
 u-boot.hex:	u-boot
 		$(OBJCOPY) ${OBJCFLAGS} -O ihex $< $@
@@ -210,6 +225,11 @@ u-boot.img:	u-boot.bin
 
 u-boot.dis:	u-boot
 		$(OBJDUMP) -d $< > $@
+
+copybin2tftpboot:
+		rm -rf /tftpboot/uboot.img
+		cp u-boot.bin /tftpboot/uboot.img
+		ls -al /tftpboot/uboot.img
 
 u-boot:		depend version $(SUBDIRS) $(OBJS) $(LIBS) $(LDSCRIPT)
 		UNDEF_SYM=`$(OBJDUMP) -x $(LIBS) |sed  -n -e 's/.*\(__u_boot_cmd_.*\)/-u\1/p'|sort|uniq`;\
@@ -282,9 +302,6 @@ System.map:	u-boot
 		@$(NM) $< | \
 		grep -v '\(compiled\)\|\(\.o$$\)\|\( [aUw] \)\|\(\.\.ng$$\)\|\(LASH[RL]DI\)' | \
 		sort > System.map
-
-prog_free.bin:
-		$(MAKE) -C tools/spi_prog || exit 1
 
 #########################################################################
 else
@@ -2061,24 +2078,8 @@ ifeq ($(ETH_CONFIG), _s27)
 	@echo '#define CFG_ATH_GMAC_NMACS 2' >>include/config.h
 endif
 
-ifeq ($(ATH_DUAL_FLASH), 1)
-	@echo '#define CONFIG_ATH_NAND_SUPPORT  1'      >>include/config.h
-ifeq ($(ATH_SPI_NAND), 1)
-	@echo '#define ATH_SPI_NAND             1'      >>include/config.h
-	@echo '#define CONFIG_ATH_SPI_NAND_CS_GPIO  $(ATH_SPI_NAND_CS_GPIO) '>> include/config.h
-endif
-endif
-
-ifeq ($(ATH_DUAL_IMAGE_SUPPORT),1)
-	@echo '#define CONFIG_ATH_DUAL_IMAGE_SUPPORT  1' >>include/config.h
-endif
-	@echo '#define BOARD_NAME "$(CFG_BOARD_NAME)"' >>include/config.h
-
 ifdef FLASH_SIZE
 	@echo "#define FLASH_SIZE $(FLASH_SIZE)" >>include/config.h
-endif
-ifdef ATH_SPI_CS1_GPIO
-	@echo "#define CONFIG_ATH_SPI_CS1_GPIO $(ATH_SPI_CS1_GPIO)" >>include/config.h
 endif
 	@./mkconfig -a board953x mips mips board953x atheros
 
@@ -3013,6 +3014,7 @@ CFG_BOARD_TYPE=ap135
 endif
 endif #}
 
+
 ifneq ($(findstring $(BOARD_TYPE), board955x-offload-host),)
 ifneq ($(findstring $(BUILD_CONFIG), _ap136 _ap136_bootrom),)
 CFG_BOARD_TYPE=ap136
@@ -3055,12 +3057,13 @@ else
 endif
 ifeq ($(ETH_CONFIG2), _s17)
 	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
+	OBJS	+= ../common/athrs17_phy.o
 endif
 
 ifeq ($(ATH_SGMII_FORCED),1)
 	@echo '#define ATH_SGMII_FORCED		1'	>>include/config.h
 endif
-ifneq (,$(findstring _s17,$(ETH_CONFIG))) #{
+ifeq ($(ETH_CONFIG), _s17)
 	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
 
 ifneq (,$(findstring $(CFG_BOARD_TYPE),ap136 ap135)) #{
@@ -3078,6 +3081,19 @@ ifeq ($(S17_SWMAC6_CONNECTED),1)
 endif
 endif
 
+ifeq ($(CFG_BOARD_TYPE), 7479PLC)
+	@echo '#define ATH_MDC_GPIO_PIN       21'      >>include/config.h
+	@echo '#define ATH_MDIO_GPIO_PIN      22'      >>include/config.h
+ifeq ($(CFG_BOARD_TYPE), 7479CAC)
+	@echo '#define ATH_MDC_GPIO_PIN       21'      >>include/config.h
+	@echo '#define ATH_MDIO_GPIO_PIN      22'      >>include/config.h
+endif
+else
+	@echo '#define ATH_MDC_GPIO_PIN       19'      >>include/config.h
+	@echo '#define ATH_MDIO_GPIO_PIN      17'      >>include/config.h
+endif
+
+
 ifeq ($(CFG_BOARD_TYPE), ap132)
 	@echo '#define CFG_ATH_GMAC_NMACS       2'      >>include/config.h
 	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1'      >>include/config.h
@@ -3093,6 +3109,7 @@ ifeq ($(ATH_S17_MAC0_SGMII),1)
 endif
 
 
+	@echo '#define CONFIG_MGMT_INIT         1'      >>include/config.h
 #ifeq ($(ETH_CONFIG2), _s17_hwaccel)
 #	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
 #	@echo '#define CFG_DUAL_PHY_SUPPORT	1'	>>include/config.h
@@ -3101,6 +3118,14 @@ endif
 #	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
 #	@echo '#define CFG_ATH_GMAC_NMACS	1'	>>include/config.h
 #endif
+ifeq ($(ETH_CONFIG), _ar8035) 
+	@echo '#define CONFIG_ATHR_8035_PHY     1'      >>include/config.h
+ifeq ($(ETH_CONFIG2), _ar8033)
+else
+	@echo '#define CFG_ATH_GMAC_NMACS  	1'      >>include/config.h
+endif
+endif
+
 ifeq ($(ETH_CONFIG2), _ar8033) #{
 	@echo '#define CONFIG_ATHR_8033_PHY     1'      >>include/config.h
 	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
@@ -3134,113 +3159,12 @@ ifeq ($(ATH_RGMII_CAL),1)
 	@echo "#define ATH_RGMII_CAL 1" >> include/config.h
 endif
 
-ifeq ($(BOOT_FROM_NAND),1)
-	@echo '#define CONFIG_ATH_NAND_BR	1'	>>include/config.h
-	@echo '#define CONFIG_ATH_NAND_SUPPORT	1'	>>include/config.h
-	@echo "#define ATH_CAL_NAND_PARTITION "\"$(strip ${ATH_CAL_NAND_PARTITION})\" >>include/config.h
-	@echo '#define ATH_CAL_OFF_INVAL        0xbad0ff' >>include/config.h
-endif
-ifeq ($(ATH_DUAL_FLASH),1)
-	@echo '#define CONFIG_ATH_NAND_SUPPORT	1'	>>include/config.h
-	@echo "#define ATH_CAL_NAND_PARTITION "\"$(strip ${ATH_CAL_NAND_PARTITION})\" >>include/config.h
-	@echo '#define ATH_CAL_OFF_INVAL        0xbad0ff' >>include/config.h
-endif
-ifdef FLASH_SIZE
-	@echo '#define FLASH_SIZE	$(FLASH_SIZE)'	>>include/config.h
-endif
-	@./mkconfig -a board955x mips mips board955x atheros
-
-ap135_config: 	unconfig
-	@echo '#define CONFIG_ATHEROS		1'	>include/config.h
-	@echo '#define CONFIG_MACH_QCA955x	1'	>>include/config.h
-	@echo '#define CFG_INIT_STACK_IN_SRAM	1'	>>include/config.h
-	@echo '#define CONFIG_'`echo $(CFG_BOARD_TYPE) | tr [a-z] [A-Z] | sed s/-/_/g`'	1' >>include/config.h
-	@echo '#define __CONFIG_BOARD_NAME $(CFG_BOARD_TYPE)' >>include/config.h
-	@echo '#define CONFIG_BOARD_NAME "$(CFG_BOARD_TYPE)"' >>include/config.h
-ifdef pll
-	@echo '#define CFG_PLL_FREQ		$(pll)'	>>include/config.h
-else
-	@echo '#define CFG_PLL_FREQ		CFG_PLL_720_600_200'	>>include/config.h
-endif
-ifeq ($(ETH_CONFIG2), _s17)
-	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
+ifeq ($(SUPPORT_SECOND_FLASH),y)
+	@echo "#define SUPPORT_SECOND_FLASH 1" >> include/config.h
 endif
 
-ifeq ($(ATH_SGMII_FORCED),1)
-	@echo '#define ATH_SGMII_FORCED		1'	>>include/config.h
-endif
-ifneq (,$(findstring _s17,$(ETH_CONFIG))) #{
-	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
-
-ifneq (,$(findstring $(CFG_BOARD_TYPE),ap136 ap135)) #{
-	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
-	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
-
-ifeq ($(ATH_S17_PHY0_WAN),1)
-	@echo "#define CONFIG_ATH_S17_WAN 1" >> include/config.h
-endif
-
-endif #}
-ifeq ($(S17_SWMAC6_CONNECTED),1)
-	@echo "#define CONFIG_S17_SWMAC6_CONNECTED 1" >> include/config.h
-endif
-endif
-
-ifeq ($(CFG_BOARD_TYPE), ap132)
-	@echo '#define CFG_ATH_GMAC_NMACS       2'      >>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1'      >>include/config.h
-	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
-	@echo '#define CONFIG_MGMT_INIT         1'      >>include/config.h
-ifeq ($(ATH_SWITCH_ONLY_MODE),1)
-	@echo "#define CONFIG_ATHR_SWITCH_ONLY_MODE 1" >> include/config.h
-endif
-endif
-
-ifeq ($(ATH_S17_MAC0_SGMII),1)
-	@echo "#define ATH_S17_MAC0_SGMII 1" >> include/config.h
-endif
-
-
-#ifeq ($(ETH_CONFIG2), _s17_hwaccel)
-#	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
-#	@echo '#define CFG_DUAL_PHY_SUPPORT	1'	>>include/config.h
-#else
-#ifeq ($(ETH_CONFIG), _s17_hwaccel)
-#	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
-#	@echo '#define CFG_ATH_GMAC_NMACS	1'	>>include/config.h
-#endif
-ifeq ($(ETH_CONFIG2), _ar8033) #{
-	@echo '#define CONFIG_ATHR_8033_PHY     1'      >>include/config.h
-	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
-	@echo '#define CFG_DUAL_PHY_SUPPORT	1'	>>include/config.h
-	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
-ifeq ($(ATH_MDC_GPIO),1)
-	@echo '#define ATH_MDC_GPIO       1'      >>include/config.h
-endif
-
-endif #}
-ifeq ($(ETH_CONFIG), _vir) #{
-
-ifneq ($(findstring ATHR_MII,$(ATH_GMAC0_MII)),)
-	@echo "#define GMAC0_MII 1" >> include/config.h
-
-else
-	@echo '#define CONFIG_VIR_PHY		1'	>>include/config.h
-	@echo '#define CFG_ATH_GMAC_NMACS	1'	>>include/config.h
-endif
-
-ifeq ($(ATH_SLAVE_CONNECTED),1)
-	@echo "#define CONFIG_SCO_SLAVE_CONNECTED 1" >> include/config.h
-endif
-
-endif #}
-ifeq ($(ATH_SGMII_FORCED),1)
-	@echo "#define ATH_SGMII_FORCED_MODE 1" >> include/config.h
-endif
-
-ifeq ($(ATH_RGMII_CAL),1)
-	@echo "#define ATH_RGMII_CAL 1" >> include/config.h
+ifdef CFG_ELX_FLASH_SPI_CMD_SECOTR_ERASE
+	@echo "#define CFG_ELX_FLASH_SPI_CMD_SECOTR_ERASE $(CFG_ELX_FLASH_SPI_CMD_SECOTR_ERASE)" >> include/config.h
 endif
 
 ifeq ($(BOOT_FROM_NAND),1)
@@ -3258,178 +3182,6 @@ ifdef FLASH_SIZE
 	@echo '#define FLASH_SIZE	$(FLASH_SIZE)'	>>include/config.h
 endif
 	@./mkconfig -a board955x mips mips board955x atheros
-
-
-board956x_config: unconfig
-	@echo '#define CONFIG_ATHEROS		1'	>include/config.h
-	@echo '#define CONFIG_MACH_QCA956x	1'	>>include/config.h
-	@echo '#define CFG_INIT_STACK_IN_SRAM	1'	>>include/config.h
-	@echo '#define CONFIG_'`echo $(CFG_BOARD_TYPE) | tr [a-z] [A-Z] | sed s/-/_/g`'	1' >>include/config.h
-	@echo '#define __CONFIG_BOARD_NAME $(CFG_BOARD_TYPE)' >>include/config.h
-	@echo '#define CONFIG_BOARD_NAME "$(CFG_BOARD_TYPE)"' >>include/config.h
-ifdef pll
-	@echo '#define CFG_PLL_FREQ		$(pll)'	>>include/config.h
-else
-	@echo '#define CFG_PLL_FREQ		CFG_PLL_750_400_250'	>>include/config.h
-endif
-ifdef ddr_cas
-	@echo '#define CFG_DDR2_DRAGONFLY_CAS_LATENCY		$(ddr_cas)'	>>include/config.h
-endif
-ifneq (,$(findstring $(CFG_BOARD_TYPE),cus249 tb753)) #{
-	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
-endif #}
-ifneq (,$(findstring $(CFG_BOARD_TYPE),ap151 ap151-020 tb754)) #{
-	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
-endif #}
-ifneq (,$(findstring $(CFG_BOARD_TYPE), ap152 tb755)) #{
-	@echo '#define CFG_ATH_GMAC_NMACS	1'	>>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
-	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
-	@echo '#define ATH_S17_MAC0_SGMII	1'	>>include/config.h
-endif #}
-ifeq ($(ATH_DUAL_FLASH),1)
-	@echo '#define CONFIG_ATH_NAND_SUPPORT	1'	>>include/config.h
-ifeq ($(ATH_SPI_NAND),1)
-	@echo '#define ATH_SPI_NAND		1'	>>include/config.h
-	@echo '#define CONFIG_ATH_SPI_NAND_CS_GPIO  $(ATH_SPI_NAND_CS_GPIO) '>> include/config.h
-endif
-endif
-
-ifneq (,$(findstring $(CFG_BOARD_TYPE), ap152)) #{
-	@echo '#define UART_RX18_TX22           1'      >>include/config.h
-endif #}
-ifeq ($(CFG_BOARD_TYPE), ap151-020)
-	@echo '#define UART_RX24_TX20           1'      >>include/config.h
-endif 
-ifeq ($(CFG_BOARD_TYPE), ap151)
-	@echo '#define UART_RX18_TX20           1'      >>include/config.h
-endif
-ifneq (,$(findstring $(CFG_BOARD_TYPE), tb755)) #{
-	@echo '#define UART_RX20_TX22           1'      >>include/config.h
-endif #}
-
-ifneq (,$(findstring $(CFG_BOARD_TYPE), tb753 tb754)) #{
-	@echo '#define TEST_BOARD_UART          1'      >>include/config.h
-endif #}
-
-ifneq (,$(findstring $(CFG_BOARD_TYPE),dragonflyemu)) #{
-	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
-	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
-endif #}
-
-ifeq ($(CFG_BOARD_TYPE), ap152)
-	@echo '#define CONFIG_ATHRS_GMAC_SGMII	1'	>>include/config.h
-endif
-
-ifeq ($(ETH_CONFIG), _s27)
-	@echo '#define CFG_ATHRS27_PHY		1'	>>include/config.h	
-endif
-
-ifeq ($(ETH_CONFIG), _s17)
-	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
-endif
-
-ifeq ($(ETH_CONFIG), _s17_hwaccel)
-	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
-endif
-
-ifeq ($(ATH_SGMII_FORCED),1)
-	@echo '#define ATH_SGMII_FORCED_MODE    1'	>>include/config.h
-endif
-
-ifdef FLASH_SIZE
-	@echo '#define FLASH_SIZE	$(FLASH_SIZE)'	>>include/config.h
-endif
-	@./mkconfig -a board956x mips mips board956x atheros
-
-board550x_config: unconfig
-	@echo '#define CONFIG_ATHEROS		1'	>include/config.h
-	@echo '#define CONFIG_MACH_QCN550x	1'	>>include/config.h
-	@echo '#define CFG_INIT_STACK_IN_SRAM	1'	>>include/config.h
-	@echo '#define CONFIG_'`echo $(CFG_BOARD_TYPE) | tr [a-z] [A-Z] | sed s/-/_/g`'	1' >>include/config.h
-	@echo '#define __CONFIG_BOARD_NAME $(CFG_BOARD_TYPE)' >>include/config.h
-	@echo '#define CONFIG_BOARD_NAME "$(CFG_BOARD_TYPE)"' >>include/config.h
-ifdef pll
-	@echo '#define CFG_PLL_FREQ		$(pll)'	>>include/config.h
-else
-	@echo '#define CFG_PLL_FREQ		CFG_PLL_750_400_250'	>>include/config.h
-endif
-ifdef ddr_cas
-	@echo '#define CFG_DDR2_DRAGONFLY_CAS_LATENCY		$(ddr_cas)'	>>include/config.h
-endif
-ifneq (,$(findstring $(CFG_BOARD_TYPE),cus249 tb753)) #{
-	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
-endif #}
-ifneq (,$(findstring $(CFG_BOARD_TYPE),ap151 ap151-020 tb754)) #{
-	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
-endif #}
-ifneq (,$(findstring $(CFG_BOARD_TYPE), apjet01 tb755)) #{
-	@echo '#define CFG_ATH_GMAC_NMACS	1'	>>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
-	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
-	@echo '#define ATH_S17_MAC0_SGMII	1'	>>include/config.h
-endif #}
-ifeq ($(ATH_DUAL_FLASH),1)
-	@echo '#define CONFIG_ATH_NAND_SUPPORT	1'	>>include/config.h
-ifeq ($(ATH_SPI_NAND),1)
-	@echo '#define ATH_SPI_NAND		1'	>>include/config.h
-	@echo '#define CONFIG_ATH_SPI_NAND_CS_GPIO  $(ATH_SPI_NAND_CS_GPIO) '>> include/config.h
-endif
-endif
-
-ifneq (,$(findstring $(CFG_BOARD_TYPE), apjet01)) #{
-	@echo '#define UART_RX18_TX19           1'      >>include/config.h
-endif #}
-ifeq ($(CFG_BOARD_TYPE), ap151-020)
-	@echo '#define UART_RX24_TX20           1'      >>include/config.h
-endif
-ifeq ($(CFG_BOARD_TYPE), ap151)
-	@echo '#define UART_RX18_TX20           1'      >>include/config.h
-endif
-ifneq (,$(findstring $(CFG_BOARD_TYPE), tb755)) #{
-	@echo '#define UART_RX20_TX22           1'      >>include/config.h
-endif #}
-
-ifneq (,$(findstring $(CFG_BOARD_TYPE), tb753 tb754)) #{
-	@echo '#define TEST_BOARD_UART          1'      >>include/config.h
-endif #}
-
-ifneq (,$(findstring $(CFG_BOARD_TYPE),dragonflyemu)) #{
-	@echo '#define CFG_ATH_GMAC_NMACS	2'	>>include/config.h
-	@echo '#define CFG_ATH_GE1_IS_CONNECTED 1' 	>>include/config.h
-	@echo '#define CONFIG_ATHRS_GMAC_SGMII  1'      >>include/config.h
-endif #}
-
-ifeq ($(CFG_BOARD_TYPE), apjet01)
-	@echo '#define CONFIG_ATHRS_GMAC_SGMII	1'	>>include/config.h
-endif
-
-ifeq ($(ETH_CONFIG), _s27)
-	@echo '#define CFG_ATHRS27_PHY		1'	>>include/config.h
-endif
-
-ifeq ($(ETH_CONFIG), _s17)
-	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
-endif
-
-ifeq ($(ETH_CONFIG), _s17_hwaccel)
-	@echo '#define CONFIG_ATHRS17_PHY	1'	>>include/config.h
-endif
-
-ifeq ($(ATH_SGMII_FORCED),1)
-	@echo '#define ATH_SGMII_FORCED_MODE    1'	>>include/config.h
-endif
-
-ifdef FLASH_SIZE
-	@echo '#define FLASH_SIZE	$(FLASH_SIZE)'	>>include/config.h
-endif
-	@./mkconfig -a board550x mips mips board550x atheros
-
 
 ap138_config: 	unconfig
 	@echo '#define CONFIG_ATHEROS		1'	>include/config.h

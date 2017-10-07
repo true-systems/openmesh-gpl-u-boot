@@ -16,7 +16,6 @@
 /* zutil.h -- internal interface and configuration of the compression library
  * Copyright (C) 1995 Jean-loup Gailly.
  * For conditions of distribution and use, see copyright notice in zlib.h
- *
  */
 
 /* WARNING: this file should *not* be used by applications. It is
@@ -29,7 +28,7 @@
 #define _Z_UTIL_H
 
 #include "zlib.h"
-
+#include <common.h>
 #ifndef local
 #  define local static
 #endif
@@ -818,6 +817,9 @@ int r;
       NEEDBITS(3)
       t = (uInt)b & 7;
       s->last = t & 1;
+
+	  reset_watchdog();
+
       switch (t >> 1)
       {
 	case 0:                         /* stored */

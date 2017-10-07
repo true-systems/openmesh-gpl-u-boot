@@ -17,7 +17,7 @@
  *    along with this program; if not, write to the Free Software
  *    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
-#ident "$Id:$"
+#ident "$Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/common/cmd_ace.c#1 $"
 
 /*
  * The Xilinx SystemACE chip support is activated by defining

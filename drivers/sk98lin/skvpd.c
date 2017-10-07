@@ -2,8 +2,8 @@
  *
  * Name:	skvpd.c
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.37 $
- * Date:	$Date: 2003/01/13 10:42:45 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/09/21 $
  * Purpose:	Shared software to read and write VPD data
  *
  ******************************************************************************/
@@ -168,7 +168,7 @@
 	Please refer skvpd.txt for infomation how to include this module
  */
 static const char SysKonnectFileId[] =
-	"@(#)$Id: skvpd.c,v 1.37 2003/01/13 10:42:45 rschmidt Exp $ (C) SK";
+	"@(#)$Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/drivers/sk98lin/skvpd.c#1 $ (C) SK";
 
 #include "h/skdrv1st.h"
 #include "h/sktypes.h"

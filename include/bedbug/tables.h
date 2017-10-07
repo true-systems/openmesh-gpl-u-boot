@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/bedbug/tables.h#1 $ */
 
 #ifndef TABLES_H
 #define TABLES_H

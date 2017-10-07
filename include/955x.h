@@ -1,18 +1,22 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
+/*
+ * QCA 955x series processor SOC registers
+ *
+ * (C) Copyright 2008 Atheros Communications, Inc.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307 USA
  */
 
 #ifndef _QCA955X_H
@@ -1963,6 +1967,7 @@
 #define GPIO_OE_ADDRESS                                              0x18040000
 #define GPIO_OUT_ADDRESS                                             0x18040008
 #define GPIO_SPARE_ADDRESS                                           0x18040028
+#define GPIO_INT_ADDRESS                                            0x18040014
 
 #define GPIO_OUT_FUNCTION1_ENABLE_GPIO_7_MSB                         31
 #define GPIO_OUT_FUNCTION1_ENABLE_GPIO_7_LSB                         24
@@ -2051,6 +2056,22 @@
 #define GPIO_IN_ENABLE3_BOOT_EXT_MDO_RESET                           0x80 // 128
 #define GPIO_IN_ENABLE3_ADDRESS                                      0x18040050
 
+#define GPIO_IN_ENABLE4_I2C_DATA_MSB                              31
+#define GPIO_IN_ENABLE4_I2C_DATA_LSB                              24
+#define GPIO_IN_ENABLE4_I2C_DATA_MASK                             0xff000000
+#define GPIO_IN_ENABLE4_I2C_DATA_GET(x)                           (((x) & GPIO_IN_ENABLE4_I2C_DATA_MASK) >> GPIO_IN_ENABLE4_I2C_DATA_LSB)
+#define GPIO_IN_ENABLE4_I2C_DATA_SET(x)                           (((x) << GPIO_IN_ENABLE4_I2C_DATA_LSB) & GPIO_IN_ENABLE4_I2C_DATA_MASK)
+#define GPIO_IN_ENABLE4_I2C_DATA_RESET                            0x80 // 128
+#define GPIO_IN_ENABLE4_I2C_CLK_MSB                              23
+#define GPIO_IN_ENABLE4_I2C_CLK_LSB                              16
+#define GPIO_IN_ENABLE4_I2C_CLK_MASK                             0x00ff0000
+#define GPIO_IN_ENABLE4_I2C_CLK_GET(x)                           (((x) & GPIO_IN_ENABLE4_I2C_CLK_MASK) >> GPIO_IN_ENABLE4_I2C_CLK_LSB)
+#define GPIO_IN_ENABLE4_I2C_CLK_SET(x)                           (((x) << GPIO_IN_ENABLE4_I2C_CLK_LSB) & GPIO_IN_ENABLE4_I2C_CLK_MASK)
+#define GPIO_IN_ENABLE4_I2C_CLK_RESET                            0x80 // 128
+#define GPIO_IN_ENABLE4_ADDRESS                                      0x18040054
+
+#define GPIO_IN_ENABLE9_ADDRESS                                      0x18040068
+
 #define GPIO_OUT_FUNCTION3_ENABLE_GPIO_15_MSB                        31
 #define GPIO_OUT_FUNCTION3_ENABLE_GPIO_15_LSB                        24
 #define GPIO_OUT_FUNCTION3_ENABLE_GPIO_15_MASK                       0xff000000
@@ -2102,6 +2123,32 @@
 #define GPIO_OUT_FUNCTION4_ENABLE_GPIO_16_SET(x)                     (((x) << GPIO_OUT_FUNCTION4_ENABLE_GPIO_16_LSB) & GPIO_OUT_FUNCTION4_ENABLE_GPIO_16_MASK)
 #define GPIO_OUT_FUNCTION4_ENABLE_GPIO_16_RESET                      0x0 // 0
 #define GPIO_OUT_FUNCTION4_ADDRESS                                   0x1804003c
+
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_MSB                        31
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_LSB                        24
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_MASK                       0xff000000
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_GET(x)                     (((x) & GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_MASK) >> GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_LSB)
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_SET(x)                     (((x) << GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_LSB) & GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_MASK)
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_23_RESET                      0x0 // 0
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_MSB                        23
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_LSB                        16
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_MASK                       0x00ff0000
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_GET(x)                     (((x) & GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_MASK) >> GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_LSB)
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_SET(x)                     (((x) << GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_LSB) & GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_MASK)
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_RESET                      0x0 // 0
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_MSB                        15
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_LSB                        8
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_MASK                       0x0000ff00
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_GET(x)                     (((x) & GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_MASK) >> GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_LSB)
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_SET(x)                     (((x) << GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_LSB) & GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_MASK)
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_RESET                      0x0 // 0
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_MSB                        7
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_LSB                        0
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_MASK                       0x000000ff
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_GET(x)                     (((x) & GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_MASK) >> GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_LSB)
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_SET(x)                     (((x) << GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_LSB) & GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_MASK)
+#define GPIO_OUT_FUNCTION5_ENABLE_GPIO_20_RESET                      0x0 // 0
+#define GPIO_OUT_FUNCTION5_ADDRESS                                   0x18040040
 
 #define GPIO_FUNCTION_CLK_OBS9_ENABLE_MSB                            11
 #define GPIO_FUNCTION_CLK_OBS9_ENABLE_LSB                            11
@@ -2832,7 +2879,11 @@
 #define ATH_SPI_CMD_RD_STATUS		0x05
 #define ATH_SPI_CMD_FAST_READ		0x0b
 #define ATH_SPI_CMD_PAGE_PROG		0x02
-#define ATH_SPI_CMD_SECTOR_ERASE	0xd8
+#ifdef CFG_ELX_FLASH_SPI_CMD_SECOTR_ERASE
+#define ATH_SPI_CMD_SECTOR_ERASE    CFG_ELX_FLASH_SPI_CMD_SECOTR_ERASE
+#else
+#define ATH_SPI_CMD_SECTOR_ERASE    0xd8    // Block Erase (BE) Sequence (Command 52 or D8)
+#endif
 #define ATH_SPI_CMD_CHIP_ERASE		0xc7
 #define ATH_SPI_CMD_RDID		0x9f
 

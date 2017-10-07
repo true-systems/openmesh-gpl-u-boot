@@ -26,7 +26,7 @@
  ***********************************************************************/
 
 /*
- * $Id: KAREF.h,v 1.6 2005/06/03 15:05:25 tsawyer Exp $
+ * $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/configs/KAREF.h#1 $
  *
  */
 

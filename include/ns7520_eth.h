@@ -3,7 +3,7 @@
  *  Copyright 2003 by FS Forth-Systeme GmbH.
  *  All rights reserved.
  *
- *  $Id$
+ *  $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/ns7520_eth.h#1 $
  *  @Author: Markus Pietrek
  *  @Descr: Defines the NS7520 ethernet registers.
  *          Stick with the old ETH prefix names instead going to the

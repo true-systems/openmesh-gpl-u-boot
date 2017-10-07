@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <config.h>
 #include <common.h>
 #include <malloc.h>
@@ -23,6 +6,7 @@
 #include <asm/io.h>
 #include <asm/addrspace.h>
 #include <asm/types.h>
+#include <config.h>
 
 #ifdef CONFIG_ATH_NAND_BR
 #include <nand.h>
@@ -41,6 +25,7 @@
 
 int ath_gmac_miiphy_read(char *devname, uint32_t phaddr, uint8_t reg, uint16_t *data);
 int ath_gmac_miiphy_write(char *devname, uint32_t phaddr, uint8_t reg, uint16_t data);
+extern void ath_sys_frequency(uint32_t *, uint32_t *, uint32_t *);
 
 #ifndef CFG_ATH_GMAC_NMACS
 #define CFG_ATH_GMAC_NMACS	1
@@ -55,6 +40,14 @@ extern int athr_vir_phy_is_up(int unit);
 extern int athr_vir_phy_is_fdx(int unit);
 extern int athr_vir_phy_speed(int unit);
 extern void athr_vir_reg_init(void);
+#endif
+
+#ifdef CONFIG_ATHR_8035_PHY
+extern int athr_ar8035_phy_setup(int unit);
+extern int athr_ar8035_phy_is_up(int unit);
+extern int athr_ar8035_phy_is_fdx(int unit);
+extern int athr_ar8035_phy_speed(int unit);
+extern void athr_ar8035_reg_init(void);
 #endif
 
 #ifdef  CONFIG_ATHRS17_PHY
@@ -79,6 +72,29 @@ extern unsigned long long
 ath_nand_get_cal_offset(const char *ba);
 #endif
 
+#if 1 //jaykung 20130527 for rgmii setting
+#define set_1000_rgmii()  do{  ath_reg_wr(ETH_XMII_ADDRESS, \
+                                 ETH_XMII_TX_INVERT_SET(1) \
+                               | ETH_XMII_RX_DELAY_SET(3)  \
+                               | ETH_XMII_TX_DELAY_SET(3)  \
+                               | ETH_XMII_GIGE_SET(1) ); }while(0)      
+                               
+#define set_rgmii_delay() do{ath_reg_rmw_set(ATH_ETH_CFG, \
+                                                                ETH_CFG_ETH_RXD_DELAY_SET(3)| \
+                                ETH_CFG_ETH_RXDV_DELAY_SET(3)| \
+                                ETH_CFG_ETH_TXEN_DELAY_SET(3)| \
+                                ETH_CFG_ETH_TXD_DELAY_SET(3));}while(0)
+                                
+#define set_100_rgmii() do{ath_reg_wr(ETH_XMII_ADDRESS, \
+                                                                ETH_XMII_TX_INVERT_SET(1)| \
+                                                                ETH_XMII_PHASE1_COUNT_SET(1) |\
+                                                                ETH_XMII_PHASE0_COUNT_SET(1));}while(0)
+#define set_10_rgmii() do{ath_reg_wr(ETH_XMII_ADDRESS, \
+                                                                ETH_XMII_TX_INVERT_SET(1)| \
+                                                                ETH_XMII_PHASE1_COUNT_SET(19) |\
+                                                                ETH_XMII_PHASE0_COUNT_SET(19));}while(0)                                                                
+#endif 
+
 static int
 ath_gmac_send(struct eth_device *dev, volatile void *packet, int length)
 {
@@ -87,6 +103,8 @@ ath_gmac_send(struct eth_device *dev, volatile void *packet, int length)
 	ath_gmac_mac_t *mac = (ath_gmac_mac_t *)dev->priv;
 
 	ath_gmac_desc_t *f = mac->fifo_tx[mac->next_tx];
+	
+	reset_watchdog();
 
 	f->pkt_size = length;
 	f->res1 = 0;
@@ -98,7 +116,10 @@ ath_gmac_send(struct eth_device *dev, volatile void *packet, int length)
 	ath_gmac_reg_wr(mac, ATH_DMA_TX_CTRL, ATH_TXE);
 
 	for (i = 0; i < MAX_WAIT; i++) {
+		reset_watchdog();
 		udelay(10);
+		reset_watchdog();
+		
 		if (!ath_gmac_tx_owned_by_dma(f))
 			break;
 	}
@@ -108,6 +129,8 @@ ath_gmac_send(struct eth_device *dev, volatile void *packet, int length)
 	f->pkt_start_addr = 0;
 	f->pkt_size = 0;
 
+	reset_watchdog();
+	
 	if (++mac->next_tx >= NO_OF_TX_FIFOS)
 		mac->next_tx = 0;
 
@@ -123,6 +146,8 @@ static int ath_gmac_recv(struct eth_device *dev)
 	int count = 0;
 
 	mac = (ath_gmac_mac_t *)dev->priv;
+	
+	reset_watchdog();
 
 	for (;;) {
 	     f = mac->fifo_rx[mac->next_rx];
@@ -157,6 +182,8 @@ static int ath_gmac_recv(struct eth_device *dev)
 
 		NetReceive(NetRxPackets[mac->next_rx] , length - 4);
 		flush_cache((u32) NetRxPackets[mac->next_rx] , PKTSIZE_ALIGN);
+		
+		reset_watchdog();
 
 		ath_gmac_reg_wr(mac,0x194,1);
 		ath_gmac_rx_give_to_dma(f);
@@ -169,7 +196,8 @@ static int ath_gmac_recv(struct eth_device *dev)
 		ath_gmac_reg_wr(mac, ATH_DMA_RX_DESC, virt_to_phys(f));
 		ath_gmac_reg_wr(mac, ATH_DMA_RX_CTRL, 1);
 	}
-
+	
+	reset_watchdog();
 	return (0);
 }
 
@@ -194,7 +222,9 @@ void ath_gmac_mii_setup(ath_gmac_mac_t *mac)
 #else
         rgmii_cal_alg()
 #endif
+		reset_watchdog();
 		udelay(1000);
+		reset_watchdog();
 		ath_gmac_reg_wr(mac, ATH_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
 		ath_gmac_reg_wr(mac, ATH_MAC_MII_MGMT_CFG, mgmt_cfg_val);
 		return;
@@ -210,6 +240,30 @@ void ath_gmac_mii_setup(ath_gmac_mac_t *mac)
 
 
         }
+
+         if (is_ar8035 () && mac->mac_unit == 0) {
+                printf("Scorpion ---->8035 PHY*\n");
+                mgmt_cfg_val = 7;
+
+                ath_reg_wr(ATH_ETH_CFG, ETH_CFG_ETH_RXDV_DELAY_SET(3) |
+                                        ETH_CFG_ETH_RXD_DELAY_SET(3)|
+                                        ETH_CFG_RGMII_GE0_SET(1));
+
+                ath_reg_wr(ETH_XMII_ADDRESS, ETH_XMII_TX_INVERT_SET(1) |
+                                             ETH_XMII_RX_DELAY_SET(2)  |
+                                             ETH_XMII_TX_DELAY_SET(1)  |
+                                             ETH_XMII_GIGE_SET(1));
+
+				reset_watchdog();
+                udelay(1000);
+				reset_watchdog();
+                ath_gmac_reg_wr(mac, ATH_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
+                ath_gmac_reg_wr(mac, ATH_MAC_MII_MGMT_CFG, mgmt_cfg_val);
+                return;
+
+        }
+        
+        
         if (is_vir_phy()) {
         	printf("Scorpion ---->VIR PHY*\n");
 		
@@ -335,7 +389,9 @@ athrs_sgmii_res_cal(void)
 			SGMII_SERDES_VCO_REG_SET(3));
 
 	ath_reg_rmw_clear(RST_RESET_ADDRESS, RST_RESET_ETH_SGMII_ARESET_MASK);
+	reset_watchdog();
 	udelay(25);
+	reset_watchdog();
 	ath_reg_rmw_clear(RST_RESET_ADDRESS, RST_RESET_ETH_SGMII_RESET_MASK);
 
 	while (!(ath_reg_rd(SGMII_SERDES_ADDRESS) & SGMII_SERDES_LOCK_DETECT_STATUS_MASK));
@@ -350,7 +406,9 @@ static void athr_gmac_sgmii_setup()
         ath_reg_wr(MR_AN_CONTROL_ADDRESS, MR_AN_CONTROL_SPEED_SEL1_SET(1) |
                                            MR_AN_CONTROL_PHY_RESET_SET(1)  |
                                            MR_AN_CONTROL_DUPLEX_MODE_SET(1));
+		reset_watchdog();
         udelay(10);
+		reset_watchdog();
 
         ath_reg_wr(SGMII_CONFIG_ADDRESS, SGMII_CONFIG_MODE_CTRL_SET(2)   |
                                           SGMII_CONFIG_FORCE_SPEED_SET(1) |
@@ -404,7 +462,9 @@ static void athr_gmac_sgmii_setup()
 	while (!(status == 0xf || status == 0x10)) {
 
 		ath_reg_rmw_set(MR_AN_CONTROL_ADDRESS, MR_AN_CONTROL_PHY_RESET_SET(1));
+		reset_watchdog();
 		udelay(100);
+		reset_watchdog();
 		ath_reg_rmw_clear(MR_AN_CONTROL_ADDRESS, MR_AN_CONTROL_PHY_RESET_SET(1));
 		if (count++ == SGMII_LINK_WAR_MAX_TRY) {
 			printf ("Max resets limit reached exiting...\n");
@@ -416,7 +476,6 @@ static void athr_gmac_sgmii_setup()
 	printf("%s SGMII done\n",__func__);
 
 }
-
 static void ath_gmac_hw_start(ath_gmac_mac_t *mac)
 {
 
@@ -458,9 +517,7 @@ static void ath_gmac_hw_start(ath_gmac_mac_t *mac)
 	 * Setting Drop CRC Errors, Pause Frames,Length Error frames
 	 * and Multi/Broad cast frames.
 	 */
-
-	ath_gmac_reg_wr(mac, ATH_MAC_FIFO_CFG_5, 0x7eccf);
-
+ 	ath_gmac_reg_wr(mac, ATH_MAC_FIFO_CFG_5, 0x7eccf);
 	ath_gmac_reg_wr(mac, ATH_MAC_FIFO_CFG_3, 0x1f00140);
 
 	printf(": cfg1 %#x cfg2 %#x\n", ath_gmac_reg_rd(mac, ATH_MAC_CFG1),
@@ -474,8 +531,8 @@ static int ath_gmac_check_link(ath_gmac_mac_t *mac)
 	int link, duplex, speed;
 
 	ath_gmac_phy_link(mac->mac_unit, &link);
-	ath_gmac_phy_duplex(mac->mac_unit, &duplex);
-	ath_gmac_phy_speed(mac->mac_unit, &speed);
+	//jaykung 20150427, here we just check link first, 
+	// if there is no link, don't need to check capability
 
 	mac->link = link;
 
@@ -484,6 +541,9 @@ static int ath_gmac_check_link(ath_gmac_mac_t *mac)
 		return 0;
 	}
 
+	ath_gmac_phy_duplex(mac->mac_unit, &duplex);
+	ath_gmac_phy_speed(mac->mac_unit, &speed);
+	
 	switch (speed)
 	{
 		case _1000BASET:
@@ -494,7 +554,13 @@ static int ath_gmac_check_link(ath_gmac_mac_t *mac)
 				ath_reg_wr(ETH_SGMII_ADDRESS, ETH_SGMII_GIGE_SET(1) |
                                            ETH_SGMII_CLK_SEL_SET(1));
 			}
-	
+			
+			
+                        if (is_ar8035() && mac->mac_unit == 0) {
+//                             printf("---->1000Mpbs\n");
+                            set_rgmii_delay();
+                            set_1000_rgmii();
+                        }
 			break;
 
 		case _100BASET:
@@ -507,6 +573,12 @@ static int ath_gmac_check_link(ath_gmac_mac_t *mac)
                                            ETH_SGMII_PHASE1_COUNT_SET(1));
 			}
 
+			if (is_ar8035() && mac->mac_unit == 0) {
+//                             printf("---->100Mpbs\n");
+                            set_rgmii_delay();
+                            set_100_rgmii();
+                        }
+                        
 			break;
 
 		case _10BASET:
@@ -519,6 +591,11 @@ static int ath_gmac_check_link(ath_gmac_mac_t *mac)
                                            ETH_SGMII_PHASE1_COUNT_SET(19));
 			}
 
+			if (is_ar8035() && mac->mac_unit == 0) {
+//                             printf("---->10Mpbs\n");
+                            set_rgmii_delay();
+                            set_10_rgmii();
+                        }
 			break;
 
 		default:
@@ -566,7 +643,9 @@ static int ath_gmac_clean_rx(struct eth_device *dev, bd_t * bd)
 
 	ath_gmac_reg_wr(mac, ATH_DMA_RX_DESC, virt_to_phys(mac->fifo_rx[0]));
 	ath_gmac_reg_wr(mac, ATH_DMA_RX_CTRL, ATH_RXE);	/* rx start */
+	reset_watchdog();
 	udelay(1000 * 1000);
+	reset_watchdog();
 
 
 	return 1;
@@ -693,6 +772,11 @@ ath_gmac_mac_addr_loc(void)
 
 static void ath_gmac_get_ethaddr(struct eth_device *dev)
 {
+  //jaykung 2015/10/19 FIXME
+#if CONFIG_USE_FIXED_MAC
+       char def_mac[]={ 0x00, 0xaa, 0xbb, 0xcc, 0xdd, 0x00, \
+                        0x00, 0xaa, 0xbb, 0xcc, 0xdd, 0x01}; 
+#endif    
 	unsigned char *eeprom;
 	unsigned char *mac = dev->enetaddr;
 #ifndef CONFIG_ATH_EMULATION
@@ -707,7 +791,11 @@ static void ath_gmac_get_ethaddr(struct eth_device *dev)
 	}
 	else {
 #else  /* CONFIG_ATH_NAND_BR */
+#if CONFIG_USE_FIXED_MAC            
+            eeprom = &def_mac[0];
+#else
 		eeprom = ath_gmac_mac_addr_loc();
+#endif                
 #endif  /* CONFIG_ATH_NAND_BR */
 
 		if (strcmp(dev->name, "eth0") == 0) {
@@ -723,7 +811,10 @@ static void ath_gmac_get_ethaddr(struct eth_device *dev)
 	}
 #endif  /* CONFIG_ATH_NAND_BR */
 	/* Use fixed address if the above address is invalid */
-	if (mac[0] != 0x00 || (mac[0] == 0xff && mac[5] == 0xff))
+// 	if (mac[0] != 0x00 || (mac[0] == 0xff && mac[5] == 0xff))
+	if( ( mac[0] | mac[1] | mac[2] | mac[3] | mac[4] | mac[5] ) ==0
+	  || ((mac[0]&0x1)==0x1)
+	)
 #else
 	if (1)
 #endif
@@ -745,6 +836,12 @@ athr_mgmt_init(void)
 {
 
 #ifdef CONFIG_MGMT_INIT
+	
+	//jaykung we do this in athrs_ar8033_mgmt_init
+	//DO not touch gpio 17, we are using this gpio for reset
+	return ;
+
+	
 	uint32_t rddata;
 
 	rddata = ath_reg_rd(GPIO_IN_ENABLE3_ADDRESS)&
@@ -752,10 +849,9 @@ athr_mgmt_init(void)
 	rddata |= GPIO_IN_ENABLE3_MII_GE1_MDI_SET(19);
 	ath_reg_wr(GPIO_IN_ENABLE3_ADDRESS, rddata);
 
-	ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << 19));
+        ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << ATH_MDC_GPIO_PIN));
 
-	ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << 17));
-
+        ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << ATH_MDIO_GPIO_PIN));
 
 	rddata = ath_reg_rd(GPIO_OUT_FUNCTION4_ADDRESS) &
 		~ (GPIO_OUT_FUNCTION4_ENABLE_GPIO_19_MASK |
@@ -795,7 +891,7 @@ int ath_gmac_enet_initialize(bd_t * bis)
 		memset(ath_gmac_macs[i], 0, sizeof(ath_gmac_macs[i]));
 		memset(dev[i], 0, sizeof(dev[i]));
 
-		snprintf(dev[i]->name, sizeof(dev[i]->name), "eth%d", i);
+		sprintf(dev[i]->name, "eth%d", i);
 		ath_gmac_get_ethaddr(dev[i]);
 
 		ath_gmac_macs[i]->mac_unit = i;
@@ -812,14 +908,22 @@ int ath_gmac_enet_initialize(bd_t * bis)
 
 #if !defined(CONFIG_ATH_NAND_BR)
 	ath_reg_rmw_set(RST_RESET_ADDRESS,  RST_RESET_ETH_SGMII_ARESET_SET(1));
+	reset_watchdog();
 	udelay(1000 * 100);
+	reset_watchdog();
 	ath_reg_rmw_clear(RST_RESET_ADDRESS, RST_RESET_ETH_SGMII_ARESET_SET(1));
+	reset_watchdog();
 	udelay(100);
+	reset_watchdog();
 #endif
 	ath_reg_rmw_set(RST_RESET_ADDRESS, RST_RESET_ETH_SGMII_RESET_SET(1) | RST_RESET_EXTERNAL_RESET_SET(1));
+	reset_watchdog();
 	udelay(1000 * 100);
+	reset_watchdog();
 	ath_reg_rmw_clear(RST_RESET_ADDRESS, RST_RESET_ETH_SGMII_RESET_SET(1) | RST_RESET_EXTERNAL_RESET_SET(1));
+	reset_watchdog();
 	udelay(1000 * 100);
+	reset_watchdog();
 
 	for (i = 0;i < CFG_ATH_GMAC_NMACS;i++) {
 
@@ -831,25 +935,34 @@ int ath_gmac_enet_initialize(bd_t * bis)
 
 			mask = mask | ATH_RESET_GE0_MDIO | ATH_RESET_GE1_MDIO;
 
-			printf("%s: reset mask:%x \n", __func__, mask);
+			printf("<%d>%s: reset mask:%x \n", i,__func__, mask);
 
 			ath_reg_rmw_set(RST_RESET_ADDRESS, mask);
+			reset_watchdog();
 			udelay(1000 * 100);
+			reset_watchdog();
 
 			ath_reg_rmw_clear(RST_RESET_ADDRESS, mask);
+			reset_watchdog();
 			udelay(1000 * 100);
+			reset_watchdog();
 
 			udelay(10 * 1000);
+			reset_watchdog();
 		}
 #if defined(CONFIG_MGMT_INIT) && defined (CONFIG_ATHR_SWITCH_ONLY_MODE) || defined ATH_MDC_GPIO
 		if (!i)
 			athr_mgmt_init();
-
+#if defined (CONFIG_ATHR_8033_PHY) && defined (CONFIG_ATHR_8035_PHY)
+		//do nothing
+#else
+		//single phy, just enable one eth
 		if (ath_gmac_macs[i]->mac_unit == 0)
                         continue;
 #endif
+#endif
 		eth_register(dev[i]);
-#if(CONFIG_COMMANDS & CFG_CMD_MII)
+#if (CONFIG_COMMANDS & CFG_CMD_MII)
 		miiphy_register(dev[i]->name, ath_gmac_miiphy_read, ath_gmac_miiphy_write);
 #endif
 		ath_gmac_mii_setup(ath_gmac_macs[i]);
@@ -865,6 +978,11 @@ int ath_gmac_enet_initialize(bd_t * bis)
 #ifdef CONFIG_VIR_PHY
 			printf("VIRPhy reg init \n");
 			athr_vir_reg_init();
+#endif
+                        
+#ifdef CONFIG_ATHR_8035_PHY
+                        printf("AR8035 PHY reg init \n");
+                        athr_ar8035_reg_init();
 #endif
 
 		} else {
@@ -891,8 +1009,9 @@ int ath_gmac_enet_initialize(bd_t * bis)
 		ath_gmac_setup_fifos(ath_gmac_macs[i]);
 
 
-
+		reset_watchdog();
 		udelay(100 * 1000);
+		reset_watchdog();
 
 		{
 			unsigned char *mac = dev[i]->enetaddr;
@@ -935,7 +1054,9 @@ ath_gmac_miiphy_read(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t *da
 	 */
 	do
 	{
+		reset_watchdog();
 		udelay(5);
+		reset_watchdog();
 		rddata = ath_gmac_reg_rd(mac, ATH_MII_MGMT_IND) & 0x1;
 	}while(rddata && --ii);
 
@@ -949,7 +1070,9 @@ ath_gmac_miiphy_read(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t *da
 
 	do
 	{
+		reset_watchdog();
 		udelay(5);
+		reset_watchdog();
 		rddata = ath_gmac_reg_rd(mac, ATH_MII_MGMT_IND) & 0x1;
 	}while(rddata && --ii);
 
@@ -959,8 +1082,6 @@ ath_gmac_miiphy_read(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t *da
 	val = ath_gmac_reg_rd(mac, ATH_MII_MGMT_STATUS);
 	ath_gmac_reg_wr(mac, ATH_MII_MGMT_CMD, 0x0);
 
-        if (data != NULL)
-	    *data = val; 
 	return val;
 }
 
@@ -978,7 +1099,9 @@ ath_gmac_miiphy_write(char *devname, uint32_t phy_addr, uint8_t reg, uint16_t da
 	 * race condition while running at higher frequencies.
 	 */
 	do {
+		reset_watchdog();
 		udelay(5);
+		reset_watchdog();
 		rddata = ath_gmac_reg_rd(mac, ATH_MII_MGMT_IND) & 0x1;
 	} while (rddata && --ii);
 

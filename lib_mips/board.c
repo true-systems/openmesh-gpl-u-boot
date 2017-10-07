@@ -44,11 +44,11 @@ DECLARE_GLOBAL_DATA_PTR;
 extern int timer_init(void);
 
 extern int incaip_set_cpuclk(void);
-
-#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#ifdef SUPPORT_SECOND_FLASH
+void ath_set_second_flash();
+#endif
+#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x)
 void ath_set_tuning_caps(void);
-#else
-#define ath_set_tuning_caps()	/* nothing */
 #endif
 
 
@@ -60,6 +60,11 @@ ulong monitor_flash_len;
 const char version_string[] =
 	U_BOOT_VERSION" (" __DATE__ " - " __TIME__ ")";
 
+#define ELX_VERSION_PATTERN_HEAD    "ELX_"
+#define ELX_VERSION_PATTERN_TAIL    "_ELX"
+const char edi_ver[] = ELX_VERSION_PATTERN_HEAD \
+    ELX_LOCAL_VERSION ELX_VERSION_PATTERN_TAIL;
+
 static char *failed = "*** failed ***\n";
 
 /*
@@ -68,6 +73,148 @@ static char *failed = "*** failed ***\n";
 static ulong mem_malloc_start;
 static ulong mem_malloc_end;
 static ulong mem_malloc_brk;
+
+#ifdef HAS_OPERATION_SELECTION/*add */
+#define SEL_LOAD_LINUX_SDRAM            1
+#define SEL_LOAD_LINUX_WRITE_FLASH      2
+#define SEL_BOOT_FLASH                  3
+#define SEL_ENTER_CLI                   4
+#define SEL_LOAD_UCOS_SDRAM     5
+#define SEL_LOAD_CRAMFS_WRITE_FLASH     7
+#define SEL_LOAD_BOOT_SDRAM             8
+#define SEL_LOAD_BOOT_WRITE_FLASH       9
+#define ARGV_LEN  0x32
+static char  file_name_space[ARGV_LEN];
+int modifies=0;
+extern int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
+extern char        console_buffer[CFG_CBSIZE];      /* console I/O buffer   */
+extern int flash_sect_protect (int, ulong, ulong);
+void input_value(u8 *str)
+{
+    while(1)
+    {
+        if (readline ("==:") > 0)
+        {
+            strcpy (str, console_buffer);
+            break;
+        }
+        else
+            break;
+    }
+}
+void OperationSelect(void)
+{
+    printf("\nPlease choose the operation: \n");
+    printf("   %d: Load system code to SDRAM via TFTP. \n", SEL_LOAD_LINUX_SDRAM);
+    //printf("   %d: Load system code then write to Flash via TFTP. \n", SEL_LOAD_LINUX_WRITE_FLASH);
+    printf("   %d: Boot system code via Flash (default).\n", SEL_BOOT_FLASH);
+    printf("   %d: Entr boot command line interface.\n", SEL_ENTER_CLI);
+    //printf("   %d: Load ucos code to SDRAM via TFTP. \n", SEL_LOAD_UCOS_SDRAM);
+    //printf("   %d: Load Linux filesystem then write to Flash via TFTP. \n", SEL_LOAD_CRAMFS_WRITE_FLASH);
+    //printf("   %d: Load Boot Loader code to SDRAM via TFTP. \n", SEL_LOAD_BOOT_SDRAM);
+    //printf("   %d: Load Boot Loader code then write to Flash via TFTP. \n", SEL_LOAD_BOOT_WRITE_FLASH);
+}
+void filename_copy (uchar *dst, uchar *src, int size)
+{
+    *dst = '"';
+    dst++;
+    while ((size > 0) && *src && (*src != '"')) {
+        *dst++ = *src++;
+        size--;
+    }
+    *dst++ = '"';
+    *dst = '\0';
+}
+
+int tftp_config(int type, char *argv[])
+{
+    char *s;
+    char default_file[ARGV_LEN], file[ARGV_LEN], devip[ARGV_LEN], srvip[ARGV_LEN], default_ip[ARGV_LEN];
+
+    printf(" Please Input new ones /or Ctrl-C to discard\n");
+
+    memset(default_file, 0, ARGV_LEN);
+    memset(file, 0, ARGV_LEN);
+    memset(devip, 0, ARGV_LEN);
+    memset(srvip, 0, ARGV_LEN);
+    memset(default_ip, 0, ARGV_LEN);
+
+    printf("\tInput device IP ");
+    s = getenv("ipaddr");
+    memcpy(devip, s, strlen(s));
+    memcpy(default_ip, s, strlen(s));
+
+    printf("(%s) ", devip);
+    input_value(devip);
+    setenv("ipaddr", devip);
+    if (strcmp(default_ip, devip) != 0)
+        modifies++;
+
+    printf("\tInput server IP ");
+    s = getenv("serverip");
+    memcpy(srvip, s, strlen(s));
+    memset(default_ip, 0, ARGV_LEN);
+    memcpy(default_ip, s, strlen(s));
+
+    printf("(%s) ", srvip);
+    input_value(srvip);
+    setenv("serverip", srvip);
+    if (strcmp(default_ip, srvip) != 0)
+        modifies++;
+
+    if(type == SEL_LOAD_BOOT_SDRAM || type == SEL_LOAD_BOOT_WRITE_FLASH 
+            || type == SEL_LOAD_UCOS_SDRAM) {
+//         if(type == SEL_LOAD_BOOT_SDRAM)
+// #if defined (RT2880_ASIC_BOARD) || defined (RT2880_FPGA_BOARD)
+//             argv[1] = "0x8a200000";
+// #else
+//         argv[1] = "0x80200000";
+// #endif
+//         else if (type == SEL_LOAD_UCOS_SDRAM)
+//             argv[1] = "0x88001000";
+//         else
+// #if defined (RT2880_ASIC_BOARD) || defined (RT2880_FPGA_BOARD)
+//             argv[1] = "0x8a100000";
+// #else
+//         argv[1] = "0x80100000";
+// #endif
+// //         printf("\tInput Uboot filename ");
+//         //argv[2] = "uboot.bin";
+//         strncpy(argv[2], "uboot.bin", ARGV_LEN);
+    }
+    else if (type == SEL_LOAD_LINUX_WRITE_FLASH 
+            || type == SEL_LOAD_CRAMFS_WRITE_FLASH) {
+                argv[1] = "0x80060000";
+            printf("\tInput Linux Kernel filename ");
+                strncpy(argv[2], "uImage", ARGV_LEN);
+    }
+    else if (type == SEL_LOAD_LINUX_SDRAM ) {
+        /* bruce to support ramdisk */
+
+        argv[1] = "0x80800000";
+
+        printf("\tInput Linux Kernel filename ");
+        //argv[2] = "uImage";
+        strncpy(argv[2], "uImage", ARGV_LEN);
+    }
+
+    s = getenv("bootfile");
+    if (s != NULL) {
+        memcpy(file, s, strlen(s));
+        memcpy(default_file, s, strlen(s));
+    }
+    printf("(%s) ", file);
+    input_value(file);
+    if (file == NULL)
+        return 1;
+    filename_copy (argv[2], file, sizeof(file));
+    setenv("bootfile", file);
+    if (s && strcmp(default_file, file) != 0)
+        modifies++;
+
+    return 0;
+}
+#endif
 
 
 /*
@@ -119,7 +266,8 @@ static int init_func_ram (void)
 static int display_banner(void)
 {
 
-	printf ("\n\n%s\n\n", version_string);
+	printf ("\n\n%s\n", version_string);
+    printf ("ELX version: %s\n\n", ELX_LOCAL_VERSION);
 
 	return (0);
 }
@@ -323,6 +471,9 @@ void board_init_r (gd_t *id, ulong dest_addr)
 {
 	cmd_tbl_t *cmdtp;
 	ulong size;
+        char addr_str[11+1];
+        unsigned char confirm=0;
+        ulong e_end;
 	extern void malloc_bin_reloc (void);
 #ifndef CFG_ENV_IS_NOWHERE
 	extern char * env_name_spec;
@@ -343,6 +494,10 @@ void board_init_r (gd_t *id, ulong dest_addr)
 
 	debug ("Now running in RAM - U-Boot at: %08lx\n", dest_addr);
 
+	/*jaykung enable hw watchdog if needed*/
+	init_hw_watchdog();
+	reset_watchdog();
+	
 	gd->reloc_off = dest_addr - CFG_MONITOR_BASE;
 
 	monitor_flash_len = (ulong)&uboot_end_data - dest_addr;
@@ -379,7 +534,9 @@ void board_init_r (gd_t *id, ulong dest_addr)
 #ifndef CFG_ENV_IS_NOWHERE
 	env_name_spec += gd->reloc_off;
 #endif
-
+#ifdef SUPPORT_SECOND_FLASH
+	ath_set_second_flash();
+#endif
 #ifndef CONFIG_ATH_NAND_BR
 	/* configure available FLASH banks */
 	size = flash_init();
@@ -464,15 +621,189 @@ void board_init_r (gd_t *id, ulong dest_addr)
 #endif
 #endif
 
+//#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x)
         ath_set_tuning_caps(); /* Needed here not to mess with Ethernet clocks */
+//#endif
 
+	reset_watchdog();	
+
+#ifdef HAS_OPERATION_SELECTION/*add by jaykung*/
+    int timer1= CONFIG_BOOTDELAY;
+    int my_tmp;
+    unsigned char BootType='3';
+    OperationSelect();
+
+     reset_watchdog();
+
+    while (timer1 > 0) {
+        --timer1;
+        /* delay 100 * 10ms */
+        for (i=0; i<20; ++i) {
+
+            reset_watchdog();
+
+            if ((my_tmp = tstc()) != 0) {   /* we got a key press   */
+                timer1 = 0; /* no more delay    */
+                BootType = getc();
+                if ((BootType < '1' || BootType > '5') && (BootType != '7') && (BootType != '8') && (BootType != '9'))
+                    BootType = '3';
+                printf("\n\rYou choosed %c\n\n", BootType);
+                break;
+            }
+            reset_watchdog();
+
+            udelay (10000);
+
+            reset_watchdog();
+
+        }
+        printf ("\b\b\b%2d ", timer1);
+    }
+    putc ('\n');
+    if(BootType == '3') {
+#ifdef DEF_USE_BOOTCMD
+		char *s;
+		s = getenv ("bootcmd");
+		if (s) 
+		{
+			run_command (s, 0);
+		}
+		else
+		{
+			BootType = '4';
+			goto do_other_cmd;
+		}
+#else			
+        char *argv[2];
+        sprintf(addr_str, "0x%X", CFG_KERN_ADDR);
+
+        argv[1] = &addr_str[0];
+        printf("   \n3: System Boot system code via Flash.\n");
+
+        reset_watchdog();
+
+		if(do_bootm(cmdtp, 0, 2, argv))
+		{
+			printf("Enter Recovery Mode\n");
+		}
+		
+//         do_bootm(cmdtp, 0, 2, argv);
+#endif
+    }
+    else
+    {
+        char *argv[4];
+        int argc= 3;
+		do_other_cmd:
+        argv[2] = &file_name_space[0];
+        memset(file_name_space,0,ARGV_LEN);
+       
+//  #if (CONFIG_COMMANDS & CFG_CMD_NET)
+//  #if defined(CONFIG_NET_MULTI)
+//          puts ("Net:   ");
+//  #endif
+//          eth_initialize(gd->bd);
+//  #endif
+        switch(BootType) {
+            case '1':
+                printf("   \n%d: System Load Linux to SDRAM via TFTP. \n", SEL_LOAD_LINUX_SDRAM);
+                tftp_config(SEL_LOAD_LINUX_SDRAM, argv);
+                argc= 3;
+                setenv("autostart", "yes");
+                do_tftpb(cmdtp, 0, argc, argv);
+                break;
+            case '2':
+                                printf("   \n%d: System Load Linux Kernel then write to Flash via TFTP. \n", SEL_LOAD_LINUX_WRITE_FLASH);
+                                printf(" Warning!! Erase Linux in Flash then burn new one. Are you sure?(Y/N)\n");
+                                confirm = getc();
+                                if (confirm != 'y' && confirm != 'Y') {
+                                        printf(" Operation terminated\n");
+                                        break;
+                                }
+                                tftp_config(SEL_LOAD_LINUX_WRITE_FLASH, argv);
+                                argc= 3;
+                                setenv("autostart", "no");
+                                do_tftpb(cmdtp, 0, argc, argv);
+            
+                //protect off kernel-->end
+                flash_sect_protect(0, CFG_FLASH_BASE+CFG_BOOTLOADER_SIZE, CFG_FLASH_BASE+size-1);
+
+                                //erase linux
+            if (NetBootFileXferSize <= (bd->bi_flashsize - (CFG_BOOTLOADER_SIZE + CFG_CONFIG_SIZE + CFG_FACTORY_SIZE))) {
+                                e_end = CFG_KERN_ADDR + NetBootFileXferSize;
+                        if (0 != get_addr_boundary(&e_end))
+                        break;
+                        printf("Erase linux kernel block !!\n");
+                        printf("From 0x%X To 0x%X\n", CFG_KERN_ADDR, e_end);
+                        flash_sect_erase(CFG_KERN_ADDR, e_end);
+                }
+                        else {
+                                printf("The Linux Image size is too big !! \n");
+                                break;
+                        }
+            //cp.linux
+            argc = 4;
+            argv[0]= "cp.linux";
+            do_mem_cp(cmdtp, 0, argc, argv);
+
+            argc= 2;
+                sprintf(addr_str, "0x%X", CFG_KERN_ADDR);
+                argv[1] = &addr_str[0];
+             do_bootm(cmdtp, 0, argc, argv);            
+
+                break;
+            case '4':
+                printf("   \n%d: System Enter Boot Command Line Interface.\n", SEL_ENTER_CLI);
+                printf ("\n%s\n", version_string);
+                /* main_loop() can return to retry autoboot, if so just run it again. */
+                for (;;) {                  
+                    main_loop ();
+                }
+                break;
+ 
+        }
+    }
+#else
 	/* main_loop() can return to retry autoboot, if so just run it again. */
 	for (;;) {
 		main_loop ();
 	}
-
+#endif
 	/* NOTREACHED - no way out of command loop except booting */
 }
+
+#ifdef UBOOT_SUPPORT_HW_WD
+static u32 hw_wd_flag;
+static ulong watch_timer=0;
+#define HW_RESET_TIME	CFG_HZ/10 //(30000 * (CFG_HZ / 1000000))
+int init_hw_watchdog()
+{
+// 	ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << UBOOT_SUPPORT_HW_WD_GPIO));
+	ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << UBOOT_SUPPORT_HW_WD_GPIO));
+	watch_timer = get_timer(0);
+	return 1;
+}
+int reset_watchdog()
+{
+	
+	if((ulong)((ulong)get_ticks() - watch_timer) < HW_RESET_TIME)
+		return 1;
+	
+	hw_wd_flag=hw_wd_flag^1;
+
+ 	if(hw_wd_flag)
+ 	{
+		ath_reg_rmw_set(GPIO_OUT_ADDRESS, (1 << UBOOT_SUPPORT_HW_WD_GPIO));
+ 	}
+ 	else
+ 	{
+		ath_reg_rmw_clear(GPIO_OUT_ADDRESS, (1 << UBOOT_SUPPORT_HW_WD_GPIO));
+ 	}
+ 	watch_timer = get_timer(0);
+}
+#endif
+
+
 
 void hang (void)
 {

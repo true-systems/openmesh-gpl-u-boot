@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 /*
  * This file contains the configuration parameters for the dbau1x00 board.
  */
@@ -29,15 +12,7 @@
  *-----------------------------------------------------------------------
  */
  
-#if (FLASH_SIZE == 16)
-#define CFG_MAX_FLASH_BANKS     1	    /* max number of memory banks */
-#define CFG_MAX_FLASH_SECT      256    /* max number of sectors on one chip */
-#define CFG_FLASH_SECTOR_SIZE   (64*1024)
-#define CFG_FLASH_SIZE          0x01000000 /* Total flash size */
-
-#define ENABLE_DYNAMIC_CONF 1
-
-#elif (FLASH_SIZE == 4)
+#if (FLASH_SIZE == 4)
 #define CFG_MAX_FLASH_BANKS     1	    /* max number of memory banks */
 #define CFG_MAX_FLASH_SECT      64    /* max number of sectors on one chip */
 #define CFG_FLASH_SECTOR_SIZE   (64*1024)
@@ -96,10 +71,7 @@
 /* default mtd partition table */
 #undef MTDPARTS_DEFAULT
 
-#if (FLASH_SIZE == 16)
-#define	CONFIG_BOOTARGS     "console=ttyS0,115200 root=31:02 rootfstype=squashfs init=/sbin/init mtdparts=ar7240-nor0:256k(u-boot),64k(u-boot-env),14528k(rootfs),1408k(uImage),64k(NVRAM),64k(ART)"
-#define MTDPARTS_DEFAULT    "mtdparts=ar7240-nor0:256k(u-boot),64k(u-boot-env),14528k(rootfs),1408k(uImage),64k(NVRAM),64k(ART)"
-#elif (FLASH_SIZE == 4)
+#if (FLASH_SIZE == 4)
 #define	CONFIG_BOOTARGS     "console=ttyS0,115200 root=31:02 rootfstype=squashfs init=/sbin/init mtdparts=ar7240-nor0:256k(u-boot),64k(u-boot-env),2752k(rootfs),896k(uImage),64k(NVRAM),64k(ART)"
 #define MTDPARTS_DEFAULT    "mtdparts=ar7240-nor0:256k(u-boot),64k(u-boot-env),2752k(rootfs),896k(uImage),64k(NVRAM),64k(ART)"
 #else
@@ -230,9 +202,7 @@
 #define CFG_ENV_ADDR		0x9f040000
 #define CFG_ENV_SIZE		0x10000
 
-#if (FLASH_SIZE == 16)
-    #define CONFIG_BOOTCOMMAND "bootm 0x9fe80000"
-#elif (FLASH_SIZE == 4)
+#if (FLASH_SIZE == 4)
     #define CONFIG_BOOTCOMMAND "bootm 0x9f300000"
 #else
     #ifdef VXWORKS_UBOOT
@@ -344,10 +314,7 @@
 ** NOTE: **This will change with different flash configurations**
 */
 
-#if (FLASH_SIZE == 16)
-#define WLANCAL                        0xbfff1000
-#define BOARDCAL                       0xbfff0000
-#elif (FLASH_SIZE == 4)
+#if (FLASH_SIZE == 4)
 #define WLANCAL                        0xbf3f1000
 #define BOARDCAL                       0xbf3f0000
 #else

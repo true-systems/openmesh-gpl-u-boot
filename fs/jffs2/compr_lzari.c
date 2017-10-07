@@ -7,7 +7,7 @@
  * For licensing information, see the file 'LICENCE' in the
  * jffs2 directory.
  *
- * $Id: compr_lzari.c,v 1.3 2004/06/23 16:34:39 havasi Exp $
+ * $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/fs/jffs2/compr_lzari.c#1 $
  *
  */
 

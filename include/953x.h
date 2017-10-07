@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2013 Qualcomm Atheros, Inc.
  * 
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -669,68 +669,6 @@
 #define PCIe_DPLL2_RESET_TEST_SET(x)                                 (((x) << PCIe_DPLL2_RESET_TEST_LSB) & PCIe_DPLL2_RESET_TEST_MASK)
 #define PCIe_DPLL2_RESET_TEST_RESET                                  0x0 // 0
 #define PCIe_DPLL2_ADDRESS                                           0x18116c04
-
-#define PCIE_DPLL3_DO_MEAS_MSB						31
-#define PCIE_DPLL3_DO_MEAS_LSB						31
-#define PCIE_DPLL3_DO_MEAS_MASK						0x80000000
-#define PCIE_DPLL3_DO_MEAS_GET(x)					(((x) & PCIE_DPLL3_DO_MEAS_MASK) >> PCIE_DPLL3_DO_MEAS_LSB)
-#define PCIE_DPLL3_DO_MEAS_SET(x)					(((x) << PCIE_DPLL3_DO_MEAS_LSB) & PCIE_DPLL3_DO_MEAS_MASK)
-#define PCIE_DPLL3_DO_MEAS_RESET					0x0 // 0
-#define PCIE_DPLL3_VC_MEAS0_MSB						30
-#define PCIE_DPLL3_VC_MEAS0_LSB						13
-#define PCIE_DPLL3_VC_MEAS0_MASK					0x7fffe000
-#define PCIE_DPLL3_VC_MEAS0_GET(x)					(((x) & PCIE_DPLL3_VC_MEAS0_MASK) >> PCIE_DPLL3_VC_MEAS0_LSB)
-#define PCIE_DPLL3_VC_MEAS0_SET(x)					(((x) << PCIE_DPLL3_VC_MEAS0_LSB) & PCIE_DPLL3_VC_MEAS0_MASK)
-#define PCIE_DPLL3_VC_MEAS0_RESET					0x0 // 0
-#define PCIE_DPLL3_VC_DIFF0_MSB						12
-#define PCIE_DPLL3_VC_DIFF0_LSB						3
-#define PCIE_DPLL3_VC_DIFF0_MASK					0x00001ff8
-#define PCIE_DPLL3_VC_DIFF0_GET(x)					(((x) & PCIE_DPLL3_VC_DIFF0_MASK) >> PCIE_DPLL3_VC_DIFF0_LSB)
-#define PCIE_DPLL3_VC_DIFF0_SET(x)					(((x) << PCIE_DPLL3_VC_DIFF0_LSB) & PCIE_DPLL3_VC_DIFF0_MASK)
-#define PCIE_DPLL3_VC_DIFF0_RESET					0x0 // 0
-#define PCIE_DPLL3_LOCAL_PLL_PWD_MSB					2
-#define PCIE_DPLL3_LOCAL_PLL_PWD_LSB					2
-#define PCIE_DPLL3_LOCAL_PLL_PWD_MASK					0x00000004
-#define PCIE_DPLL3_LOCAL_PLL_PWD_GET(x)					(((x) & PCIE_DPLL3_LOCAL_PLL_PWD_MASK) >> PCIE_DPLL3_LOCAL_PLL_PWD_LSB)
-#define PCIE_DPLL3_LOCAL_PLL_PWD_SET(x)					(((x) << PCIE_DPLL3_LOCAL_PLL_PWD_LSB) & PCIE_DPLL3_LOCAL_PLL_PWD_MASK)
-#define PCIE_DPLL3_LOCAL_PLL_PWD_RESET					0x0 // 0
-#define PCIE_DPLL3_SPARE_MSB						1
-#define PCIE_DPLL3_SPARE_LSB						0
-#define PCIE_DPLL3_SPARE_MASK						0x00000003
-#define PCIE_DPLL3_SPARE_GET(x)						(((x) & PCIE_DPLL3_SPARE_MASK) >> PCIE_DPLL3_SPARE_LSB)
-#define PCIE_DPLL3_SPARE_SET(x)						(((x) << PCIE_DPLL3_SPARE_LSB) & PCIE_DPLL3_SPARE_MASK)
-#define PCIE_DPLL3_SPARE_RESET						0x0 // 0
-#define PCIE_DPLL3_ADDR							0x0008
-#define PCIE_DPLL3_OFFSET						0x0008
-#define PCIE_DPLL3_SW_MASK						0xffffffff
-#define PCIE_DPLL3_RSTMASK						0xffffffff
-#define PCIE_DPLL3_RESET						0x00000000
-#define PCIE_DPLL3_ADDRESS						0x18116c08
-
-#define PCIE_DPLL1_REFDIV_MSB						31
-#define PCIE_DPLL1_REFDIV_LSB						27
-#define PCIE_DPLL1_REFDIV_MASK						0xf8000000
-#define PCIE_DPLL1_REFDIV_GET(x)					(((x) & PCIE_DPLL1_REFDIV_MASK) >> PCIE_DPLL1_REFDIV_LSB)
-#define PCIE_DPLL1_REFDIV_SET(x)					(((x) << PCIE_DPLL1_REFDIV_LSB) & PCIE_DPLL1_REFDIV_MASK)
-#define PCIE_DPLL1_REFDIV_RESET						0x1 // 1
-#define PCIE_DPLL1_NINT_MSB						26
-#define PCIE_DPLL1_NINT_LSB						18
-#define PCIE_DPLL1_NINT_MASK						0x07fc0000
-#define PCIE_DPLL1_NINT_GET(x)						(((x) & PCIE_DPLL1_NINT_MASK) >> PCIE_DPLL1_NINT_LSB)
-#define PCIE_DPLL1_NINT_SET(x)						(((x) << PCIE_DPLL1_NINT_LSB) & PCIE_DPLL1_NINT_MASK)
-#define PCIE_DPLL1_NINT_RESET						0x10 // 16
-#define PCIE_DPLL1_NFRAC_MSB						17
-#define PCIE_DPLL1_NFRAC_LSB						0
-#define PCIE_DPLL1_NFRAC_MASK						0x0003ffff
-#define PCIE_DPLL1_NFRAC_GET(x)						(((x) & PCIE_DPLL1_NFRAC_MASK) >> PCIE_DPLL1_NFRAC_LSB)
-#define PCIE_DPLL1_NFRAC_SET(x)						(((x) << PCIE_DPLL1_NFRAC_LSB) & PCIE_DPLL1_NFRAC_MASK)
-#define PCIE_DPLL1_NFRAC_RESET						0x0 // 0
-#define PCIE_DPLL1_ADDR							0x0000
-#define PCIE_DPLL1_OFFSET                 				0x0000
-#define PCIE_DPLL1_SW_MASK						0xffffffff
-#define PCIE_DPLL1_RSTMASK						0xffffffff
-#define PCIE_DPLL1_RESET						0x08400000
-#define PCIE_DPLL1_ADDRESS						0x18116c00
 
 #define DDR_DPLL2_LOCAL_PLL_MSB                                      31
 #define DDR_DPLL2_LOCAL_PLL_LSB                                      31
@@ -3650,7 +3588,6 @@
 #define ATH_PCI_CTLR_BASE		ATH_APB_BASE+0x000F0000
 #define ATH_OTP_BASE			ATH_APB_BASE+0x00130000
 #define ATH_NAND_FLASH_BASE		0x1b800000u
-#define ATH_GPIO_OE			ATH_GPIO_BASE+0x0
 
 
 /*
@@ -3817,8 +3754,6 @@
 #define ATH_SPI_CMD_SECTOR_ERASE	0xd8
 #define ATH_SPI_CMD_CHIP_ERASE		0xc7
 #define ATH_SPI_CMD_RDID		0x9f
-#define ATH_SPI_CMD_WR_EXT		0xc5
-#define ATH_SPI_CMD_RD_EXT		0xc8
 
 #if defined(CFG_ATH_EMULATION)
 

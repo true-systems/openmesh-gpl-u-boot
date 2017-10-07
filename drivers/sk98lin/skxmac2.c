@@ -2,8 +2,8 @@
  *
  * Name:	skxmac2.c
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.91 $
- * Date:	$Date: 2003/02/05 15:09:34 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/09/21 $
  * Purpose:	Contains functions to initialize the MACs and PHYs
  *
  ******************************************************************************/
@@ -427,7 +427,7 @@ typedef struct s_PhyHack {
 
 /* local variables ************************************************************/
 static const char SysKonnectFileId[] =
-	"@(#)$Id: skxmac2.c,v 1.91 2003/02/05 15:09:34 rschmidt Exp $ (C) SK ";
+	"@(#)$Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/drivers/sk98lin/skxmac2.c#1 $ (C) SK ";
 
 BCOM_HACK BcomRegA1Hack[] = {
  { 0x18, 0x0c20 }, { 0x17, 0x0012 }, { 0x15, 0x1104 }, { 0x17, 0x0013 },

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 Qualcomm Atheros, Inc.
+ * Copyright (c) 2010, Atheros Communications Inc.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -30,32 +30,26 @@ athrs_ar8033_mgmt_init(void)
 {
     uint32_t rddata;
 
-
-    rddata = ath_reg_rd(GPIO_IN_ENABLE3_ADDRESS)&
+	rddata = ath_reg_rd(GPIO_IN_ENABLE3_ADDRESS)&
              ~GPIO_IN_ENABLE3_MII_GE1_MDI_MASK;
-    rddata |= GPIO_IN_ENABLE3_MII_GE1_MDI_SET(19);
+    rddata |= GPIO_IN_ENABLE3_MII_GE1_MDI_SET(22);//Using GPIO 22 as GE1_MDI(data input)
     ath_reg_wr(GPIO_IN_ENABLE3_ADDRESS, rddata);
-    
-    ath_reg_rmw_clear(GPIO_OE_ADDRESS, ATH_GPIO);
 
-    ath_reg_rmw_clear(GPIO_OE_ADDRESS, ATH_GPIO17);
+	ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << ATH_MDC_GPIO_PIN)); //21 is MDC
 
-    
-    rddata = ath_reg_rd(GPIO_OUT_FUNCTION4_ADDRESS) & 
-             ~ (GPIO_FUNCTION4_MASK);
-
-    rddata |= (GPIO_FUNCTION4_ENABLE);
-
-    ath_reg_wr(GPIO_OUT_FUNCTION4_ADDRESS, rddata);
-
-#ifdef ATH_MDC_GPIO
-    rddata = ath_reg_rd(GPIO_OUT_FUNCTION3_ADDRESS) &
-           ~ (GPIO_OUT_FUNCTION3_ENABLE_GPIO_14_MASK);
-
-    rddata |= GPIO_OUT_FUNCTION3_ENABLE_GPIO_14_SET(0x21);
-
-    ath_reg_wr(GPIO_OUT_FUNCTION3_ADDRESS, rddata);
-#endif
+	ath_reg_rmw_clear(GPIO_OE_ADDRESS, (1 << ATH_MDIO_GPIO_PIN)); //22 is MDIO
+	
+    //set mdio
+    rddata = ath_reg_rd(GPIO_OUT_FUNCTION5_ADDRESS) &
+             ~(GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_MASK);
+    rddata |=(GPIO_OUT_FUNCTION5_ENABLE_GPIO_22_SET(32));//32 is GE1_MII_MDO(Output value)
+    ath_reg_wr(GPIO_OUT_FUNCTION5_ADDRESS, rddata);
+	
+	//set mdc
+    rddata = ath_reg_rd(GPIO_OUT_FUNCTION5_ADDRESS) &
+             ~(GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_MASK);
+    rddata |=(GPIO_OUT_FUNCTION5_ENABLE_GPIO_21_SET(33));//33 is GE1_MII_MDC(Output value)
+    ath_reg_wr(GPIO_OUT_FUNCTION5_ADDRESS, rddata);	
 
 }
 
@@ -145,11 +139,18 @@ athrs_ar8033_reg_init(void *arg)
 
 
 	athrs_ar8033_mgmt_init();
-	phy_reg_write(0x1,0x5, 0x1f, 0x101);
+	
+int phyid1,phyid2;
+// phy_reg_read(phyBase, phyAddr, 0x3);
+    phyid1 = phy_reg_read(1, 0x1, 2);
+    phyid2 = phy_reg_read(1, 0x1, 3);
+    printf("Phy ID %x:%x\n", phyid1, phyid2);
+	
+	phy_reg_write(0x1,0x1, 0x1f, 0x8111);//change to copper mode
 
 
 
-	printf("%s: Done %x \n",__func__, phy_reg_read(0x1,0x5,0x1f));
+	printf("%s: Done %x \n",__func__, phy_reg_read(0x1,0x1,0x1f));
    
 	return 0;
 }

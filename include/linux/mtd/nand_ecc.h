@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com)
  *
- * $Id: nand_ecc.h,v 1.4 2004/06/17 02:35:02 dbrown Exp $
+ * $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/linux/mtd/nand_ecc.h#1 $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

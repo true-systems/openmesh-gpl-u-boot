@@ -1,4 +1,4 @@
-/* $Id: xipif_v1_23_b.c,v 1.1 2002/03/18 23:24:52 linnj Exp $ */
+/* $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/board/xilinx/common/xipif_v1_23_b.c#1 $ */
 /******************************************************************************
 *
 *       XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS"

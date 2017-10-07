@@ -546,19 +546,6 @@ void	panic(const char *fmt, ...);
 int	sprintf(char * buf, const char *fmt, ...);
 int	vsprintf(char *buf, const char *fmt, va_list args);
 
-#ifdef CONFIG_SYS_VSNPRINTF
-int	vsnprintf(char *buf, size_t size, const char *fmt, va_list args);
-int	snprintf(char *buf, size_t size, const char *fmt, ...);
-#else
-/*
- * Use macros to silently drop the size parameter. Note that the 'cn'
- * versions are the same as the 'n' versions since the functions assume
- * there is always enough buffer space when !CONFIG_SYS_VSNPRINTF
- */
-#define snprintf(buf, size, fmt, args...) sprintf(buf, fmt, ##args)
-#define vsnprintf(buf, size, fmt, args...) vsprintf(buf, fmt, ##args)
-#endif /* CONFIG_SYS_VSNPRINTF */
-
 /* lib_generic/crc32.c */
 ulong crc32 (ulong, const unsigned char *, uint);
 ulong crc32_no_comp (ulong, const unsigned char *, uint);
@@ -618,6 +605,15 @@ void	show_boot_progress (int status);
 #ifdef CONFIG_INIT_CRITICAL
 #error CONFIG_INIT_CRITICAL is depracted!
 #error Read section CONFIG_SKIP_LOWLEVEL_INIT in README.
+#endif
+// #define UBOOT_SUPPORT_HW_WD
+// #define UBOOT_SUPPORT_HW_WD_GPIO 12
+#ifdef UBOOT_SUPPORT_HW_WD
+int init_hw_watchdog();
+int reset_watchdog();
+#else
+#define reset_watchdog(x...) do{}while(0) 
+#define init_hw_watchdog(x...) do{}while(0) 
 #endif
 
 #endif	/* __COMMON_H_ */

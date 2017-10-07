@@ -258,7 +258,7 @@ int eth_initialize(bd_t *bis)
 				puts (" [PRIME]");
 			}
 
-			snprintf(enetvar, sizeof(enetvar), eth_number ? "eth%daddr" : "ethaddr", eth_number);
+			sprintf(enetvar, eth_number ? "eth%daddr" : "ethaddr", eth_number);
 			tmp = getenv (enetvar);
 
 			for (i=0; i<6; i++) {
@@ -460,7 +460,7 @@ extern int ns7520_miiphy_initialize(bd_t *bis);
 int eth_initialize(bd_t *bis)
 {
 #if defined(CONFIG_MII) || (CONFIG_COMMANDS & CFG_CMD_MII)
-	miiphy_init();
+    miiphy_init();
 #endif
 
 #if defined(CONFIG_AT91RM9200)

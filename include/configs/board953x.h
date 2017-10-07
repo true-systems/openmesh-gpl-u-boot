@@ -1,15 +1,18 @@
-/*
- * Copyright (c) 2014 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
+/* 
+ * Copyright (c) 2014 Qualcomm Atheros, Inc.
+ * 
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ * 
  */
 
 #ifndef __BOARD_955X_H
@@ -26,21 +29,11 @@
 #ifndef FLASH_SIZE
 #define FLASH_SIZE 8
 #endif
-
-#if (FLASH_SIZE > 16)
-#define ATH_DUAL_NOR		1
-#endif
-
-#define CONFIG_SYS_VSNPRINTF
 /*-----------------------------------------------------------------------
  * FLASH and environment organization
  */
 #define CFG_MAX_FLASH_BANKS	1	/* max number of memory banks */
-#if (FLASH_SIZE == 32)
-#define CFG_MAX_FLASH_SECT	512	/* max number of sectors on one chip */
-#define ATH_MTDPARTS_MIB0	"64k(mib0)"
-#define ATH_ROOTFS_SIZE		"14528k(rootfs)"
-#elif (FLASH_SIZE == 16)
+#if (FLASH_SIZE == 16)
 #define CFG_MAX_FLASH_SECT	256	/* max number of sectors on one chip */
 #define ATH_MTDPARTS_MIB0	"64k(mib0)"
 #define ATH_ROOTFS_SIZE		"14528k(rootfs)"
@@ -48,8 +41,6 @@
 #define CFG_MAX_FLASH_SECT	128	/* max number of sectors on one chip */
 #define ATH_MTDPARTS_MIB0	"64k(mib0)"
 #define ATH_ROOTFS_SIZE		"6336k(rootfs)"
-#elif (FLASH_SIZE == 1/2)
-#define CFG_MAX_FLASH_SECT	8	/* max number of sectors on one chip */
 #else
 #define CFG_MAX_FLASH_SECT	64	/* max number of sectors on one chip */
 #define ATH_MTDPARTS_MIB0	"64k(mib0)"
@@ -57,14 +48,10 @@
 #endif
 
 #define CFG_FLASH_SECTOR_SIZE	(64*1024)
-#if (FLASH_SIZE == 32)
-#define CFG_FLASH_SIZE		0x02000000	/* Total flash size */
-#elif (FLASH_SIZE == 16)
+#if (FLASH_SIZE == 16)
 #define CFG_FLASH_SIZE		0x01000000	/* Total flash size */
 #elif (FLASH_SIZE == 8)
 #define CFG_FLASH_SIZE		0x00800000	/* max number of sectors on one chip */
-#elif (FLASH_SIZE == 1/2)
-#define CFG_FLASH_SIZE		0x00080000	/* Total flash size */
 #else
 #define CFG_FLASH_SIZE		0x00400000	/* Total flash size */
 #endif
@@ -128,17 +115,6 @@
 	#ec " " #a " " #el "&&"			\
 	#cc " $fileaddr " #a " $filesize\0"
 
-#if (FLASH_SIZE == 32)
-#define __gen_cmd2(n, a1, a2, f, ec, cc, el)	\
-	#n "=tftp 0x80060000 ${dir}" #f "&&"	\
-	#ec " " #a1 " " #el "&&"		\
-	#cc " $fileaddr " #a1 " $filesize &&"	\
-	#ec " " #a2 " " #el "&&"		\
-	#cc " $fileaddr " #a2 " $filesize\0"
-#define gen_cmd2(n, a1, a2, f)			\
-	__gen_cmd2(n, a1, a2, f, erase, cp.b, +$filesize)
-#endif
-
 #define gen_cmd(n, a, f)			\
 	__gen_cmd(n, a, f, erase, cp.b, +$filesize)
 
@@ -158,7 +134,6 @@
 #	define ATH_U_FILE	u-boot.bin
 #endif
 
-#define ATH_UBI_ARGS	" "
 
 #ifdef CONFIG_ATH_NAND_SUPPORT
 #	ifdef CONFIG_ATH_NAND_BR	// nand boot rom
@@ -171,32 +146,19 @@
 #		endif
 #		define ATH_ROOT_DEV	"31:03"
 #		define CFG_ENV_ADDR	0x00040000
-#		define ATH_F_LEN	0x700000
-#		define ATH_F_ADDR	0x1c0000
-#		define ATH_K_ADDR	0x80000
-#		define ATH_K_LEN	0x140000
 #	else //dual flash
-#		ifdef ATH_SPI_NAND
-#			if CONFIG_ATH_DUAL_IMAGE_SUPPORT
-#                               define MTDPARTS_DEFAULT "mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),128k(reserved),64k(art);spi0.1:2m(kernel),20m(rootfs),2m(k-2),20m(r-2),84m(user),22m@0x0(firmware),22m@0x1600000(fw-2)"
-#				define ATH_UBI_ARGS	" ubi.mtd=5,2048 root=/dev/mtdblock11 "
-#                       else
-#				define MTDPARTS_DEFAULT "mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),128k(reserved),64k(art);spi0.1:2m(kernel),20m(rootfs),106m(data),22m@0x0(firmware)"
-#				define ATH_UBI_ARGS	" ubi.mtd=5,2048 root=/dev/mtdblock8 "
-#			endif
-#			define ATH_F_LEN        0x1400000
-#			define ATH_F_ADDR       0x200000
-#			define ATH_K_ADDR       0x0
-#			define ATH_K_LEN        0x200000
-#			define CFG_ENV_ADDR	0x9f040000
-#		else
-#			error "Invalid NAND flash configuration"
-#		endif
+#		define ATH_U_CMD	gen_cmd(lu, 0x9f000000, ATH_U_FILE)
+#		define MTDPARTS_DEFAULT "mtdparts=ath-nor0:320k(u-boot-and-env),6336k(free);ath-nand:256k(u-boot),256k(u-boot-env),1280k(uImage),7m(rootfs),128k(dummy),128k(caldata)"
+#		define ATH_ROOT_DEV	"31:05"
+#		define CFG_ENV_ADDR	0x9f040000
 #	endif
 #	define ATH_F_FILE		fs_name(${bc}-nand-jffs2)
+#	define ATH_F_LEN		0x700000
+#	define ATH_F_ADDR		0x1c0000
 #	define ATH_K_FILE		vmlinux${bc}.lzma.uImage
+#	define ATH_K_ADDR		0x80000
 #	define ATH_F_CMD		nand_gen_cmd(lf, ATH_F_ADDR, ATH_F_FILE, ATH_F_LEN)
-#	define ATH_K_CMD		nand_gen_cmd(lk, ATH_K_ADDR, ATH_K_FILE, ATH_K_LEN)
+#	define ATH_K_CMD		nand_gen_cmd(lk, ATH_K_ADDR, ATH_K_FILE, 0x140000)
 #	define ATH_EXTRA_ENV		"bootdevice=0\0"
 #else
 #	if defined(COMPRESSED_UBOOT)
@@ -219,7 +181,7 @@
 #		define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:32k(u-boot1),32k(u-boot2),3008k(rootfs),896k(uImage),64k(mib0),64k(ART)"
 #	else
 #		define ATH_F_FILE		fs_name(${bc}-jffs2)
-#	if (FLASH_SIZE == 16 || FLASH_SIZE == 32)
+#	if (FLASH_SIZE == 16)
 #		define ATH_F_LEN		0xE30000
 #		define ATH_K_ADDR		0x9fE80000
 #	else
@@ -228,26 +190,7 @@
 # 	endif
 #		define ATH_F_ADDR		0x9f050000
 #		define ATH_K_FILE		vmlinux${bc}.lzma.uImage
-
-#		if CONFIG_ATH_DUAL_IMAGE_SUPPORT
-#			if (FLASH_SIZE == 32)
-#				define MTDPARTS_DEFAULT	"mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)," ATH_ROOTFS_SIZE ",1472k(kernel),64k(art),256k(reserved),14528k(r-2),1472k(k-2),128k(reserved2),16000k@0x50000(firmware),16000k@0x1040000(fw-2)"
-#			else
-#				if defined(CONFIG_ATH_SPI_CS1_GPIO)
-#					define MTDPARTS_DEFAULT	"mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env)," ATH_ROOTFS_SIZE ",1472k(kernel),64k(art),16000k@0x50000(firmware);spi0.1:14528k(r-2),1472k(k-2),384k(reserved),16000k@0x0(fw-2)"
-#				else /* FLASH_SIZE == 16 */
-#					define ATH_F_LEN		0x660000
-#					define ATH_K_ADDR		0x9f6B0000
-#					define MTDPARTS_DEFAULT	"mtdparts=spi0.0:256k(u-boot),64k(u-boot-env),6528k(rootfs),1472k(kernel),6528k(r-2),1472k(k-2),64k(art),8000k@0x50000(firmware),8000k@0x820000(fw-2)"
-#				endif
-#			endif
-#		else
-#			if (FLASH_SIZE == 32)
-#				define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1472k(uImage)," "64k(ART),256k(reserved),16128k(usr)"
-#			else
-#				define MTDPARTS_DEFAULT	"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1408k(uImage)," ATH_MTDPARTS_MIB0 ",64k(ART)"
-#			endif
-#		endif
+#		define MTDPARTS_DEFAULT		"mtdparts=ath-nor0:256k(u-boot),64k(u-boot-env)," ATH_ROOTFS_SIZE ",1408k(uImage)," ATH_MTDPARTS_MIB0 ",64k(ART)"
 #	endif
 #endif /*CONFIG_MI124*/
 
@@ -260,11 +203,7 @@
 #endif
 
 #ifndef ATH_U_CMD
-#	if (FLASH_SIZE == 32)
-#		define ATH_U_CMD	gen_cmd2(lu, 0x9f000000, 0xa0000000, ATH_U_FILE)
-#	else
-#		define ATH_U_CMD	gen_cmd(lu, 0x9f000000, ATH_U_FILE)
-#	endif
+#	define ATH_U_CMD	gen_cmd(lu, 0x9f000000, ATH_U_FILE)
 #endif
 
 #ifndef ATH_F_CMD
@@ -278,11 +217,8 @@
 #define CONFIG_EXTRA_ENV_SETTINGS	\
 	"dir=\0" ATH_U_CMD ATH_F_CMD ATH_K_CMD ""
 
-#ifdef BOARD_NAME
-	#define CONFIG_BOOTARGS "board=" BOARD_NAME " console=ttyS0,115200 " ATH_UBI_ARGS MTDPARTS_DEFAULT " rootfstype=squashfs,jffs2 noinitrd"
-#else
-	#define	CONFIG_BOOTARGS	"console=ttyS0,115200 root=" ATH_ROOT_DEV " rootfstype=jffs2 init=/sbin/init " MTDPARTS_DEFAULT
-#endif
+#define	CONFIG_BOOTARGS		"console=ttyS0,115200 root=" ATH_ROOT_DEV " rootfstype=jffs2 init=/sbin/init " MTDPARTS_DEFAULT
+
 //#define CFG_PLL_FREQ    CFG_PLL_720_600_200
 
 /*
@@ -298,17 +234,13 @@
 #define CFG_INIT_SRAM_SP_OFFSET	0xbd001800
 
 #ifdef CONFIG_ATH_NAND_SUPPORT
-#ifdef ATH_SPI_NAND
-#	define CONFIG_BOOTCOMMAND       "nboot 0x81000000 0 0"
-#else
 #	define CONFIG_BOOTCOMMAND	"nboot 0x81000000 0 0x80000"
-#endif
 #else
 #	define CFG_ENV_ADDR		0x9f040000
 #	ifdef COMPRESSED_UBOOT
 #		define CONFIG_BOOTCOMMAND	"bootm 0x9f300000"
 #	else
-#		if (FLASH_SIZE == 16 || FLASH_SIZE == 32)
+#		if (FLASH_SIZE == 16)
 #			define CONFIG_BOOTCOMMAND	"bootm 0x9fE80000"
 #		else
 #			define CONFIG_BOOTCOMMAND	"bootm 0x9f680000"
@@ -398,9 +330,9 @@
 
 #define CONFIG_COMMANDS			(ATH_CFG_COMMANDS | ATH_EXTRA_CMD)
 
-#define CONFIG_IPADDR			192.168.1.1
-#define CONFIG_SERVERIP			192.168.1.10
-#define CONFIG_ETHADDR			0x00:0xaa:0xbb:0xcc:0xdd:0xee
+#define CONFIG_IPADDR			192.168.99.9
+#define CONFIG_SERVERIP			192.168.99.8
+#define CONFIG_ETHADDR "00:AA:BB:CC:DD:10"
 #define CFG_FAULT_ECHO_LINK_DOWN	1
 
 #define CFG_PHY_ADDR			0
@@ -418,8 +350,8 @@
 ** NOTE: **This will change with different flash configurations**
 */
 
-#define BOARDCAL			(CFG_FLASH_BASE + CFG_FLASH_SIZE - 0x10000)
-#define WLANCAL				(BOARDCAL + 0x1000)
+#define WLANCAL				0x9fff1000
+#define BOARDCAL			0x9fff0000
 #define ATHEROS_PRODUCT_ID		137
 #define CAL_SECTOR			(CFG_MAX_FLASH_SECT - 1)
 

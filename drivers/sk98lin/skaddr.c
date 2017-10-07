@@ -2,8 +2,8 @@
  *
  * Name:	skaddr.c
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.48 $
- * Date:	$Date: 2003/02/12 17:09:37 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/09/21 $
  * Purpose:	Manage Addresses (Multicast and Unicast) and Promiscuous Mode.
  *
  ******************************************************************************/
@@ -224,7 +224,7 @@
 
 #ifndef	lint
 static const char SysKonnectFileId[] =
-	"@(#) $Id: skaddr.c,v 1.48 2003/02/12 17:09:37 tschilli Exp $ (C) SysKonnect.";
+	"@(#) $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/drivers/sk98lin/skaddr.c#1 $ (C) SysKonnect.";
 #endif	/* !defined(lint) */
 
 #define __SKADDR_C

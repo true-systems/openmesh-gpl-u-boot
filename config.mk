@@ -22,6 +22,9 @@
 #
 
 #########################################################################
+-include $(TOPDIR)/.config
+-include $(TOPDIR)/profile.mk
+-include $(TOPDIR)/func.mk
 
 # clean the slate ...
 PLATFORM_RELFLAGS =
@@ -159,6 +162,7 @@ ifdef ATH_SST_FLASH
 CFLAGS += -DATH_SST_FLASH=1
 endif
 
+
 # avoid trigraph warnings while parsing pci.h (produced by NIOS gcc-2.9)
 # this option have to be placed behind -Wall -- that's why it is here
 ifeq ($(ARCH),nios)
@@ -208,8 +212,9 @@ ifeq ($(PCI_CLOCK),PCI_66M)
 CFLAGS := $(CFLAGS) -DPCI_66M
 endif
 
-CFLAGS += $(UBOOT_GCC_4_3_3_EXTRA_CFLAGS) -g
 
+CFLAGS += $(UBOOT_GCC_4_3_3_EXTRA_CFLAGS) -g
+CFLAGS += $(EXTRA_CFLAGS)
 #########################################################################
 
 export	CONFIG_SHELL HPATH HOSTCC HOSTCFLAGS CROSS_COMPILE \
@@ -243,6 +248,6 @@ endif
 ifneq ($(V),1)
 	@echo [CC] $(abspath $(CURDIR)/$<)
 endif
-	$(Q)$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 #########################################################################

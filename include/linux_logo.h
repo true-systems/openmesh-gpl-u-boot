@@ -1,4 +1,4 @@
-/* $Id: linux_logo.h,v 1.5 1998/07/30 16:30:58 jj Exp $
+/* $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/linux_logo.h#1 $
  * include/linux/linux_logo.h: This is a linux logo
  *                             to be displayed on boot.
  *

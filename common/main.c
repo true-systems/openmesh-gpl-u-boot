@@ -29,7 +29,9 @@
 #ifdef CONFIG_MODEM_SUPPORT
 #include <malloc.h>		/* for free() prototype */
 #endif
-
+#ifdef HAS_OPENMESH_PATCH
+#include <rsaverify.h>
+#endif
 #ifdef CFG_HUSH_PARSER
 #include <hush.h>
 #endif
@@ -233,6 +235,7 @@ static __inline__ int abortboot(int bootdelay)
 #ifdef CONFIG_MENUPROMPT
 	printf(CONFIG_MENUPROMPT, bootdelay);
 #else
+// 	abort = 1; /*farrah: jump into boot command mode, no need enter any key*/
 	printf("Hit any key to stop autoboot: %2d ", bootdelay);
 #endif
 
@@ -459,6 +462,15 @@ void main_loop (void)
 	    video_banner();
 	}
 #endif
+#ifdef HAS_OPENMESH_PATCH
+       /* disable uboot shell when rsa key is installed */
+       if (rsa_key_installed()) {
+               printf("U-boot shell is disabled for this device\n");
+               /* Reinit board to run initialization code again */
+               do_reset (NULL, 0, 0, NULL);
+               return;
+       }
+#endif
 
 	/*
 	 * Main Loop for Monitor Command Processing
@@ -570,6 +582,7 @@ int readline (const char *const prompt)
 		}
 #endif
 		WATCHDOG_RESET();		/* Trigger watchdog, if needed */
+		reset_watchdog();
 
 #ifdef CONFIG_SHOW_ACTIVITY
 		while (!tstc()) {

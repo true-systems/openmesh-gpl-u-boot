@@ -34,7 +34,9 @@ OBJS	= bzlib.o bzlib_crctable.o bzlib_decompress.o \
 	  crc32.o ctype.o display_options.o ldiv.o \
 	  string.o vsprintf.o zlib.o LzmaDecode.o LzmaWrapper.o
 endif
-
+ifdef HAS_OPENMESH_PATCH
+OBJS += md5.o sha256.o rsa-mod-exp.o rsa-checksum.o rsaverify.o
+endif
 CFLAGS += -DCONFIG_LZMA=1
 
 

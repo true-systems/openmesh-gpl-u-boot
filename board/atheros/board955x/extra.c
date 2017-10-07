@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <common.h>
 #include <command.h>
 #include <asm/mipsregs.h>
@@ -87,9 +70,9 @@ void ath_set_tuning_caps(void)
 #endif /* CONFIG_ATH_NAND_BR */
 
 	val =	XTAL_TCXODET_SET(0x0) |
-		XTAL_XTAL_DRVSTR_SET(0x3) |
 		XTAL_XTAL_CAPINDAC_SET(0x45) |
 		XTAL_XTAL_CAPOUTDAC_SET(0x45) |
+		XTAL_XTAL_DRVSTR_SET(0x3) |
 		XTAL_XTAL_SHORTXIN_SET(0x0) |
 		XTAL_XTAL_LOCALBIAS_SET(0x1) |
 		XTAL_XTAL_PWDCLKD_SET(0x0) |
@@ -104,11 +87,10 @@ void ath_set_tuning_caps(void)
 		XTAL_SPARE_SET(0xf);
 
 	/* checking feature enable bit 6 and caldata is valid */
-	if ((eep) && (eep->featureEnable & 0x40) && (eep->pad[0x0] != 0xff)) {
+	if ((eep->featureEnable & 0x40) && (eep->pad[0x0] != 0xff)) {
 		val &= ~(XTAL_XTAL_CAPINDAC_MASK | XTAL_XTAL_CAPOUTDAC_MASK);
 		val |=	XTAL_XTAL_CAPINDAC_SET(eep->params_for_tuning_caps[0]) |
 			XTAL_XTAL_CAPOUTDAC_SET(eep->params_for_tuning_caps[0]);
-
 	}
 
 	ath_reg_wr(XTAL_ADDRESS, val);

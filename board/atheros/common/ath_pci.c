@@ -1,20 +1,16 @@
-
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
+/*****************************************************************************/
+/*! file ath_pci.c
+** /brief PCI support for Atheros boards
+**
+** This provides the support code required for PCI support on the AP91/93
+** board in the U-Boot environment. This board is a Python based system
+** with a Merlin WLAN interface. This file also contains the support
+** for initialization of the Merlin radios on the PCi bus, required for
+** pre-configuration for use by Linux.
+**
+** Copyright (c) 2008 Atheros Communications Inc. All rights reserved.
+**
+*/
 
 #include <common.h>
 #include <command.h>
@@ -261,7 +257,7 @@ pci_init_board (void)
 	} 
 #else 
 
-#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#if defined(CONFIG_MACH_QCA956x)
 
         ath_reg_rmw_set(PCIE_PHY_REG_1_ADDRESS, PCIE_PHY_REG_1_S_SET(PCIE_PHY_REG_1_S_RESET));
 
@@ -287,27 +283,6 @@ pci_init_board (void)
 
 #endif 
 
-#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCN550x)
-
-	prmsg("Power up PLL with outdiv = 0 then switch to 3\n");
-
-	ath_reg_wr(PCIE_DPLL3_ADDRESS, PCIE_DPLL3_LOCAL_PLL_PWD_SET(0x1));
-	ath_reg_rmw_clear(PCIE_PLL_CONFIG_ADDRESS, PCIE_PLL_CONFIG_PLLPWD_SET(1));
-	ath_reg_rmw_clear(PCIE_PLL_CONFIG_ADDRESS, PCIE_PLL_CONFIG_BYPASS_SET(1));
-	ath_reg_wr(PCIE_DPLL1_ADDRESS, PCIE_DPLL1_REFDIV_SET(0x1) |
-		PCIE_DPLL1_NINT_SET(0x18));
-	ath_reg_wr(PCIe_DPLL2_ADDRESS, PCIe_DPLL2_LOCAL_PLL_SET(0x1) |
-		PCIe_DPLL2_KD_SET(0x4) |
-		PCIe_DPLL2_PLL_PWD_SET(0x1) |
-		PCIe_DPLL2_PHASE_SHIFT_SET(0x6));
-
-	ath_reg_wr(PCIE_DPLL3_ADDRESS, PCIE_DPLL3_RESET);
-	ath_reg_wr(PCIe_DPLL2_ADDRESS, PCIe_DPLL2_LOCAL_PLL_SET(0x1) |
-		PCIe_DPLL2_KD_SET(0x4) |
-		PCIe_DPLL2_PLL_PWD_SET(0x1) |
-		PCIe_DPLL2_OUTDIV_SET(0x3) |
-		PCIe_DPLL2_PHASE_SHIFT_SET(0x6));
-#else
 	ath_reg_wr_nf(PCIE_PLL_CONFIG_ADDRESS,
 		PCIE_PLL_CONFIG_REFDIV_SET(1) |
 		PCIE_PLL_CONFIG_BYPASS_SET(1) |
@@ -317,10 +292,9 @@ pci_init_board (void)
 	ath_reg_rmw_clear(PCIE_PLL_CONFIG_ADDRESS, PCIE_PLL_CONFIG_PLLPWD_SET(1));
 	udelay(1000);
 	ath_reg_rmw_clear(PCIE_PLL_CONFIG_ADDRESS, PCIE_PLL_CONFIG_BYPASS_SET(1));
-#endif
 	udelay(1000);
 
-#if !defined(CONFIG_MACH_QCA956x) && !defined(CONFIG_MACH_QCN550x)
+#if !defined(CONFIG_MACH_QCA956x)
 
 #ifdef PCIE2_APP_ADDRESS
 	if (!(ath_reg_rd(RST_BOOTSTRAP_ADDRESS) & RST_BOOTSTRAP_PCIE_RC_EP_SELECT_MASK)) {
@@ -376,45 +350,46 @@ pci_init_board (void)
 	 */
 	if (((ath_reg_rd(PCIE_RESET_ADDRESS)) & 0x1) == 0x0) {
 		prmsg("*** Warning *** : PCIe WLAN Module not found !!!\n");
-	} else {
-#ifndef COMPRESSED_UBOOT
-		/*
-		 * Now, configure for u-boot tools
-		 */
-
-		hose.first_busno = 0;
-		hose.last_busno = 0xff;
-
-		/* System space */
-		pci_set_region(	&hose.regions[0],
-				0x80000000,
-				0x00000000,
-				32 * 1024 * 1024,
-				PCI_REGION_MEM | PCI_REGION_MEMORY);
-
-		/* PCI memory space */
-		pci_set_region(	&hose.regions[1],
-				0x10000000,
-				0x10000000,
-				128 * 1024 * 1024,
-				PCI_REGION_MEM);
-
-		hose.region_count = 2;
-
-		pci_register_hose(&hose);
-
-		pci_set_ops(	&hose,
-				pci_hose_read_config_byte_via_dword,
-				pci_hose_read_config_word_via_dword,
-				ath_pci_read_config,
-				pci_hose_write_config_byte_via_dword,
-				pci_hose_write_config_word_via_dword,
-				ath_pci_write_config);
-#endif
 	}
 #endif
+
 #ifdef PCIE2_APP_ADDRESS
-        pci_rc2_init_board();
+	pci_rc2_init_board();
+#endif
+
+#ifndef COMPRESSED_UBOOT
+	/*
+	 * Now, configure for u-boot tools
+	 */
+
+	hose.first_busno = 0;
+	hose.last_busno = 0xff;
+
+	/* System space */
+	pci_set_region(	&hose.regions[0],
+			0x80000000,
+			0x00000000,
+			32 * 1024 * 1024,
+			PCI_REGION_MEM | PCI_REGION_MEMORY);
+
+	/* PCI memory space */
+	pci_set_region(	&hose.regions[1],
+			0x10000000,
+			0x10000000,
+			128 * 1024 * 1024,
+			PCI_REGION_MEM);
+
+	hose.region_count = 2;
+
+	pci_register_hose(&hose);
+
+	pci_set_ops(	&hose,
+			pci_hose_read_config_byte_via_dword,
+			pci_hose_read_config_word_via_dword,
+			ath_pci_read_config,
+			pci_hose_write_config_byte_via_dword,
+			pci_hose_write_config_word_via_dword,
+			ath_pci_write_config);
 #endif
 	plat_dev_init();
 #endif /* CONFIG_ATH_EMULATION */
@@ -426,16 +401,10 @@ pci_init_board (void)
 void
 pci_rc2_init_board (void)
 {
-#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 #if defined(CONFIG_MACH_QCA956x)
-	ath_reg_rmw_clear(GPIO_OE_ADDRESS, 0x01);
+	ath_reg_rmw_clear(GPIO_OE_ADDRESS, 0x1);
         udelay(10000);
         ath_reg_rmw_set(GPIO_OUT_FUNCTION0_ADDRESS, GPIO_OUT_FUNCTION0_ENABLE_GPIO_0_SET(0x73));
-#elif defined(CONFIG_MACH_QCN550x)
-	ath_reg_rmw_clear(GPIO_OE_ADDRESS, 0x20);
-        udelay(10000);
-        ath_reg_rmw_set(GPIO_OUT_FUNCTION1_ADDRESS, GPIO_OUT_FUNCTION1_ENABLE_GPIO_5_SET(0x73));
-#endif
         udelay(10000);
         ath_reg_rmw_set(RST_RESET_ADDRESS,RST_RESET_PCIE_PHY_RESET_SET(1) |
                                           RST_RESET_PCIE_RESET_SET(1));
@@ -541,7 +510,7 @@ pci_rc2_init_board (void)
 	 * initialization code and return
 	 */
 	if (((ath_reg_rd(PCIE2_RESET_ADDRESS)) & 0x1) == 0x0) {
-		prmsg("*** Warning *** : PCIe WLAN Module not found !!!\n");
+		prmsg("*** Warning *** : PCIe_2 WLAN Module not found !!!\n");
 		return;
 	}
 }

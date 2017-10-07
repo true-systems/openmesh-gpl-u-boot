@@ -29,7 +29,7 @@ LIB	= libnet.a
 ifeq ($(COMPRESSED_UBOOT),1)
 OBJS	= net.o tftp.o rarp.o eth.o
 else
-OBJS	= net.o tftp.o bootp.o rarp.o eth.o nfs.o sntp.o
+OBJS	= net.o tftp.o rarp.o eth.o bootp.o  nfs.o
 endif
 
 all:	$(LIB)

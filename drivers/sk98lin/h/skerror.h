@@ -2,8 +2,8 @@
  *
  * Name:	skerror.h
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.5 $
- * Date:	$Date: 2002/04/25 11:05:10 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/09/21 $
  * Purpose:	SK specific Error log support
  *
  ******************************************************************************/

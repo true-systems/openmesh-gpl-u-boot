@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/common/bedbug.c#1 $ */
 
 #include <common.h>
 

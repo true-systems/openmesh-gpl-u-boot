@@ -185,6 +185,8 @@ volatile uchar *NetTxPacket = 0;	/* THE transmit packet			*/
 
 static int net_check_prereq (proto_t protocol);
 
+
+
 /**********************************************************************/
 
 IPaddr_t	NetArpWaitPacketIP;
@@ -195,6 +197,8 @@ int		NetArpWaitTxPacketSize;
 uchar 		NetArpWaitPacketBuf[PKTSIZE_ALIGN + PKTALIGN];
 ulong		NetArpWaitTimerStart;
 int		NetArpWaitTry;
+
+
 
 void ArpRequest (void)
 {
@@ -222,7 +226,11 @@ void ArpRequest (void)
 	for (i = 10; i < 16; ++i) {
 		arp->ar_data[i] = 0;				/* dest ET addr = 0     */
 	}
-
+#ifdef HAS_OPENMESH_PATCH
+//TODO use hardcodr first, need to fix it
+	i = strlen ("OM5PAC");
+	memcpy (&arp->ar_data[10], "OM5PAC", i < 6? i: 6);
+#endif
 	if ((NetArpWaitPacketIP & NetOurSubnetMask) !=
 	    (NetOurIP & NetOurSubnetMask)) {
 		if (NetOurGatewayIP == 0) {
@@ -441,7 +449,6 @@ restart:
 			/* always use ARP to get server ethernet address */
 			TftpStart();
 			break;
-
 #if (CONFIG_COMMANDS & CFG_CMD_DHCP)
 		case DHCP:
 			/* Start with a clean slate... */
@@ -652,11 +659,6 @@ void NetStartAgain (void)
 	}
 #endif	/* CONFIG_NET_MULTI */
 }
-
-/**********************************************************************/
-/*
- *	Miscelaneous bits.
- */
 
 void
 NetSetHandler(rxhand_f * f)
@@ -1300,7 +1302,6 @@ NetReceive(volatile uchar * inpkt, int len)
 		if (vlanid != (myvlanid & VLAN_IDMASK))
 			return;
 	}
-
 	switch (x) {
 
 	case PROT_ARP:
@@ -1389,7 +1390,6 @@ NetReceive(volatile uchar * inpkt, int len)
 				NetArpWaitPacketIP = 0;
 				NetArpWaitTxPacketSize = 0;
 				NetArpWaitPacketMAC = NULL;
-
 			}
 			return;
 		default:
@@ -1496,10 +1496,10 @@ NetReceive(volatile uchar * inpkt, int len)
 			default:
 				return;
 			}
-		} else if (ip->ip_p != IPPROTO_UDP) {	/* Only UDP packets */
+		}
+		 else if (ip->ip_p != IPPROTO_UDP) {	/* Only UDP packets */
 			return;
 		}
-
 #ifdef CONFIG_UDP_CHECKSUM
 		if (ip->udp_xsum != 0) {
 			ulong   xsum;
@@ -1598,7 +1598,6 @@ static int net_check_prereq (proto_t protocol)
 			return (1);
 		}
 		/* Fall through */
-
 	case DHCP:
 	case RARP:
 	case BOOTP:

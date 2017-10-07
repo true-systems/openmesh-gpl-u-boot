@@ -2,7 +2,7 @@
 #define load_kernel_h
 /*-------------------------------------------------------------------------
  * Filename:      load_kernel.h
- * Version:       $Id: load_kernel.h,v 1.3 2002/01/25 01:34:11 nyet Exp $
+ * Version:       $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/jffs2/load_kernel.h#1 $
  * Copyright:     Copyright (C) 2001, Russ Dill
  * Author:        Russ Dill <Russ.Dill@asu.edu>
  * Description:   header for load kernel modules

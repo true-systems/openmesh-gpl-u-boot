@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2005 by Videon Central, Inc.
  *
- * $Id$
+ * $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/drivers/ns7520_eth.c#1 $
  * @Author: Arthur Shipkowski
  * @Descr: Ethernet driver for the NS7520. Uses polled Ethernet, like
  *     the older netarmeth driver.  Note that attempting to filter

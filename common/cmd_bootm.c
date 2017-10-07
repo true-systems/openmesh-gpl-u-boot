@@ -174,6 +174,8 @@ int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		addr = simple_strtoul(argv[1], NULL, 16);
 	}
 
+	reset_watchdog();
+	
 	SHOW_BOOT_PROGRESS (1);
 	printf ("## Booting image at %08lx ...\n", addr);
 
@@ -187,6 +189,8 @@ int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		memmove (&header, (char *)addr, sizeof(image_header_t));
 	}
 
+	reset_watchdog();
+	
 	if (ntohl(hdr->ih_magic) != IH_MAGIC) {
 #ifdef __I386__	/* correct image format not implemented yet - fake it */
 		if (fake_header(hdr, (void*)addr, -1) != NULL) {
@@ -235,11 +239,13 @@ int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 
 	if (verify) {
 		printf("   Verifying Checksum at 0x%p ...", data);
+		reset_watchdog();
 		if (crc32 (0, (uchar *)data, len) != ntohl(hdr->ih_dcrc)) {
 			printf ("Bad Data CRC\n");
 			SHOW_BOOT_PROGRESS (-3);
 			return 1;
 		}
+		reset_watchdog();
 		puts ("OK\n");
 	}
 	SHOW_BOOT_PROGRESS (4);
@@ -325,6 +331,7 @@ int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	mips_cache_flush();
 	mips_icache_flush_ix();
 
+	reset_watchdog();
 	/* XXX - this causes problems when booting from flash */
 	/* dcache_disable(); */
 #endif
@@ -1059,20 +1066,78 @@ int do_bootd (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 #endif
 	return rcode;
 }
-
+#ifndef HAS_OPENMESH_PATCH
 U_BOOT_CMD(
  	boot,	1,	1,	do_bootd,
  	"boot    - boot default, i.e., run 'bootcmd'\n",
 	NULL
 );
-
+#endif
 /* keep old command name "bootd" for backward compatibility */
 U_BOOT_CMD(
  	bootd, 1,	1,	do_bootd,
  	"bootd   - boot default, i.e., run 'bootcmd'\n",
 	NULL
 );
+#ifdef HAS_OPENMESH_PATCH
+int do_boot (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
+{
+	int rcode = 0;
 
+	if (argc > 1) {
+		static char *str[] = {"bootcmd", "bootargs"};
+		char *val[] = {NULL, NULL};
+		char *arg[] = {argv[1], NULL};
+		char key[32], *s;
+		int i = -1;
+
+		while (!rcode && ++i < 2) {
+			if ((s = getenv (str[i])) != NULL && !(rcode = (val[i] = malloc (strlen (s) + 1)) == NULL)) {
+				strcpy (val[i], s);
+			}
+		}
+		for(rcode? (arg[0] = NULL): (rcode = 1);
+			rcode && arg[0] != NULL && ((arg[1] = strchr (arg[0], ',')) != NULL && (*arg[1] = '\0'), 1); arg[0] = arg[1] != NULL? arg[1] + 1: NULL) {
+			if (strlen (arg[0]) <= 16) {
+				for (i = 0; i < 2; i++) {
+					if (sprintf (key, "%s_%s", str[i], arg[0]) > 0 && getenv (key) != NULL) {
+						setenv (str[i], NULL), setenv (str[i], getenv (key));
+					}
+					else {
+						setenv (str[i], val[i]);
+					}
+				}
+				rcode = do_bootd (cmdtp, 0, 0, NULL);
+			}
+			else {
+				break;
+			}
+		}
+		if (i == 2) {
+			while (i-- > 0) {
+				setenv (str[i], val[i]);
+			}
+		}
+		while (++i < 2) {
+			if (val[i] != NULL) {
+				free (val[i]), val[i] = NULL;
+			}
+		}
+	}
+	else {
+		rcode = do_bootd (cmdtp, 0, 0, NULL);
+	}
+
+	return rcode;
+}
+
+U_BOOT_CMD(
+ 	boot,	2,	1,	do_boot,
+ 	"boot    - boot default, i.e., run 'bootcmd'\n",
+	"[seq[,seq]...]\n"
+);
+
+#endif
 #endif
 
 #if (CONFIG_COMMANDS & CFG_CMD_IMI)
@@ -1338,6 +1403,8 @@ int gunzip(void *dst, int dstlen, unsigned char *src, unsigned long *lenp)
 	/* skip header */
 	i = 10;
 	flags = src[3];
+	reset_watchdog();
+	
 	if (src[2] != DEFLATED || (flags & RESERVED) != 0) {
 		puts ("Error: Bad gzipped data\n");
 		return (-1);
@@ -1357,6 +1424,7 @@ int gunzip(void *dst, int dstlen, unsigned char *src, unsigned long *lenp)
 		return (-1);
 	}
 
+	reset_watchdog();
 	s.zalloc = zalloc;
 	s.zfree = zfree;
 #if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)

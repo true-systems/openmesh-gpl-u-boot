@@ -4,7 +4,7 @@
  *  Copyright (c) 2000 David Woodhouse <dwmw2@mvhi.com>
  *                     Steven J. Hill <sjhill@cotw.com>
  *
- * $Id: nand_ids.h,v 1.1 2000/10/13 16:16:26 mdeans Exp $
+ * $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/linux/mtd/nand_ids.h#1 $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

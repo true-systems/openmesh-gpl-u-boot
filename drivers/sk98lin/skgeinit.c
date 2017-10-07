@@ -2,8 +2,8 @@
  *
  * Name:	skgeinit.c
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.85 $
- * Date:	$Date: 2003/02/05 15:30:33 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/09/21 $
  * Purpose:	Contains functions to initialize the GE HW
  *
  ******************************************************************************/
@@ -405,7 +405,7 @@
 /* local variables ************************************************************/
 
 static const char SysKonnectFileId[] =
-	"@(#)$Id: skgeinit.c,v 1.85 2003/02/05 15:30:33 rschmidt Exp $ (C) SK ";
+	"@(#)$Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/drivers/sk98lin/skgeinit.c#1 $ (C) SK ";
 
 struct s_QOffTab {
 	int	RxQOff;		/* Receive Queue Address Offset */

@@ -3,7 +3,7 @@
  * Copyright (C) 2004 by FS Forth-Systeme GmbH.
  * All rights reserved.
  *
- * $Id: ns9750_eth.h,v 1.2 2004/02/24 13:25:39 mpietrek Exp $
+ * $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/ns9750_eth.h#1 $
  * @Author: Markus Pietrek
  * @References: [1] NS9750 Hardware Reference, December 2003
  *              [2] Intel LXT971 Datasheet #249414 Rev. 02

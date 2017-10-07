@@ -20,6 +20,7 @@
 */
 
 #ifdef CONFIG_LZMA
+#include <common.h>
 
 #include "LzmaDecode.h"
 
@@ -133,9 +134,19 @@ int LzmaDecodeProperties(CLzmaProperties *propsRes, const unsigned char *propsDa
     printf("ERROR: %s, %d\n", __FILE__, __LINE__);
     return LZMA_RESULT_DATA_ERROR;
   }
-  {
+  {  
     for (propsRes->pb = 0; prop0 >= (9 * 5); propsRes->pb++, prop0 -= (9 * 5));
-    for (propsRes->lp = 0; prop0 >= 9; propsRes->lp++, prop0 -= 9);
+//     for (propsRes->pb = 0; prop0 >= (9 * 5); propsRes->pb++)
+// 	{
+// 		reset_watchdog();
+// 		prop0 -= (9 * 5);
+// 	}
+	for (propsRes->lp = 0; prop0 >= 9; propsRes->lp++, prop0 -= 9);
+// 	for (propsRes->lp = 0; prop0 >= 9; propsRes->lp++);
+// 	{
+// 		reset_watchdog();
+// 		prop0 -= 9;
+// 	}
     propsRes->lc = prop0;
     /*
     unsigned char remainder = (unsigned char)(prop0 / 9);
@@ -201,17 +212,21 @@ int LzmaDecode(CLzmaDecoderState *vs,
   #ifndef _LZMA_IN_CB
   *inSizeProcessed = 0;
   #endif
+  
+  reset_watchdog();
   *outSizeProcessed = 0;
   if (len == kLzmaStreamWasFinishedId)
     return LZMA_RESULT_OK;
 
+	reset_watchdog();
+  
   if (dictionarySize == 0)
   {
     dictionary = tempDictionary;
     dictionarySize = 1;
     tempDictionary[0] = vs->TempDictionary[0];
   }
-
+ 
   if (len == kLzmaNeedInitId)
   {
     {
@@ -472,6 +487,7 @@ int LzmaDecode(CLzmaDecoderState *vs,
           }
         }
         RangeDecoderBitTreeDecode(probLen, numBits, len);
+		reset_watchdog();
         len += offset;
       }
 

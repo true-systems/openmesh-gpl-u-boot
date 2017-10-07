@@ -181,6 +181,9 @@ block_dev_desc_t *usb_stor_get_dev(int index)
 void usb_show_progress(void)
 {
 	printf(".");
+	//reset watch dog when read usb data
+    if (i++ && !(i%10))
+        reset_watchdog();
 }
 
 /*********************************************************************************

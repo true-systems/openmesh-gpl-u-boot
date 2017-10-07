@@ -7,7 +7,7 @@
  * Copyright (C) 2000-2004 Steven J. Hill (sjhill@realitydiluted.com)
  *                         Toshiba America Electronics Components, Inc.
  *
- * $Id: nand_ecc.c,v 1.14 2004/06/16 15:34:37 gleixner Exp $
+ * $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/drivers/nand/nand_ecc.c#1 $
  *
  * This file is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the

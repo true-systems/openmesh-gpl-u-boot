@@ -1,23 +1,6 @@
 /*
  * vim: tabstop=8 : noexpandtab
  */
-
-/* 
- * Copyright (c) 2013 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
-
 #ifndef _ATHEROS_H
 #define _ATHEROS_H
 
@@ -45,7 +28,6 @@
 #define is_hb()		(0)
 
 #define is_qca956x()	(0)
-#define is_qcn550x()	(0)
 
 #define ATH_CONSOLE_BAUD	115200
 
@@ -83,10 +65,16 @@
 #define is_ar8033() 1
 #else
 #define is_ar8033() 0
-#endif
+#endif 
+
+#ifdef CONFIG_ATHR_8035_PHY
+#define is_ar8035() 1
+#else
+#define is_ar8035() 0
+#endif 
 
 #ifdef CONFIG_VIR_PHY
-#define is_vir_phy()	1
+#define is_vir_phy()	1 
 #else
 #define is_vir_phy() 	0
 #endif
@@ -200,8 +188,6 @@ typedef unsigned int ath_reg_t;
 #	include <953x.h>
 #elif defined(CONFIG_MACH_QCA956x)
 #	include <956x.h>
-#elif defined(CONFIG_MACH_QCN550x)
-#	include <550x.h>
 #else
 #	error "Building U-Boot for unknown device"
 #endif

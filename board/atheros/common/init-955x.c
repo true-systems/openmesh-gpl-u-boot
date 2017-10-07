@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <common.h>
 #include <asm/addrspace.h>
 #include <atheros.h>
@@ -193,7 +176,14 @@ ath_ddr_initial_config(uint32_t refresh)
 		ath_reg_wr_nf(DDR_CONTROL_ADDRESS, 0x20);
 		udelay(10);
 		prmsg("%s(%d): (", __func__, __LINE__);
+#ifdef FORCE_RAM_TO_16BIT
+		  prmsg("16");
+		  ctl_config =	CFG_DDR_CTL_CONFIG |
+				  DDR_CTL_CONFIG_PAD_DDR2_SEL_SET(0x1) |
+				  DDR_CTL_CONFIG_HALF_WIDTH_SET(0x1);
 
+		  cycle_val = CFG_DDR2_RD_DATA_THIS_CYCLE_VAL_16;
+#else
 		if (RST_BOOTSTRAP_DDR_WIDTH_GET(bootstrap)) {
 			prmsg("32");
 			ctl_config =	CFG_DDR_CTL_CONFIG |
@@ -208,7 +198,7 @@ ath_ddr_initial_config(uint32_t refresh)
 
 			cycle_val = CFG_DDR2_RD_DATA_THIS_CYCLE_VAL_16;
 		}
-
+#endif
 		ctl_config |= CPU_DDR_SYNC_MODE;
 
 		ath_reg_wr_nf(DDR_CTL_CONFIG_ADDRESS, ctl_config);
@@ -375,8 +365,6 @@ ath_ddr_initial_config(uint32_t refresh)
 	ath_reg_rmw_clear(PMU1_ADDRESS, (7<<1));
 	ath_reg_rmw_set(PMU1_ADDRESS, (1<<3));
 
-	ath_sys_frequency();
-
 	return type;
 #else	// !nand flash and !emulation
 	return 0;
@@ -393,13 +381,14 @@ ath_uart_freq(void)
 	}
 }
 
-void ath_sys_frequency()
+void
+ath_sys_frequency(uint32_t *cpu, uint32_t *ddr, uint32_t *ahb)
 {
 #if !defined(CONFIG_ATH_EMULATION)
 	uint32_t pll, out_div, ref_div, nint, frac, clk_ctrl;
 #endif
-	uint32_t ref = ath_uart_freq();
-	uint32_t ath_cpu_freq = 0, ath_ddr_freq = 0, ath_ahb_freq = 0;
+	uint32_t ref;
+	static uint32_t ath_cpu_freq, ath_ddr_freq, ath_ahb_freq;
 
 	if (ath_cpu_freq)
 		goto done;
@@ -434,6 +423,7 @@ void ath_sys_frequency()
 		frac	= CPU_PLL_CONFIG_NFRAC_GET(pll);
 		pll = ref >> 6;
 		frac	= frac * pll / ref_div;
+		prmsg("cpu apb ");
 //	}
 	ath_cpu_freq = (((nint * (ref / ref_div)) + frac) >> out_div) /
 			(CPU_DDR_CLOCK_CONTROL_CPU_POST_DIV_GET(clk_ctrl) + 1);
@@ -459,6 +449,7 @@ void ath_sys_frequency()
 		frac	= DDR_PLL_CONFIG_NFRAC_GET(pll);
 		pll = ref >> 10;
 		frac	= frac * pll / ref_div;
+		prmsg("ddr apb ");
 //	}
 	ath_ddr_freq = (((nint * (ref / ref_div)) + frac) >> out_div) /
 			(CPU_DDR_CLOCK_CONTROL_DDR_POST_DIV_GET(clk_ctrl) + 1);
@@ -471,9 +462,16 @@ void ath_sys_frequency()
 			(CPU_DDR_CLOCK_CONTROL_AHB_POST_DIV_GET(clk_ctrl) + 1);
 	}
 #endif
-done:
-        prmsg("cpu %u ddr %u ahb %u\n",
+		ath_cpu_freq = 720 * 1000000;
+		ath_ddr_freq = 600 * 1000000;
+		ath_ahb_freq = 200 * 1000000;
+	prmsg("cpu %u ddr %u ahb %u\n",
 		ath_cpu_freq / 1000000,
 		ath_ddr_freq / 1000000,
 		ath_ahb_freq / 1000000);
+done:
+	*cpu = ath_cpu_freq;
+	*ddr = ath_ddr_freq;
+	*ahb = ath_ahb_freq;
+
 }

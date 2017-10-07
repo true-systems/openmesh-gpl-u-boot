@@ -25,7 +25,7 @@
  ***********************************************************************/
 
 /*
- * $Id: METROBOX.h,v 1.21 2005/06/03 15:05:25 tsawyer Exp $
+ * $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/include/configs/METROBOX.h#1 $
  *
  *
  * $Log: METROBOX.h,v $

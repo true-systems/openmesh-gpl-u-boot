@@ -68,6 +68,7 @@ static env_t *flash_addr = (env_t *)CFG_ENV_ADDR;
 #else /* ! ENV_IS_EMBEDDED */
 
 env_t *env_ptr = (env_t *)CFG_ENV_ADDR;
+
 #ifdef CMD_SAVEENV
 static env_t *flash_addr = (env_t *)CFG_ENV_ADDR;
 #endif
@@ -265,7 +266,13 @@ int  env_init(void)
 	if(flash_probe() == 0)
 		goto bad_flash;
 #endif
-	if (crc32(0, env_ptr->data, ENV_SIZE) == env_ptr->crc) {
+//	if (crc32(0, env_ptr->data, (0x1000-4)) == env_ptr->crc) { // Roger test
+ 	//if (crc32(0, env_ptr->data, ENV_SIZE) == env_ptr->crc) {
+#ifndef HAS_OPENMESH_PATCH
+    if (crc32(0, env_ptr->data, (0x1000-4)) == env_ptr->crc) { // Roger test
+#else
+    if (crc32(0, env_ptr->data, ENV_SIZE) == env_ptr->crc) {
+#endif
 		gd->env_addr  = (ulong)&(env_ptr->data);
 		gd->env_valid = 1;
 		return(0);

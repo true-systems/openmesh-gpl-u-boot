@@ -36,6 +36,7 @@
 #include <dataflash.h>
 #endif
 #include "defines.h"
+extern ulong		NetBootFileXferSize;
 
 #if (CONFIG_COMMANDS & (CFG_CMD_MEMORY	| \
 			CFG_CMD_I2C	| \
@@ -396,16 +397,26 @@ int do_mem_cmp (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 
 int do_mem_cp ( cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 {
-	ulong	addr, dest, count;
+	ulong	addr = 0, dest = 0, count = 0;
 	int	size;
+	if(!memcmp(argv[0],"cp.linux",sizeof("cp.linux")))
+	{
+		addr += base_address;
+		addr += load_addr;
+		dest = dest + CFG_KERN_ADDR + base_address;
+		printf("\n Copy linux image[%d byte] to Flash[0x%08X].... \n",NetBootFileXferSize,dest);
+		count = NetBootFileXferSize;
+		size = 1;
+		goto ATH_START_WRITE_FLASH;
+	}
 
 	if (argc != 4) {
 		printf ("Usage:\n%s\n", cmdtp->usage);
 		return 1;
 	}
-
 	/* Check for size specification.
 	*/
+	
 	if ((size = cmd_get_data_size(argv[0], 4)) < 0)
 		return 1;
 
@@ -417,6 +428,7 @@ int do_mem_cp ( cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 
 	count = simple_strtoul(argv[3], NULL, 16);
 
+ATH_START_WRITE_FLASH:
 	if (count == 0) {
 		puts ("Zero length ???\n");
 		return 1;
@@ -432,6 +444,7 @@ int do_mem_cp ( cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		int rc;
 
 		puts ("Copy to Flash... ");
+		printf ("\n Copy %d [0x%x] byte to Flash... ",count*size,count*size);
 
 		rc = flash_write ((char *)addr, dest, count*size);
 		if (rc != 0) {
@@ -518,6 +531,7 @@ int do_mem_cp ( cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 #endif
 
 	while (count-- > 0) {
+		reset_watchdog();
 		if (size == 4)
 			*((ulong  *)dest) = *((ulong  *)addr);
 		else if (size == 2)
@@ -954,6 +968,7 @@ int do_mem_mtest (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 #else /* The original, quickie test */
 	incr = 1;
 	for (;;) {
+	    reset_watchdog();
 		if (ctrlc()) {
 			putc ('\n');
 			return 1;
@@ -965,6 +980,7 @@ int do_mem_mtest (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 			pattern, "");
 
 		for (addr=start,val=pattern; addr<end; addr++) {
+// 		  reset_watchdog();
 			*addr = val;
 			val  += incr;
 		}
@@ -972,6 +988,7 @@ int do_mem_mtest (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		puts ("Reading...");
 
 		for (addr=start,val=pattern; addr<end; addr++) {
+// 		  reset_watchdog();
 			readback = *addr;
 			if (readback != val) {
 				printf ("\nMem error @ 0x%08X: "
@@ -995,6 +1012,7 @@ int do_mem_mtest (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 			pattern = ~pattern;
 		}
 		incr = -incr;
+		reset_watchdog();
 	}
 	return rcode;
 #endif
@@ -1299,10 +1317,6 @@ int do_mem_mct (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	if (argc > 1) {
 		size = simple_strtoul(argv[1], NULL, 16);
 	} 
-	else {
-		printf ("Usage:\n%s\n", cmdtp->usage);
-		return -1;
-	}
 	
 	/* Clean all information memory locations */
 	for (i = 0; i < 0xb0; i+=4) {

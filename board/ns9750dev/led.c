@@ -3,7 +3,7 @@
  * Copyright (C) 2004 by FS Forth-Systeme GmbH.
  * All rights reserved.
  *
- * $Id: led.c,v 1.1 2004/02/16 10:37:20 mpietrek Exp $
+ * $Id: //depot/sw/qca_main/components/bootloaders/u-boot-1.1.4/1.0/board/ns9750dev/led.c#1 $
  * @Author: Markus Pietrek
  * @Descr: Defines helper functions for toggeling LEDs
  * @Usage:

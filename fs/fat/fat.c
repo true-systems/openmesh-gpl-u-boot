@@ -191,6 +191,7 @@ get_fatent(fsdata *mydata, __u32 entry)
 	__u32 offset;
 	__u32 ret = 0x00;
 
+	reset_watchdog();
 	switch (mydata->fatsize) {
 	case 32:
 		bufnum = entry / FAT32BUFSIZE;
@@ -269,6 +270,7 @@ get_fatent(fsdata *mydata, __u32 entry)
 	}
 	break;
 	}
+	reset_watchdog();
 	FAT_DPRINT("ret: %d, offset: %d\n", ret, offset);
 
 	return ret;

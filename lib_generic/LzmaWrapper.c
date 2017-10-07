@@ -75,7 +75,7 @@ int lzma_inflate(unsigned char *source, int s_len, unsigned char *dest, int *d_l
   unsigned char properties[LZMA_PROPERTIES_SIZE];
 
   int res;
-
+  reset_watchdog();
   if (sizeof(UInt32) < 4)
   {
     printf("LZMA decoder needs correct UInt32\n");
@@ -99,6 +99,7 @@ int lzma_inflate(unsigned char *source, int s_len, unsigned char *dest, int *d_l
     printf("%s\n", kCantReadMessage);
     return LZMA_RESULT_DATA_ERROR;
   }
+  reset_watchdog();
 
   /* Read uncompressed size */
   {
@@ -106,6 +107,7 @@ int lzma_inflate(unsigned char *source, int s_len, unsigned char *dest, int *d_l
     for (i = 0; i < 8; i++)
     {
       unsigned char b;
+	  reset_watchdog();
       if (!MyReadFileAndCheck(source, &b, 1))
       {
         printf("%s\n", kCantReadMessage);

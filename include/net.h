@@ -4,6 +4,7 @@
  *	Copyright 1994 - 2000 Neil Russell.
  *	(See License)
  *
+ *
  * History
  *	9/16/00	  bor  adapted to TQM823L/STK8xxL board, RARP/TFTP boot added
  */
@@ -168,7 +169,6 @@ typedef struct {
 
 #define IPPROTO_ICMP	 1	/* Internet Control Message Protocol	*/
 #define IPPROTO_UDP	17	/* User Datagram Protocol		*/
-
 /*
  *	Internet Protocol (IP) header.
  */
@@ -253,6 +253,9 @@ typedef struct icmphdr {
 		} frag;
 	} un;
 } ICMP_t;
+/*
+ *	firmware image header.
+ */
 
 
 /*
@@ -340,9 +343,11 @@ extern int		NetRestartWrap;		/* Tried all network devices	*/
 #endif
 
 #if defined(CFG_ATHRS26_PHY) && defined(CFG_ATHRHDR_EN)
-typedef enum { BOOTP, RARP, ARP, TFTP, DHCP, PING, DNS, NFS, CDP, NETCONS, SNTP, ATHRHDR } proto_t;
+typedef enum { BOOTP, RARP, ARP, TFTP, DHCP, PING, DNS, NFS, CDP, NETCONS, SNTP, ATHRHDR
+} proto_t;
 #else
-typedef enum { BOOTP, RARP, ARP, TFTP, DHCP, PING, DNS, NFS, CDP, NETCONS, SNTP } proto_t;
+typedef enum { BOOTP, RARP, ARP, TFTP, DHCP, PING, DNS, NFS, CDP, NETCONS, SNTP
+} proto_t;
 #endif
 
 /* from net/net.c */
