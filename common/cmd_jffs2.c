@@ -15,7 +15,7 @@
  *   Parsing routines are based on driver/mtd/cmdline.c from the linux 2.4
  *   kernel tree.
  *
- *   $Id: cmdlinepart.c,v 1.17 2004/11/26 11:18:47 lavinen Exp $
+ *   $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/common/cmd_jffs2.c#1 $
  *   Copyright 2002 SYSGO Real-Time Solutions GmbH
  *
  * See file CREDITS for list of people who contributed to this

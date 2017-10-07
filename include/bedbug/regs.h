@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/bedbug/regs.h#1 $ */
 
 #ifndef _REGS_H
 #define _REGS_H

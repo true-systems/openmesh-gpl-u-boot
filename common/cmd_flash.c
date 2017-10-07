@@ -324,9 +324,7 @@ int do_flerase (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 
 	if (strcmp(argv[1], "all") == 0) {
 		for (bank=1; bank<=CFG_MAX_FLASH_BANKS; ++bank) {
-#ifdef FLASH_DEBUG
 			printf ("Erase Flash Bank # %ld ", bank);
-#endif
 			info = &flash_info[bank-1];
 			rcode = flash_erase (info, 0, info->sector_count-1);
 		}
@@ -338,10 +336,8 @@ int do_flerase (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 			puts ("Bad sector specification\n");
 			return 1;
 		}
-#ifdef FLASH_DEBUG
 		printf ("Erase Flash Sectors %d-%d in Bank # %d ",
 			sect_first, sect_last, (info-flash_info)+1);
-#endif
 		rcode = flash_erase(info, sect_first, sect_last);
 		return rcode;
 	}
@@ -356,12 +352,12 @@ int do_flerase (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 				info = &flash_info[bank];
 				addr_first = part->offset + info->start[0];
 				addr_last = addr_first + part->size - 1;
-#ifdef FLASH_DEBUG
+
 				printf ("Erase Flash Parition %s, "
 						"bank %d, 0x%08lx - 0x%08lx ",
 						argv[1], bank, addr_first,
 						addr_last);
-#endif
+
 				rcode = flash_sect_erase(addr_first, addr_last);
 				return rcode;
 			}
@@ -384,9 +380,7 @@ int do_flerase (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 				CFG_MAX_FLASH_BANKS);
 			return 1;
 		}
-#ifdef FLASH_DEBUG
 		printf ("Erase Flash Bank # %ld ", bank);
-#endif
 		info = &flash_info[bank-1];
 		rcode = flash_erase (info, 0, info->sector_count-1);
 		return rcode;
@@ -427,7 +421,6 @@ int flash_sect_erase (ulong addr_first, ulong addr_last)
 		     ++bank, ++info) {
 			if (s_first[bank]>=0) {
 				erased += s_last[bank] - s_first[bank] + 1;
-#ifdef FLASH_DEBUG
 				debug ("Erase Flash from 0x%08lx to 0x%08lx "
 					"in Bank # %ld ",
 					info->start[s_first[bank]],
@@ -435,9 +428,6 @@ int flash_sect_erase (ulong addr_first, ulong addr_last)
 						info->start[0] + info->size - 1:
 						info->start[s_last[bank]+1] - 1,
 					bank+1);
-#else
-				printf( "Erasing flash... ");
-#endif
 				rcode = flash_erase (info, s_first[bank], s_last[bank]);
 			}
 		}
@@ -742,22 +732,7 @@ U_BOOT_CMD(
 	"erase all\n    - erase all FLASH banks\n"
 );
 
-#if defined(CONFIG_ATH_SPI_CS1_GPIO) || defined(ATH_DUAL_NOR)
-int do_flselect (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
-{
-	if (argc < 2)
-		return -1;
 
-	flash_select((int)simple_strtoul(argv[1], NULL, 16));
-
-	return 0;
-}
-
-U_BOOT_CMD(
-	flselect,	2,	1,	do_flselect,
-	"\n",
-);
-#endif
 
 #undef	TMP_ERASE
 #undef	TMP_PROT_ON

@@ -2,8 +2,8 @@
  *
  * Name:	sktimer.c
  * Project:	GEnesis, PCI Gigabit Ethernet Adapter
- * Version:	$Revision: 1.12 $
- * Date:	$Date: 1999/11/22 13:38:51 $
+ * Version:	$Revision: #1 $
+ * Date:	$Date: 2012/01/04 $
  * Purpose:	High level timer functions.
  *
  ******************************************************************************/
@@ -80,7 +80,7 @@
 	Event queue and dispatcher
 */
 static const char SysKonnectFileId[] =
-	"$Header: /usr56/projects/ge/schedule/sktimer.c,v 1.12 1999/11/22 13:38:51 cgoos Exp $" ;
+	"$Header: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/drivers/sk98lin/sktimer.c#1 $" ;
 
 #include "h/skdrv1st.h"		/* Driver Specific Definitions */
 #include "h/skdrv2nd.h"		/* Adapter Control- and Driver specific Def. */

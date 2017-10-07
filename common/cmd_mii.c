@@ -122,7 +122,7 @@ int do_mii (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 			}
 		}
 	} else if (op == 'r') {
-		if (miiphy_read (devname, addr, reg, &data) < 0) {
+		if (miiphy_read (devname, addr, reg, &data) != 0) {
 			puts ("Error reading from the PHY\n");
 			rcode = 1;
 		} else {
@@ -511,7 +511,7 @@ int do_mii (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 		for (addr = addrlo; addr <= addrhi; addr++) {
 			for (reg = reglo; reg <= reghi; reg++) {
 				data = 0xffff;
-				if (miiphy_read (devname, addr, reg, &data) < 0) {
+				if (miiphy_read (devname, addr, reg, &data) != 0) {
 					printf(
 					"Error reading from the PHY addr=%02x reg=%02x\n",
 						addr, reg);
@@ -547,7 +547,7 @@ int do_mii (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 		}
 		for (addr = addrlo; addr <= addrhi; addr++) {
 			for (reg = reglo; reg < reghi + 1; reg++) {
-				if (miiphy_read(devname, addr, reg, &regs[reg]) < 0) {
+				if (miiphy_read(devname, addr, reg, &regs[reg]) != 0) {
 					ok = 0;
 					printf(
 					"Error reading from the PHY addr=%02x reg=%02x\n",
@@ -615,14 +615,15 @@ extern flash_info_t flash_info[];	/* info for FLASH chips */
 
 #define ATH_NAND_NAND_PART              "ath-nand"
 
+#define ATH_CAL_OFF_INVAL               0xbad0ff
 
 unsigned long long
 ath_nand_get_cal_offset(const char *ba)
 {
-        char *mtdparts = NULL, ch, *pn, *end;
+        char *mtdparts, ch, *pn, *end;
         unsigned long long off = 0, size;
-	if (ba)
-		mtdparts = strstr(ba, ATH_NAND_NAND_PART);
+
+        mtdparts = strstr(ba, ATH_NAND_NAND_PART);
         if (!mtdparts) {
                 goto bad;
         }
@@ -673,7 +674,6 @@ int do_mac (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 	int     ret;
 	ulong   off, size;
 	nand_info_t *nand;
-	char 	*p;
 		
 	/* 
 	 * caldata partition is of 128k 
@@ -716,15 +716,10 @@ int do_mac (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
 
 	serno = 0xFFFFFF & ( (product_id << 13) | (serno & 0x1fff));
 
-	p = getenv("bootargs");
-	if (p == NULL) {
-		printf("No bootargs\n");
-		return 1;
-	}
 	/*
 	 * Get the Offset of Caldata partition
 	 */
-	off = ath_nand_get_cal_offset(p);
+	off = ath_nand_get_cal_offset(getenv("bootargs"));
 	if(off == ATH_CAL_OFF_INVAL) {
 		printf("Invalid CAL offset \n");
 		return 1;
@@ -870,193 +865,5 @@ U_BOOT_CMD(
     "                the board's product ID (decimal)\n"
 );
 
-#ifdef CONFIG_ATH_NAND_BR
-#define SECTOR_BUFF_SIZE 256*1024
-#else
-#define SECTOR_BUFF_SIZE CFG_FLASH_SECTOR_SIZE
-#endif
-
-static int process(char **s, u_char *val)
-{
-	char *p = *s;
-	u_char x;
-
-	if (*p == ':')
-		p ++;
-
-	if (*p >= '0' && *p <= '9')
-		x = *p - '0';
-	else if (*p >= 'a' && *p <= 'f')
-		x = *p - 'a' + 10;
-	else if (*p >= 'A' && *p <= 'F')
-		x = *p - 'A' + 10;
-	else return -1;
-
-	x = x << 4;
-	p ++;
-
-	if (*p >= '0' && *p <= '9')
-		x |= *p - '0';
-	else if (*p >= 'a' && *p <= 'f')
-		x |= *p - 'a' + 10;
-	else if (*p >= 'A' && *p <= 'F')
-		x |= *p - 'A' + 10;
-	else return -1;
-
-	*s = (p + 1);
-	*val = x;
-
-	return 0;
-}
-
-typedef union {
-	uint8_t		b[6];
-	uint64_t	m;
-	uint32_t	w[2];
-} ath_mac_addr_t;
-
-static int str_to_mac(char *s, ath_mac_addr_t *m)
-{
-	ath_mac_addr_t mac;
-	int i;
-
-	mac.m = 0;
-
-	for (i = 0; i < sizeof(mac.b) && *s; i++) {
-		if (process(&s, &mac.b[i])) {
-			return -1;
-		}
-	}
-
-	if (i != sizeof(mac.b)) {
-		return -1;
-	}
-
-	printf("%02x:%02x:%02x:%02x:%02x:%02x\n", mac.b[0], mac.b[1], mac.b[2], mac.b[3], mac.b[4], mac.b[5]);
-	printf("%x %x\n", mac.w[0], mac.w[1]);
-
-	*m = mac;
-
-	return 0;
-}
-
-/**********************************************************************************
-** do_mac_setting
-**
-** This is the executable portion of the progmac command.  This will process the
-** MAC address strings, and program them into the appropriate flash sector..
-**
-*/
-
-int do_mac2 (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[])
-{
-	char    sectorBuff[SECTOR_BUFF_SIZE];
-	ath_mac_addr_t mac0, mac1;
-#ifdef CONFIG_ATH_NAND_BR
-	int     ret;
-	ulong   off, size;
-	nand_info_t *nand;
-	char *p;
-		
-	/* 
-	 * caldata partition is of 128k 
-	 *
-	 */
-	nand = &nand_info[nand_curr_device];
-	size = nand->erasesize;
-#endif
-
-	if (argc < 3) {
-		printf ("Usage:\n%s\n", cmdtp->usage);
-		printf ("progmac2 <eth0 mac> <eth1 mac>\n");
-		return 1;
-	}
-
-	if (str_to_mac(argv[1], &mac0)) {
-		printf("eth0 mac is invalid\n");
-		return 1;
-	}
-
-	if (str_to_mac(argv[2], &mac1)) {
-		printf("eth1 mac is invalid\n");
-		return 1;
-	}
-	
-#ifdef CONFIG_ATH_NAND_BR
-
-	p = getenv("bootargs");
-	if (p == NULL) {
-		printf("No bootargs\n");
-		return 1;
-	}
-
-	/*
-	 * Get the Offset of Caldata partition
-	 */
-	off = ath_nand_get_cal_offset(p);
-	if(off == ATH_CAL_OFF_INVAL) {
-		printf("Invalid CAL offset \n");
-		return 1;
-	}
-	
-         
-	/*
-	 * Get the values from flash, and program into the MAC address
-	 * registers
-	 */
-	ret = nand_read(nand, (loff_t)off, &size, (u_char *)sectorBuff);
-	printf(" %d bytes %s: %s\n", size,
-		       "read", ret ? "ERROR" : "OK");
-	if(ret != 0 ) {
-		return 1;
-	}
-#else
-	memcpy(sectorBuff,(void *)BOARDCAL, CFG_FLASH_SECTOR_SIZE);
-#endif
-	
-	/*
-	 * Set the MAC0 value
-	 */
-	
-	memcpy(&sectorBuff[0],&mac0.b[0],6);
-
-	/*
-	 * Set the MAC1 value
-	 */
-
-	memcpy(&sectorBuff[6],&mac1.b[0],6);
-	
-#ifdef CONFIG_ATH_NAND_BR
-	ret = nand_erase(nand,(loff_t)off, size);
-	printf(" %d bytes %s: %s\n", size,
-		       "erase", ret ? "ERROR" : "OK");
-
-	if(ret != 0 ) {
-		return 1;
-	}
-
-	ret = nand_write(nand, (loff_t)off, &size, (u_char *)sectorBuff);
-	printf(" %d bytes %s: %s\n", size,
-		       "write", ret ? "ERROR" : "OK");
-	if(ret != 0 ) {
-		return 1;
-	}
-#else
-	flash_erase(flash_info,CAL_SECTOR,CAL_SECTOR);
-	write_buff(flash_info,sectorBuff, BOARDCAL, CFG_FLASH_SECTOR_SIZE);
-#endif
-
-	return 0;
-}
-
-U_BOOT_CMD(
-    progmac2, 3, 0, do_mac2,
-    "progmac2 - Set ethernet MAC addresses\n",
-    "progmac2 <eth0 mac> <eth1 mac> - Program the MAC addresses\n"
-    "                  <eth0 mac> is the eth0 MAC address\n"
-    "                  <eth1 mac> is the eth1 MAC address\n"
-    "                  MAC address can be in the format\n"
-    "                  <aa:bb:cc:dd:ee:ff> or <aabbccddeeff>\n"
-);
 #endif /* BOARDCAL */
 

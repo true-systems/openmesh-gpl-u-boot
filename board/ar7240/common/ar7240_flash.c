@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <common.h>
 #include <jffs2/jffs2.h>
 #include <asm/addrspace.h>
@@ -102,17 +85,11 @@ flash_erase(flash_info_t *info, int s_first, int s_last)
 {
 	int i, sector_size = info->size / info->sector_count;
 
-#ifdef FLASH_DEBUG
 	printf("\nFirst %#x last %#x sector size %#x\n",
 	       s_first, s_last, sector_size);
-#endif
 
 	for (i = s_first; i <= s_last; i++) {
-#ifdef FLASH_DEBUG
 		printf("\b\b\b\b%4d", i);
-#else
-		puts(".");
-#endif
 		ar7240_spi_sector_erase(i * sector_size);
 	}
 	ar7240_spi_done();
@@ -172,34 +149,23 @@ write_buff(flash_info_t *info, uchar *src, ulong dst, ulong len)
 int
 write_buff(flash_info_t *info, uchar *source, ulong addr, ulong len)
 {
-	int total = 0, len_this_lp, bytes_this_page, counter = 0;
+	int total = 0, len_this_lp, bytes_this_page;
 	ulong dst;
 	uchar *src;
 
-#ifdef FLASH_DEBUG
 	printf("write addr: %x\n", addr);
-#endif
 	addr = addr - CFG_FLASH_BASE;
 
 	while (total < len) {
 		src = source + total;
 		dst = addr + total;
 		bytes_this_page =
-		    AR7240_SPI_PAGE_SIZE - (addr & (AR7240_SPI_PAGE_SIZE-1));
+		    AR7240_SPI_PAGE_SIZE - (addr % AR7240_SPI_PAGE_SIZE);
 		len_this_lp =
 		    ((len - total) >
 		     bytes_this_page) ? bytes_this_page : (len - total);
 		ar7240_spi_write_page(dst, src, len_this_lp);
 		total += len_this_lp;
-		if(counter>=255)
-		{
-			puts(".");
-			counter = 0;
-		}
-		else
-		{
-			counter++;
-		}
 	}
 
 	ar7240_spi_done();

@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/common/bedbug.c#1 $ */
 
 #include <common.h>
 

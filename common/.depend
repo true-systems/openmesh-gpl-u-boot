@@ -1,0 +1,2806 @@
+main.o: main.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/watchdog.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/hush.h \
+  /opt/LSDK92010513/include/post.h
+ACEX1K.o: ACEX1K.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/ACEX1K.h /opt/LSDK92010513/include/altera.h \
+  /opt/LSDK92010513/include/fpga.h
+altera.o: altera.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/ACEX1K.h /opt/LSDK92010513/include/altera.h \
+  /opt/LSDK92010513/include/fpga.h
+bedbug.o: bedbug.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+circbuf.o: circbuf.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/malloc.h /opt/LSDK92010513/include/circbuf.h
+cmd_ace.o: cmd_ace.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/systemace.h \
+  /opt/LSDK92010513/include/asm/io.h \
+  /opt/LSDK92010513/include/asm/addrspace.h
+cmd_autoscript.o: cmd_autoscript.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/malloc.h \
+  /opt/LSDK92010513/include/hush.h
+cmd_bdinfo.o: cmd_bdinfo.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/net.h
+cmd_bedbug.o: cmd_bedbug.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/linux/ctype.h /opt/LSDK92010513/include/net.h \
+  /opt/LSDK92010513/include/bedbug/type.h \
+  /opt/LSDK92010513/include/bedbug/bedbug.h \
+  /opt/LSDK92010513/include/bedbug/regs.h \
+  /opt/LSDK92010513/include/bedbug/ppc.h
+cmd_bmp.o: cmd_bmp.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/bmp_layout.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/malloc.h
+cmd_boot.o: cmd_boot.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/net.h
+cmd_bootm.o: cmd_bootm.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/watchdog.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/malloc.h \
+  /opt/LSDK92010513/include/zlib.h /opt/LSDK92010513/include/bzlib.h \
+  /opt/LSDK92010513/include/LzmaWrapper.h \
+  /opt/LSDK92010513/include/environment.h /opt/LSDK92010513/include/rtc.h \
+  /opt/LSDK92010513/include/hush.h
+cmd_cache.o: cmd_cache.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_console.o: cmd_console.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/devices.h \
+  /opt/LSDK92010513/include/lists.h
+cmd_custom.o: cmd_custom.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/watchdog.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/environment.h \
+  /opt/LSDK92010513/include/malloc.h /opt/LSDK92010513/include/net.h \
+  /opt/LSDK92010513/include/md5.h
+cmd_date.o: cmd_date.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/rtc.h
+cmd_dcr.o: cmd_dcr.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_diag.o: cmd_diag.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/post.h
+cmd_display.o: cmd_display.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_doc.o: cmd_doc.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/malloc.h \
+  /opt/LSDK92010513/include/asm/io.h \
+  /opt/LSDK92010513/include/asm/addrspace.h
+cmd_dtt.o: cmd_dtt.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_eeprom.o: cmd_eeprom.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/i2c.h
+cmd_elf.o: cmd_elf.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/linux/ctype.h /opt/LSDK92010513/include/net.h \
+  /opt/LSDK92010513/include/elf.h
+cmd_ext2.o: cmd_ext2.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+cmd_fat.o: cmd_fat.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/s_record.h /opt/LSDK92010513/include/net.h \
+  /opt/LSDK92010513/include/ata.h
+cmd_fdc.o: cmd_fdc.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_fdos.o: cmd_fdos.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/fdc.h
+cmd_flash.o: cmd_flash.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_fpga.o: cmd_fpga.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/net.h \
+  /opt/LSDK92010513/include/fpga.h /opt/LSDK92010513/include/malloc.h
+cmd_i2c.o: cmd_i2c.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/i2c.h
+cmd_ide.o: cmd_ide.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/watchdog.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/ata.h \
+  /opt/LSDK92010513/include/asm/io.h \
+  /opt/LSDK92010513/include/asm/addrspace.h
+cmd_immap.o: cmd_immap.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_itest.o: cmd_itest.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_jffs2.o: cmd_jffs2.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/malloc.h \
+  /opt/LSDK92010513/include/jffs2/jffs2.h \
+  /opt/LSDK92010513/include/jffs2/load_kernel.h \
+  /opt/LSDK92010513/include/linux/list.h \
+  /opt/LSDK92010513/include/linux/ctype.h
+cmd_load.o: cmd_load.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/s_record.h /opt/LSDK92010513/include/net.h \
+  /opt/LSDK92010513/include/exports.h \
+  /opt/LSDK92010513/include/_exports.h \
+  /opt/LSDK92010513/include/xyzModem.h
+cmd_log.o: cmd_log.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/devices.h \
+  /opt/LSDK92010513/include/lists.h /opt/LSDK92010513/include/post.h \
+  /opt/LSDK92010513/include/logbuff.h
+cmd_mem.o: cmd_mem.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_mii.o: cmd_mii.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/miiphy.h \
+  /opt/LSDK92010513/include/net.h
+cmd_misc.o: cmd_misc.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_mmc.o: cmd_mmc.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_nand.o: cmd_nand.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+cmd_net.o: cmd_net.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/net.h
+cmd_nvedit.o: cmd_nvedit.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/environment.h \
+  /opt/LSDK92010513/include/watchdog.h /opt/LSDK92010513/include/serial.h \
+  /opt/LSDK92010513/include/net.h
+cmd_pci.o: cmd_pci.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/asm/processor.h \
+  /opt/LSDK92010513/include/asm/cachectl.h \
+  /opt/LSDK92010513/include/asm/mipsregs.h \
+  /opt/LSDK92010513/include/asm/reg.h /opt/LSDK92010513/include/asm/io.h \
+  /opt/LSDK92010513/include/asm/addrspace.h \
+  /opt/LSDK92010513/include/pci.h /opt/LSDK92010513/include/pci_ids.h
+cmd_pcmcia.o: cmd_pcmcia.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/pcmcia.h \
+  /opt/LSDK92010513/include/asm/io.h \
+  /opt/LSDK92010513/include/asm/addrspace.h
+cmd_portio.o: cmd_portio.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_reginfo.o: cmd_reginfo.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_reiser.o: cmd_reiser.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+cmd_scsi.o: cmd_scsi.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/asm/processor.h \
+  /opt/LSDK92010513/include/asm/cachectl.h \
+  /opt/LSDK92010513/include/asm/mipsregs.h \
+  /opt/LSDK92010513/include/asm/reg.h /opt/LSDK92010513/include/scsi.h \
+  /opt/LSDK92010513/include/pci.h /opt/LSDK92010513/include/pci_ids.h
+cmd_spi.o: cmd_spi.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/spi.h
+cmd_universe.o: cmd_universe.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/malloc.h \
+  /opt/LSDK92010513/include/asm/io.h \
+  /opt/LSDK92010513/include/asm/addrspace.h \
+  /opt/LSDK92010513/include/pci.h /opt/LSDK92010513/include/pci_ids.h \
+  /opt/LSDK92010513/include/universe.h
+cmd_usb.o: cmd_usb.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_vfd.o: cmd_vfd.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_ethreg.o: cmd_ethreg.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+cmd_pll.o: cmd_pll.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/environment.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/ar7240_soc.h \
+  /opt/LSDK92010513/include/ar934x_soc.h \
+  /opt/LSDK92010513/include/asm/addrspace.h
+command.o: command.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h
+console.o: console.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/malloc.h /opt/LSDK92010513/include/console.h \
+  /opt/LSDK92010513/include/devices.h /opt/LSDK92010513/include/lists.h \
+  /opt/LSDK92010513/include/exports.h \
+  /opt/LSDK92010513/include/_exports.h
+devices.o: devices.c /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/malloc.h /opt/LSDK92010513/include/devices.h \
+  /opt/LSDK92010513/include/lists.h /opt/LSDK92010513/include/serial.h
+dlmalloc.o: dlmalloc.c /opt/LSDK92010513/include/malloc.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/common.h /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+docecc.o: docecc.c /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/malloc.h
+environment.o: environment.c /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/environment.h
+env_common.o: env_common.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/environment.h \
+  /opt/LSDK92010513/include/malloc.h
+env_nand.o: env_nand.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+env_dataflash.o: env_dataflash.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+env_flash.o: env_flash.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/environment.h \
+  /opt/LSDK92010513/include/malloc.h
+env_eeprom.o: env_eeprom.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+env_nvram.o: env_nvram.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+env_nowhere.o: env_nowhere.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h
+exports.o: exports.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/exports.h \
+  /opt/LSDK92010513/include/_exports.h
+fpga.o: fpga.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/xilinx.h /opt/LSDK92010513/include/fpga.h \
+  /opt/LSDK92010513/include/altera.h
+ft_build.o: ft_build.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/malloc.h \
+  /opt/LSDK92010513/include/environment.h
+hush.o: hush.c /opt/LSDK92010513/include/malloc.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/linux/ctype.h \
+  /opt/LSDK92010513/include/common.h /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h /opt/LSDK92010513/include/hush.h \
+  /opt/LSDK92010513/include/command.h
+kgdb.o: kgdb.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h /opt/LSDK92010513/include/kgdb.h \
+  /opt/LSDK92010513/include/command.h
+lcd.o: lcd.c /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h /opt/LSDK92010513/include/version.h \
+  /opt/LSDK92010513/include/version_autogenerated.h \
+  /opt/LSDK92010513/include/athversion.h \
+  /opt/LSDK92010513/include/devices.h /opt/LSDK92010513/include/lists.h \
+  /opt/LSDK92010513/include/lcd.h /opt/LSDK92010513/include/watchdog.h
+lists.o: lists.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/malloc.h /opt/LSDK92010513/include/lists.h
+lynxkdi.o: lynxkdi.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/asm/processor.h \
+  /opt/LSDK92010513/include/asm/cachectl.h \
+  /opt/LSDK92010513/include/asm/mipsregs.h \
+  /opt/LSDK92010513/include/asm/reg.h
+memsize.o: memsize.c
+miiphybb.o: miiphybb.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/ioports.h \
+  /opt/LSDK92010513/include/ppc_asm.tmpl
+miiphyutil.o: miiphyutil.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/miiphy.h /opt/LSDK92010513/include/net.h \
+  /opt/LSDK92010513/include/linux/list.h \
+  /opt/LSDK92010513/include/malloc.h
+s_record.o: s_record.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/s_record.h
+serial.o: serial.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/serial.h /opt/LSDK92010513/include/devices.h \
+  /opt/LSDK92010513/include/lists.h
+soft_i2c.o: soft_i2c.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h /opt/LSDK92010513/include/i2c.h
+soft_spi.o: soft_spi.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h /opt/LSDK92010513/include/spi.h
+spartan2.o: spartan2.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/spartan2.h /opt/LSDK92010513/include/xilinx.h \
+  /opt/LSDK92010513/include/fpga.h
+spartan3.o: spartan3.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/spartan3.h /opt/LSDK92010513/include/xilinx.h \
+  /opt/LSDK92010513/include/fpga.h
+usb.o: usb.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/asm/processor.h \
+  /opt/LSDK92010513/include/asm/cachectl.h \
+  /opt/LSDK92010513/include/asm/mipsregs.h \
+  /opt/LSDK92010513/include/asm/reg.h \
+  /opt/LSDK92010513/include/linux/ctype.h
+usb_kbd.o: usb_kbd.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/devices.h /opt/LSDK92010513/include/lists.h
+usb_storage.o: usb_storage.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/command.h \
+  /opt/LSDK92010513/include/asm/processor.h \
+  /opt/LSDK92010513/include/asm/cachectl.h \
+  /opt/LSDK92010513/include/asm/mipsregs.h \
+  /opt/LSDK92010513/include/asm/reg.h
+virtex2.o: virtex2.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/virtex2.h /opt/LSDK92010513/include/xilinx.h \
+  /opt/LSDK92010513/include/fpga.h
+xilinx.o: xilinx.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/virtex2.h /opt/LSDK92010513/include/xilinx.h \
+  /opt/LSDK92010513/include/fpga.h /opt/LSDK92010513/include/spartan2.h \
+  /opt/LSDK92010513/include/spartan3.h
+crc16.o: crc16.c /opt/LSDK92010513/include/crc.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h
+xyzModem.o: xyzModem.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h \
+  /opt/LSDK92010513/include/xyzModem.h /opt/LSDK92010513/include/crc.h
+flash.o: flash.c /opt/LSDK92010513/include/common.h \
+  /opt/LSDK92010513/include/config.h \
+  /opt/LSDK92010513/include/configs/db12x.h \
+  /opt/LSDK92010513/include/configs/ar7240.h \
+  /opt/LSDK92010513/include/cmd_confdefs.h \
+  /opt/LSDK92010513/include/linux/bitops.h \
+  /opt/LSDK92010513/include/asm/bitops.h \
+  /opt/LSDK92010513/include/linux/types.h \
+  /opt/LSDK92010513/include/linux/config.h \
+  /opt/LSDK92010513/include/linux/posix_types.h \
+  /opt/LSDK92010513/include/linux/stddef.h \
+  /opt/LSDK92010513/include/asm/posix_types.h \
+  /opt/LSDK92010513/include/asm/types.h \
+  /opt/LSDK92010513/include/asm/byteorder.h \
+  /opt/LSDK92010513/include/linux/byteorder/big_endian.h \
+  /opt/LSDK92010513/include/linux/byteorder/swab.h \
+  /opt/LSDK92010513/include/linux/byteorder/generic.h \
+  /opt/LSDK92010513/include/asm/sgidefs.h \
+  /opt/LSDK92010513/include/asm/system.h \
+  /opt/LSDK92010513/include/asm/ptrace.h \
+  /opt/LSDK92010513/include/asm/isadep.h \
+  /opt/LSDK92010513/include/linux/string.h \
+  /opt/LSDK92010513/include/asm/string.h \
+  /opt/buildroot-mips-2013.05/usr/lib/gcc/mips-elx-linux-uclibc/4.3.6/include/stdarg.h \
+  /opt/LSDK92010513/include/part.h /opt/LSDK92010513/include/ide.h \
+  /opt/LSDK92010513/include/flash.h /opt/LSDK92010513/include/image.h \
+  /opt/LSDK92010513/include/asm/u-boot.h \
+  /opt/LSDK92010513/include/asm/global_data.h \
+  /opt/LSDK92010513/include/asm/regdef.h

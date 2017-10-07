@@ -31,7 +31,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: compr_rtime.c,v 1.2 2002/01/24 22:58:42 rfeany Exp $
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/fs/jffs2/compr_rtime.c#1 $
  *
  *
  * Very simple lz77-ish encoder.

@@ -76,8 +76,8 @@ void do_bootm_linux (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[],
 	ulong len = 0, checksum;
 	ulong initrd_start, initrd_end;
 	ulong data;
-#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
-	int flash_size_mbytes;
+#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240)
+    int flash_size_mbytes;
 	void (*theKernel) (int, char **, char **, int);
 #else
 	void (*theKernel) (int, char **, char **, int *);
@@ -86,7 +86,8 @@ void do_bootm_linux (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[],
 	char *commandline = getenv ("bootargs");
 	char env_buf[12];
 
-#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
+
+#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240)
 	theKernel =
 		(void (*)(int, char **, char **, int)) ntohl (hdr->ih_ep);
 #else
@@ -238,16 +239,13 @@ void do_bootm_linux (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[],
 	/* we assume that the kernel is in place */
 	printf ("\nStarting kernel ...\n\n");
 
-#if defined(CONFIG_ATH_SPI_CS1_GPIO) || defined(ATH_DUAL_NOR)
-	flash_select(0);
-#endif
-
-#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
 #ifdef CONFIG_WASP_SUPPORT
 	wasp_set_cca();
 #endif
-	/* Pass the flash size as expected by current Linux kernel for AR7100 */
-	flash_size_mbytes = gd->bd->bi_flashsize/(1024 * 1024);
+
+#if defined(CONFIG_AR7100) || defined(CONFIG_AR7240)
+    /* Pass the flash size as expected by current Linux kernel for AR7100 */
+    flash_size_mbytes = gd->bd->bi_flashsize/(1024 * 1024);
 	theKernel (linux_argc, linux_argv, linux_env, flash_size_mbytes);
 #else
 	theKernel (linux_argc, linux_argv, linux_env, 0);
@@ -257,24 +255,21 @@ void do_bootm_linux (cmd_tbl_t * cmdtp, int flag, int argc, char *argv[],
 static void linux_params_init (ulong start, char *line)
 {
 	char *next, *quote, *argp;
-#if defined(CONFIG_AR9100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
 	char memstr[32];
-	int memsize = 0;
-#endif
+
 	linux_argc = 1;
 	linux_argv = (char **) start;
 	linux_argv[0] = 0;
 	argp = (char *) (linux_argv + LINUX_MAX_ARGS);
 
 	next = line;
-#if defined(CONFIG_AR9100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
-	if (line && strstr(line, "mem=")) {
+
+	if (strstr(line, "mem=")) {
 		memstr[0] = 0;
-		memsize = simple_strtoul((strstr(line, "mem=") + 4), NULL, 10);
 	} else {
 		memstr[0] = 1;
 	}
-#endif
+
 	while (line && *line && linux_argc < LINUX_MAX_ARGS) {
 		quote = strchr (line, '"');
 		next = strchr (line, ' ');
@@ -319,7 +314,7 @@ static void linux_params_init (ulong start, char *line)
 		line = next;
 	}
 
-#if defined(CONFIG_AR9100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
+#if defined(CONFIG_AR9100) || defined(CONFIG_AR7100) || defined(CONFIG_AR7240)
 	/* Add mem size to command line */
 	if (memstr[0]) {
 		sprintf(memstr, "mem=%luM", gd->ram_size >> 20);
@@ -327,14 +322,6 @@ static void linux_params_init (ulong start, char *line)
 		linux_argv[linux_argc] = argp;
 		linux_argc++;
 		argp += strlen(memstr) + 1;
-		sprintf(memstr, "%luM", gd->ram_size >> 20);
-	}
-	else {
-		if(memsize > (gd->ram_size >> 20)) {
-			sprintf(memstr, "%luM" , gd->ram_size >> 20);
-		} else {
-			sprintf(memstr, "%luM" , memsize);
-		}
 	}
 #endif
 
@@ -342,10 +329,6 @@ static void linux_params_init (ulong start, char *line)
 	linux_env[0] = 0;
 	linux_env_p = (char *) (linux_env + LINUX_MAX_ENVS);
 	linux_env_idx = 0;
-
-#if defined(CONFIG_AR9100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
-	linux_env_set ("mem", memstr);
-#endif
 }
 
 static void linux_env_set (char *env_name, char *env_val)

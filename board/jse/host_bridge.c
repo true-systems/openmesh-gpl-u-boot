@@ -17,7 +17,7 @@
  *    along with this program; if not, write to the Free Software
  *    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
-#ident "$Id:$"
+#ident "$Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/board/jse/host_bridge.c#1 $"
 
 # include  <common.h>
 # include  <pci.h>

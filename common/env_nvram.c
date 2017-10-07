@@ -60,7 +60,7 @@ env_t *env_ptr = (env_t *)CFG_ENV_ADDR;
 
 char * env_name_spec = "NVRAM";
 
-extern uchar default_environment[];
+extern uchar *default_environment;
 extern int default_environment_size;
 
 extern uchar (*env_get_char)(int);

@@ -130,7 +130,7 @@ int eth_register(struct eth_device* dev)
 
 int eth_initialize(bd_t *bis)
 {
-	char enetvar[32], env_enetaddr[6];
+	unsigned char enetvar[32], env_enetaddr[6];
 	int i, eth_number = 0;
 	char *tmp, *end;
 
@@ -232,13 +232,10 @@ int eth_initialize(bd_t *bis)
 	rtl8169_initialize(bis);
 #endif
 #if defined(CONFIG_AR7100)
-	ag7100_enet_initialize(bis);
+    ag7100_enet_initialize(bis);
 #endif
 #if defined(CONFIG_AR7240)
-	ag7240_enet_initialize(bis);
-#endif
-#if defined(CONFIG_ATHEROS) && !defined(CONFIG_ATH_EMULATION)
-	ath_gmac_enet_initialize(bis);
+    ag7240_enet_initialize(bis);
 #endif
 
 	if (!eth_devices) {
@@ -258,7 +255,7 @@ int eth_initialize(bd_t *bis)
 				puts (" [PRIME]");
 			}
 
-			snprintf(enetvar, sizeof(enetvar), eth_number ? "eth%daddr" : "ethaddr", eth_number);
+			sprintf(enetvar, eth_number ? "eth%daddr" : "ethaddr", eth_number);
 			tmp = getenv (enetvar);
 
 			for (i=0; i<6; i++) {
@@ -267,7 +264,7 @@ int eth_initialize(bd_t *bis)
 					tmp = (*end) ? end+1 : end;
 			}
 
-#if !defined(CONFIG_AR9100) && !defined(CONFIG_AR7240) && !defined(CONFIG_ATHEROS)
+#if !defined(CONFIG_AR9100) && !defined(CONFIG_AR7240)
 			if (memcmp(env_enetaddr, "\0\0\0\0\0\0", 6)) {
 				if (memcmp(dev->enetaddr, "\0\0\0\0\0\0", 6) &&
 				    memcmp(dev->enetaddr, env_enetaddr, 6))

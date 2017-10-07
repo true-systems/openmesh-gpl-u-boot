@@ -16,7 +16,7 @@
  *
  * Interface to generic NAND code for M-Systems DiskOnChip devices
  *
- * $Id: diskonchip.c,v 1.45 2005/01/05 18:05:14 dwmw2 Exp $
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/drivers/nand/diskonchip.c#1 $
  */
 
 #include <common.h>

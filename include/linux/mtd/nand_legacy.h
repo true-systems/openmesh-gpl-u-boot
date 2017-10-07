@@ -5,7 +5,7 @@
  *                     Steven J. Hill <sjhill@cotw.com>
  *		       Thomas Gleixner <gleixner@autronix.de>
  *
- * $Id: nand.h,v 1.7 2003/07/24 23:30:46 a0384864 Exp $
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/linux/mtd/nand_legacy.h#1 $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

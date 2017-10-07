@@ -1,19 +1,16 @@
-/*
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
+/*****************************************************************************/
+/*! file ap93_pci.c
+** /brief PCI support for AP91/93 board
+**
+**  This provides the support code required for PCI support on the AP91/93
+**  board in the U-Boot environment.  This board is a Python based system
+**  with a Merlin WLAN interface.  This file also contains the support
+**  for initialization of the Merlin radios on the PCi bus, required for
+**  pre-configuration for use by Linux.
+**
+**  Copyright (c) 2008 Atheros Communications Inc.  All rights reserved.
+**
+*/
 
 #include <common.h>
 #include <command.h>
@@ -353,22 +350,6 @@ void pci_init_board (void)
 		pci_udelay(10000);
 		ar7240_reg_rmw_clear(AR934X_PCIE_PLL_CONFIG, PCIE_PLL_CONFIG_BYPASS_SET(1));
 		pci_udelay(10000);
-
-		/*
-		 * PCIe Dithering configuration
-		 */
-		if (is_ar934x_12_or_later()) {
-			ar7240_reg_wr_nf(PCIe_DPLL2_ADDRESS,
-					PCIe_DPLL2_LOCAL_PLL_SET(0) | 
-					PCIe_DPLL2_KI_SET(0x4)| 
-					PCIe_DPLL2_KD_SET(0x40));
-			ar7240_reg_wr_nf(AR934X_PCIE_PLL_CONFIG, 0x40010800);
-			ar7240_reg_wr_nf(AR934X_PCIE_PLL_DITHER_DIV_MAX, 0xc013fffe);
-			ar7240_reg_wr_nf(AR934X_PCIE_PLL_DITHER_DIV_MIN, 0x0013e666);
-
-			ar7240_reg_wr_nf(AR934X_PCIE_PLL_CONFIG, 0x00010800);  
-			ar7240_reg_wr_nf(AR934X_PCIE_PLL_CONFIG, 0x00000800);  
-		}
 
 		//run_command("md 0xb8116c00 4", 0);
 	}

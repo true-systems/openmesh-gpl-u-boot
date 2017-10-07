@@ -1,19 +1,27 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
+/*
+ *  Startup Code for MIPS32 CPU-core
+ *
+ *  Copyright (c) 2003	Wolfgang Denk <wd@denx.de>
+ *
+ * See file CREDITS for list of people who contributed to this
+ * project.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307 USA
  */
+
 
 #include <config.h>
 #include <version.h>
@@ -43,38 +51,41 @@ hornet_ddr_init:
 
     // DDR1 Paramters
 
-    //D.S 0xB8000010 %LONG 0x8           ;      // precharge
+    //D.S 0xB8000010 %LONG 0x8           ;      // Precharge All
     li t8,0x8;
     set_mem(0xB8000010,t8);
+    
+    //D.S 0xB800000C %LONG 0x2           ;      // Enable DLL, Weak Drive Strength
+    //D.S 0xB8000010 %LONG 0x2           ;      // Extended Mode Register Set (EMRS)
+    li t8, 0x2;
+    set_mem(0xB800000C , t8);
+    li t8, 0x2;
+    set_mem(0xB8000010, t8);    
 
-    //D.S 0xB8000008 %LONG 0x133         ;
+    //D.S 0xB8000008 %LONG 0x133         ;      // Reset DLL, CAS Latency 3, Burst Length 8
+    //D.S 0xB8000010 %LONG 0x1           ;      // Mode Register Set (MRS)
     li t8,CFG_DDR_MODE_VAL_INIT;
     set_mem(0xB8000008,t8);
-
-    //D.S 0xB8000010 %LONG 0x1           ;      // Write Mode Word in DDR
     li t8, 0x1;
-    set_mem( 0xB8000010, t8);
-    
-    //D.S 0xB800000C %LONG 0x2           ;      // Enable DLL, High drive strength from DDR
-    li t8, 0x2;
-    set_mem( 0xB800000C , t8);
-
-    //D.S 0xB8000010 %LONG 0x2           ;      // Write Extended Mode Word of DDR
-    li t8, 0x2;
-    set_mem( 0xB8000010, t8);
-
-    //D.S 0xB8000010 %LONG 0x8           ;      // precharge enabled
+    set_mem(0xB8000010, t8);    
+ 
+    //D.S 0xB8000010 %LONG 0x8           ;      // Precharge All
+    //D.S 0xB8000010 %LONG 0x4           ;      // Auto Refresh
+    //D.S 0xB8000010 %LONG 0x4           ;      // Auto Refresh
     li t8, 0x8;
-    set_mem( 0xB8000010, t8);
-
-    // D.S 0xB8000008 %LONG 0x33          ;      // dll out of reset CAS Latency 3
+    set_mem(0xB8000010, t8);
+    li t8, 0x4;
+    set_mem(0xB8000010, t8);
+    li t8, 0x4;
+    set_mem(0xB8000010, t8);
+ 
+    //D.S 0xB8000008 %LONG 0x33          ;      // CAS Latency 3, Burst Length 8
+    //D.S 0xB8000010 %LONG 0x1           ;      // Mode Register Set (MRS)
     li t8, CFG_DDR_MODE_VAL;
     set_mem( 0xB8000008, t8);
-
-    //D.S 0xB8000010 %LONG 0x1           ;      // write mode word
     li t8, 0x1;
     set_mem( 0xB8000010, t8);
-
+ 
     //D.S 0xB8000014 %LONG 0x4186/0x4270 ;      // Refresh control. Bit 14 is enable. Bits<13:0> Refresh time
     li t8, CFG_DDR_REFRESH_VAL;
     set_mem( 0xB8000014, t8);

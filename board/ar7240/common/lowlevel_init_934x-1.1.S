@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <config.h>
 #include <version.h>
 #include <asm/regdef.h>
@@ -220,53 +203,24 @@ srif_set:
 	and	t6,	t7,	t6
 	beq	zero,	t6,	1f
 	nop
-#if !defined(CONFIG_AP123)
-	/*		refdiv		nint		nfrac */
+
 #if cpu_from_srif
-	li	t4,	((0x8 << 27) | (112 << 18) | 0);// cpu freq = (40 MHz refclk/refdiv 8) * Nint
+	li	t4,	CPU_DPLL_40
 #endif
 #if ddr_from_srif
-#ifdef CONFIG_ATH_NAND_SUPPORT
-	li	t5,	((0x8 << 27) | (160 << 18) | 0);// ddr freq = (40 MHz refclk/refdiv 8) * Nint
-#else
-	li	t5,	((0x8 << 27) | (90 << 18) | 0);	// ddr freq = (40 MHz refclk/refdiv 8) * Nint
-#endif /* CONFIG_ATH_NAND_SUPPORT */
+	li	t5,	DDR_DPLL_40
 #endif
 	j	2f
 	nop
 1:
 #if cpu_from_srif
-	li	t4,	((0x5 << 27) | (112 << 18) | 0);// cpu freq = (25 MHz refclk/refdiv 5) * Nint
+	li	t4,	CPU_DPLL_25
 #endif
 #if ddr_from_srif
-#ifdef CONFIG_ATH_NAND_SUPPORT
-	li	t5,	((0x5 << 27) | (160 << 18) | 0);// ddr freq = (25 MHz refclk/refdiv 5) * Nint
-#else
-	li	t5,	((0x5 << 27) | (90 << 18) | 0);	// ddr freq = (25 MHz refclk/refdiv 5) * Nint
-#endif /* CONFIG_ATH_NAND_SUPPORT */
+	li	t5,	DDR_DPLL_25
 #endif
 	j	2f
 	nop
-#else	/* defined(CONFIG_AP123) */
-	/*		refdiv		nint		nfrac */
-#if cpu_from_srif
-	li	t4,	((0x8 << 27) | (107 << 18) | 0);// cpu freq = (40 MHz refclk/refdiv 8) * Nint
-#endif
-#if ddr_from_srif
-	li	t5,	((0x8 << 27) | (160 << 18) | 0);// ddr freq = (40 MHz refclk/refdiv 8) * Nint
-#endif
-	j	2f
-	nop
-1:
-#if cpu_from_srif
-	li	t4,	((0x5 << 27) | (107 << 18) | 0);// cpu freq = (25 MHz refclk/refdiv 5) * Nint
-#endif
-#if ddr_from_srif
-	li	t5,	((0x5 << 27) | (160 << 18) | 0);// ddr freq = (25 MHz refclk/refdiv 5) * Nint
-#endif
-	j	2f
-	nop
-#endif	/* !defined(CONFIG_AP123) */
 
 read_srif_from_flash:
 	li	t7,	SRIF_PLL_CONFIG_VAL_F + 4
@@ -286,11 +240,11 @@ cpu_pll_is_not_locked:
 	inc_loop_count(ATH_CPU_COUNT_LOC);
 
 #if cpu_from_srif
-	set_srif_pll(0xb81161c4, (0x4 << 26) | (0x10 << 19) | (0x1e << 7) | (1 << 16));
-	set_srif_pll_reg(0xb81161c0, t4);
-	set_srif_pll(0xb81161c4, (0x3 << 30) | (0x4 << 26) | (0x10 << 19) | (0x1e << 7) | (1 << 16));
-	set_srif_pll(0xb81161c8, (6 << 23));
-	set_srif_pll(0xb81161c4, (0x3 << 30) | (0x4 << 26) | (0x10 << 19) | (0x1e << 7));
+	set_srif_pll(CPU_DPLL2_ADDRESS, CPU_DPLL2_INIT);
+	set_srif_pll_reg(CPU_DPLL_ADDRESS, t4);
+	set_srif_pll(CPU_DPLL2_ADDRESS, CPU_DPLL2_VAL_PWD);
+	set_srif_pll(CPU_DPLL3_ADDRESS, CPU_DPLL3_PHASE_SHIFT_SET(6));
+	set_srif_pll(CPU_DPLL2_ADDRESS, CPU_DPLL2_VAL);
 
 cpu_clear_do_meas1:
 	li	t7,	KSEG1ADDR(CPU_DPLL3_ADDRESS)
@@ -330,7 +284,6 @@ cpu_read_sqsum_dvc:
 	subu	t8,	t8,	t9
 	bgez	t8,	cpu_pll_is_not_locked
 	nop
-
 #endif
 
 	/* DDR */
@@ -342,26 +295,11 @@ ddr_pll_is_not_locked:
 
 	inc_loop_count(ATH_DDR_COUNT_LOC)
 
-#if defined(CONFIG_ATH_NAND_SUPPORT)
-	set_srif_pll(0xb8116244, (0x4 << 26) | (0x10 << 19) | (1 << 13) | (0x1e << 7) | (1 << 16));
-	set_srif_pll_reg(0xb8116240, t5);
-	set_srif_pll(0xb8116244, (0x1 << 30) | (0x4 << 26) | (0x10 << 19) | (1 << 13) | (0x1e << 7) | (1 << 16));
-	set_srif_pll(0xb8116248, (6 << 23));
-	set_srif_pll(0xb8116244, (0x1 << 30) | (0x4 << 26) | (0x10 << 19) | (1 << 13) | (0x1e << 7));
-#elif !defined(CONFIG_AP123)
-	set_srif_pll(0xb8116244, (0x4 << 26) | (0x10 << 19) | (0x1e << 7) | (1 << 16));
-	set_srif_pll_reg(0xb8116240, t5);
-	set_srif_pll(0xb8116244, (0x3 << 30) | (0x4 << 26) | (0x10 << 19) | (0x1e << 7) | (1 << 16));
-	set_srif_pll(0xb8116248, (6 << 23));
-	set_srif_pll(0xb8116244, (0x3 << 30) | (0x4 << 26) | (0x10 << 19) | (0x1e << 7));
-#else /* defined(CONFIG_AP123) */
-	/* AP123 uses outdiv = 1 for ddr pll */
-	set_srif_pll(0xb8116244, (0x4 << 26) | (0x10 << 19) | (1 << 13) | (0x1e << 7) | (1 << 16));
-	set_srif_pll_reg(0xb8116240, t5);
-	set_srif_pll(0xb8116244, (0x1 << 30) | (0x4 << 26) | (0x10 << 19) | (1 << 13) | (0x1e << 7) | (1 << 16));
-	set_srif_pll(0xb8116248, (6 << 23));
-	set_srif_pll(0xb8116244, (0x1 << 30) | (0x4 << 26) | (0x10 << 19) | (1 << 13) | (0x1e << 7));
-#endif /* !defined(CONFIG_AP123) */
+	set_srif_pll(DDR_DPLL2_ADDRESS, DDR_DPLL2_INIT);
+	set_srif_pll_reg(DDR_DPLL_ADDRESS, t5);
+	set_srif_pll(DDR_DPLL2_ADDRESS, DDR_DPLL2_VAL_PWD);
+	set_srif_pll(DDR_DPLL3_ADDRESS, DDR_DPLL3_PHASE_SHIFT_SET(6));
+	set_srif_pll(DDR_DPLL2_ADDRESS, DDR_DPLL2_VAL);
 
 ddr_clear_do_meas1:
 	li	t7,	KSEG1ADDR(DDR_DPLL3_ADDRESS)
@@ -419,4 +357,3 @@ cpu_pll_dither_unset:
 
 	jr ra
 	nop
-

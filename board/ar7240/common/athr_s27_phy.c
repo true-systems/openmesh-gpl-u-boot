@@ -1,18 +1,10 @@
+
 /*
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
+ * This file is subject to the terms and conditions of the GNU General Public
+ * License.  See the file "COPYING" in the main directory of this archive
+ * for more details.
+ *
+ * Copyright © 2007 Atheros Communications, Inc.,  All Rights Reserved.
  */
 
 /*
@@ -117,7 +109,7 @@ static athrPhyInfo_t athrPhyInfo[] = {
 
     {TRUE,  /* port 5 -- WAN Port 5 */
      FALSE,
-     ENET_UNIT_WAN,
+     ENET_UNIT_LAN,
      0,
      ATHR_PHY4_ADDR,
      ATHR_LAN_PORT_VLAN    /* Send to all ports */
@@ -478,22 +470,6 @@ athrs27_phy_setup(int ethUnit)
 
             sysMsDelay(150);
         }
-        /* extend the cable length */
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_ADDRESS, 0x14);
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_DATA, 0xf52);
-
-       /* Force Class A setting phys */
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_ADDRESS, 4);
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_DATA, 0xebbb);
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_ADDRESS, 5);
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_DATA, 0x2c47);
-
-        /* fine-tune PHYs */
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_ADDRESS, 0x3c);
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_DATA, 0x1c1);
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_ADDRESS, 0x37);
-        s27_wr_phy(phyUnit, ATHR_DEBUG_PORT_DATA, 0xd600);
-
 
 #ifdef S27_VER_1_0
         /* turn off power saving */

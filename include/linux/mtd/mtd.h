@@ -1,4 +1,5 @@
 /*
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/linux/mtd/mtd.h#1 $
  *
  * Copyright (C) 1999-2003 David Woodhouse <dwmw2@infradead.org> et al.
  *
