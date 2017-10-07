@@ -37,7 +37,7 @@ extern int read_dataflash (unsigned long addr, unsigned long size, char
 extern int write_dataflash (unsigned long addr_dest, unsigned long addr_src,
 		     unsigned long size);
 extern int AT91F_DataflashInit (void);
-extern uchar default_environment[];
+extern uchar *default_environment;
 /* extern int default_environment_size; */
 
 

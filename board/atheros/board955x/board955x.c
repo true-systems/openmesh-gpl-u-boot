@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <common.h>
 #include <command.h>
 #include <asm/mipsregs.h>
@@ -97,7 +80,6 @@ ath_usb2_initial_config(void)
 	udelay(10);
 }
 
-
 void ath_gpio_config(void)
 {
 	/* disable the CLK_OBS on GPIO_4 and set GPIO4 as input */
@@ -106,10 +88,17 @@ void ath_gpio_config(void)
 	ath_reg_rmw_set(GPIO_OUT_FUNCTION1_ADDRESS, GPIO_OUT_FUNCTION1_ENABLE_GPIO_4_SET(0x80));
 	ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 4));
 	/* Set GPIO 13 as input for LED functionality to be OFF during bootup */
-	ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 13));
+//	ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 13));
 	/* Turn off JUMPST_LED and 5Gz LED during bootup */
 	ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 15));
-	ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 12));
+	ath_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 17));	//	Reset button(SWRST)
+
+	ath_reg_rmw_set(GPIO_OUT_ADDRESS, (1 << 12));
+	ath_reg_rmw_set(GPIO_OUT_ADDRESS, (1 << 13));
+	ath_reg_rmw_set(GPIO_OUT_ADDRESS, (1 << 19));
+	ath_reg_rmw_set(GPIO_OUT_ADDRESS, (1 << 23));
+#ifdef CONFIG_GPIO_CUSTOM
+#endif
 }
 
 int
@@ -155,6 +144,73 @@ long int initdram(int board_type)
 
 int	checkboard(args)
 {
-	board_str(CONFIG_BOARD_NAME);
+	board_str(BOARD_NAME" (ar955x) U-boot\n");
+
 	return 0;
 }
+
+void hw_watchdog_reset (void)
+{
+    if ((ath_reg_rd (GPIO_OUT_ADDRESS) & (1 << 17)) == 0) {
+        ath_reg_rmw_set (GPIO_OUT_ADDRESS, (1 << 17));
+    }
+    else {
+        ath_reg_rmw_clear (GPIO_OUT_ADDRESS, (1 << 17));
+    }
+}
+
+#ifdef CONFIG_GPIO_CUSTOM
+//	0 : detect button press
+//	reset button
+int gpio_custom (int opcode)
+{
+	int rcode = 0;
+	static int cmd = -1;
+
+	switch (opcode) {
+		case 0:
+			if (0) {
+				cmd = 0;
+			}
+			else {
+				cmd = -1;
+			}
+			rcode = cmd >= 0;
+			break;
+		case 1:
+			switch (cmd) {
+				case 0:
+				{
+					char key[] = "netretry", *val = NULL, *s = NULL;
+					int i = -1;
+
+					if ((s = getenv (key)) != NULL && (val = malloc (strlen (s) + 1)) != NULL) {
+						strcpy (val, s);
+					}
+					setenv (key, "no");
+					s = "boot 0";
+					for (i = 3; i-- > 0 && run_command (s, 0) == -1;) {
+						printf ("Retry%s\n", i > 0? "...": " count exceeded!");
+						if (i <= 0) {
+							run_command ("boot", 0);
+						}
+					}
+					if (val != NULL) {
+						setenv (key, val);
+					}
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+			cmd = -1;
+			break;
+		default:
+			break;
+	}
+
+	return rcode;
+}
+#endif

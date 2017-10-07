@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA 02111-1307 USA
  *
- * MODULE:        $Id:$
+ * MODULE:        $Id: //depot/sw/releases/9.5.3/boot/u-boot/drivers/s3c4510b_eth.h#1 $
  * Description:   Ethernet interface
  * Runtime Env:   ARM7TDMI
  * Change History:

@@ -130,7 +130,7 @@ int eth_register(struct eth_device* dev)
 
 int eth_initialize(bd_t *bis)
 {
-	char enetvar[32], env_enetaddr[6];
+	unsigned char enetvar[32], env_enetaddr[6];
 	int i, eth_number = 0;
 	char *tmp, *end;
 
@@ -258,7 +258,7 @@ int eth_initialize(bd_t *bis)
 				puts (" [PRIME]");
 			}
 
-			snprintf(enetvar, sizeof(enetvar), eth_number ? "eth%daddr" : "ethaddr", eth_number);
+			sprintf(enetvar, eth_number ? "eth%daddr" : "ethaddr", eth_number);
 			tmp = getenv (enetvar);
 
 			for (i=0; i<6; i++) {

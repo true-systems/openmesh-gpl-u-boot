@@ -1,23 +1,6 @@
 /*
  * vim: tabstop=8 : noexpandtab
  */
-
-/* 
- * Copyright (c) 2013 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
-
 #ifndef _ATHEROS_H
 #define _ATHEROS_H
 
@@ -40,12 +23,6 @@
 
 #define is_qca955x()	(0)
 #define is_sco()	(0)
-
-#define is_qca953x()	(0)
-#define is_hb()		(0)
-
-#define is_qca956x()	(0)
-#define is_qcn550x()	(0)
 
 #define ATH_CONSOLE_BAUD	115200
 
@@ -83,19 +60,14 @@
 #define is_ar8033() 1
 #else
 #define is_ar8033() 0
-#endif
+#endif 
 
 #ifdef CONFIG_VIR_PHY
-#define is_vir_phy()	1
+#define is_vir_phy()	1 
 #else
 #define is_vir_phy() 	0
 #endif
 
-#ifdef CFG_ATHRS27_PHY
-#define is_s27()        1
-#else
-#define is_s27()        0
-#endif
 
 #define ath_arch_init_irq() /* nothing */
 
@@ -165,19 +137,6 @@ typedef unsigned int ath_reg_t;
 #define CFG_PLL_720_600_300	0x05
 #define CFG_PLL_400_400_200	0x06
 #define CFG_PLL_560_450_220	0x07
-#define CFG_PLL_550_400_200	0x08
-#define CFG_PLL_550_600_200	0x09
-#define CFG_PLL_600_600_200	0x0a
-#define CFG_PLL_750_400_250	0x0b
-#define CFG_PLL_800_400_266	0x0c
-#define CFG_PLL_750_667_250	0x0d
-#define CFG_PLL_800_600_266	0x0e
-#define CFG_PLL_800_667_266	0x0f
-#define CFG_PLL_810_700_270	0x10
-#define CFG_PLL_810_666_270	0x11
-#define CFG_PLL_775_650_258	0x12
-#define CFG_PLL_650_400_200	0x13
-#define CFG_PLL_650_600_200	0x14
 
 #define UBOOT_SIZE                      (256 * 1024)
 #define PLL_FLASH_ADDR                  (CFG_FLASH_BASE + UBOOT_SIZE)
@@ -196,12 +155,6 @@ typedef unsigned int ath_reg_t;
 #	include <934x.h>
 #elif defined(CONFIG_MACH_QCA955x)
 #	include <955x.h>
-#elif defined(CONFIG_MACH_QCA953x)
-#	include <953x.h>
-#elif defined(CONFIG_MACH_QCA956x)
-#	include <956x.h>
-#elif defined(CONFIG_MACH_QCN550x)
-#	include <550x.h>
 #else
 #	error "Building U-Boot for unknown device"
 #endif

@@ -82,6 +82,10 @@ int do_mdm_init = 0;
 extern void mdm_init(void); /* defined in board.c */
 #endif
 
+#ifdef CONFIG_GPIO_CUSTOM
+extern int gpio_custom(int opcode);
+#endif
+
 /***************************************************************************
  * Watch for 'delay' seconds for autoboot stop or autoboot delay string.
  * returns: 0 -  no key string, allow autoboot
@@ -162,6 +166,13 @@ static __inline__ int abortboot(int bootdelay)
 	 */
 	while (!abort && get_ticks() <= etime) {
 		for (i = 0; i < sizeof(delaykey) / sizeof(delaykey[0]); i ++) {
+#ifdef CONFIG_GPIO_CUSTOM
+			if (gpio_custom(0)) {
+				abort  = 1;
+				break;
+			}
+			else 
+#endif
 			if (delaykey[i].len > 0 &&
 			    presskey_len >= delaykey[i].len &&
 			    memcmp (presskey + presskey_len - delaykey[i].len,
@@ -209,6 +220,10 @@ static __inline__ int abortboot(int bootdelay)
 	}
 #endif
 
+#ifdef CONFIG_GPIO_CUSTOM
+	gpio_custom(1);
+#endif
+
 	return abort;
 }
 
@@ -242,6 +257,13 @@ static __inline__ int abortboot(int bootdelay)
 	 * Don't check if bootdelay < 0
 	 */
 	if (bootdelay >= 0) {
+#ifdef CONFIG_GPIO_CUSTOM
+		if (gpio_custom(0)) {
+			puts ("\b\b\b 0");
+			abort = 1; 	/* don't auto boot	*/
+		}
+		else 
+#endif
 		if (tstc()) {	/* we got a key press	*/
 			(void) getc();  /* consume input	*/
 			puts ("\b\b\b 0");
@@ -256,6 +278,14 @@ static __inline__ int abortboot(int bootdelay)
 		--bootdelay;
 		/* delay 100 * 10ms */
 		for (i=0; !abort && i<100; ++i) {
+#ifdef CONFIG_GPIO_CUSTOM
+			if (gpio_custom(0)) {
+				abort  = 1;	/* don't auto boot	*/
+				bootdelay = 0;	/* no more delay	*/
+				break;
+			}
+			else 
+#endif
 			if (tstc()) {	/* we got a key press	*/
 				abort  = 1;	/* don't auto boot	*/
 				bootdelay = 0;	/* no more delay	*/
@@ -283,6 +313,10 @@ static __inline__ int abortboot(int bootdelay)
 		console_assign (stdout, "nulldev");
 		console_assign (stderr, "nulldev");
 	}
+#endif
+
+#ifdef CONFIG_GPIO_CUSTOM
+	gpio_custom(1);
 #endif
 
 	return abort;
@@ -325,6 +359,34 @@ void main_loop (void)
 #endif
 	trab_vfd (bmp);
 #endif	/* CONFIG_VFD && VFD_TEST_LOGO */
+
+#if defined(BOARDCAL) && (defined(CFG_AG7100_NMACS) || defined(CFG_AG7240_NMACS) || defined(CFG_ATH_GMAC_NMACS))
+	{
+		int i = -1, 
+#ifdef CFG_AG7100_NMACS
+			j = CFG_AG7100_NMACS;
+#else
+#ifdef CFG_AG7240_NMACS
+			j = CFG_AG7240_NMACS;
+#else
+			j = CFG_ATH_GMAC_NMACS;
+#endif
+#endif
+		while (++i < j) {
+			unsigned char *e = (unsigned char *)BOARDCAL + i * 6;
+
+			if(memcmp (e, "\x00\x00\x00\x00\x00\x00", 6) != 0 && 
+				memcmp (e, "\xff\xff\xff\xff\xff\xff", 6) != 0) {
+				char key[16], val[18];
+
+				sprintf (key, "eth%daddr", i);
+				sprintf (val, "%02x:%02x:%02x:%02x:%02x:%02x", 
+					*(e + 0), *(e + 1), *(e + 2), *(e + 3), *(e + 4), *(e + 5));
+				setenv (i > 0? key: "ethaddr", val);
+			}
+		}
+	}
+#endif /* BOARDCAL && (CFG_AG7100_NMACS || CFG_AG7240_NMACS || CFG_ATH_GMAC_NMACS) */
 
 #ifdef CONFIG_BOOTCOUNT_LIMIT
 	bootcount = bootcount_load();
@@ -422,6 +484,8 @@ void main_loop (void)
 //	debug ("### main_loop: bootcmd=\"%s\"\n", s ? s : "<UNDEFINED>");
 
 	if (bootdelay >= 0 && s && !abortboot (bootdelay)) {
+		if (getenv ("failsafe_boot") != NULL && run_command ("datachk vmlinux,rootfs", 0) == -1)
+			run_command ("run failsafe_boot", 0);
 # ifdef CONFIG_AUTOBOOT_KEYED
 		int prev = disable_ctrlc(1);	/* disable Control C checking */
 # endif

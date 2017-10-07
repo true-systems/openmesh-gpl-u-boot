@@ -1,19 +1,9 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
+// ----------------------------------
+// S17 Initialization
+// author : subha@atheros.com
+// adapted: Abishek Goda <Abishek.Goda at atheros dot com>
+// ----------------------------------
+
 //#include <prototypes.h>
 //#include <gmac_defines.h>
 #include <config.h>
@@ -273,8 +263,6 @@ void init_s17_lpbk(void)
 #ifdef DEBUG
     printf("s17 phy0 register value 0x%08x\n", rddata);
 #endif
-
-#ifndef CONFIG_MACH_QCA955x
     // power down other phys
 #ifdef ATH_S17_MAC0_SGMII
     phy_reg_write(0, 0x0, 0x0, 0x8800);
@@ -284,7 +272,6 @@ void init_s17_lpbk(void)
     phy_reg_write(0, 0x1, 0x0, 0x8800);
     phy_reg_write(0, 0x2, 0x0, 0x8800);
     phy_reg_write(0, 0x3, 0x0, 0x8800);
-#endif
     /* For 100M waveform */
     phy_reg_write(0, phyAddr, 0x1d, 0x18);
     phy_reg_write(0, phyAddr, 0x1e, 0x02ea);

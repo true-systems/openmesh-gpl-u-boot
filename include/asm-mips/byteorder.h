@@ -1,4 +1,4 @@
-/* $Id: byteorder.h,v 1.8 1998/11/02 09:29:32 ralf Exp $
+/* $Id: //depot/sw/releases/9.5.3/boot/u-boot/include/asm-mips/byteorder.h#1 $
  *
  * This file is subject to the terms and conditions of the GNU General Public
  * License.  See the file "COPYING" in the main directory of this archive

@@ -1,7 +1,7 @@
 /*
 -------------------------------------------------------------------------
  * Filename:      jffs2.c
- * Version:       $Id: jffs2_1pass.c,v 1.7 2002/01/25 01:56:47 nyet Exp $
+ * Version:       $Id: //depot/sw/releases/9.5.3/boot/u-boot/fs/jffs2/jffs2_1pass.c#1 $
  * Copyright:     Copyright (C) 2001, Russ Dill
  * Author:        Russ Dill <Russ.Dill@asu.edu>
  * Description:   Module to load kernel from jffs2
@@ -42,7 +42,7 @@
  * provisions above, a recipient may use your version of this file
  * under either the RHEPL or the GPL.
  *
- * $Id: jffs2_1pass.c,v 1.7 2002/01/25 01:56:47 nyet Exp $
+ * $Id: //depot/sw/releases/9.5.3/boot/u-boot/fs/jffs2/jffs2_1pass.c#1 $
  *
  */
 

@@ -45,10 +45,8 @@ extern int timer_init(void);
 
 extern int incaip_set_cpuclk(void);
 
-#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x)
 void ath_set_tuning_caps(void);
-#else
-#define ath_set_tuning_caps()	/* nothing */
 #endif
 
 
@@ -57,8 +55,13 @@ extern ulong uboot_end;
 
 ulong monitor_flash_len;
 
+#ifdef BUILD_VERSION
+const char version_string[] =
+        U_BOOT_VERSION" (Build from LSDK-" BUILD_VERSION " at " __DATE__ " - " __TIME__ ")";
+#else
 const char version_string[] =
 	U_BOOT_VERSION" (" __DATE__ " - " __TIME__ ")";
+#endif        
 
 static char *failed = "*** failed ***\n";
 
@@ -328,11 +331,7 @@ void board_init_r (gd_t *id, ulong dest_addr)
 	extern char * env_name_spec;
 #endif
 #ifdef CONFIG_ATH_NAND_SUPPORT
-#ifdef ATH_SPI_NAND
-	extern ulong ath_spi_nand_init(void);
-#else
 	extern ulong ath_nand_init(void);
-#endif
 #endif
 	char *s, *e;
 	bd_t *bd;
@@ -457,14 +456,12 @@ void board_init_r (gd_t *id, ulong dest_addr)
 #endif
 
 #if defined(CONFIG_ATH_NAND_SUPPORT) && !defined(CONFIG_ATH_NAND_BR)
-#ifdef ATH_SPI_NAND
-	ath_spi_nand_init();
-#else
- 	ath_nand_init();
-#endif
+	ath_nand_init();
 #endif
 
+#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x)
         ath_set_tuning_caps(); /* Needed here not to mess with Ethernet clocks */
+#endif
 
 	/* main_loop() can return to retry autoboot, if so just run it again. */
 	for (;;) {

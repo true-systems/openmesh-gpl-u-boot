@@ -3,7 +3,7 @@
  * Copyright (C) 2004 by FS Forth-Systeme GmbH.
  * All rights reserved.
  *
- * $Id: ns9750_serial.c,v 1.1 2004/02/16 10:37:20 mpietrek Exp $
+ * $Id: //depot/sw/releases/9.5.3/boot/u-boot/drivers/ns9750_serial.c#1 $
  * @Author: Markus Pietrek
  * @Descr: Serial driver for the NS9750. Only one UART is supported yet.
  * @References: [1] NS9750 Hardware Reference/December 2003

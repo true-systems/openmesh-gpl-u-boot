@@ -1,17 +1,3 @@
-/*
- * Copyright (c) 2013 The Linux Foundation. All rights reserved.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 and
- * only version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- */
-
 #include <common.h>
 #include <jffs2/jffs2.h>
 #include <asm/addrspace.h>
@@ -22,11 +8,6 @@
 #if !defined(ATH_DUAL_FLASH)
 #	define	ath_spi_flash_print_info	flash_print_info
 #endif
-
-#define ATH_16M_FLASH_SIZE		0x1000000
-#define ATH_GET_EXT_3BS(addr)		((addr) % ATH_16M_FLASH_SIZE)
-#define ATH_GET_EXT_4B(addr)		((addr) >> 24)
-
 
 /*
  * globals
@@ -42,27 +23,6 @@ static void ath_spi_poll(void);
 static void ath_spi_write_page(uint32_t addr, uint8_t * data, int len);
 #endif
 static void ath_spi_sector_erase(uint32_t addr);
-
-#if defined(ATH_DUAL_NOR)
-static void ath_spi_enter_ext_addr(u8 addr)
-{
-	ath_spi_write_enable();
-	ath_reg_wr_nf(ATH_SPI_WRITE, ATH_SPI_CS_DIS);
-	ath_spi_bit_banger(ATH_SPI_CMD_WR_EXT);
-	ath_spi_bit_banger(addr);
-	ath_spi_go();
-	ath_spi_poll();
-}
-
-static void ath_spi_exit_ext_addr(int ext)
-{
-	if (ext)
-		ath_spi_enter_ext_addr(0);
-}
-#else
-#define ath_spi_enter_ext_addr(addr)
-#define ath_spi_exit_ext_addr(ext)
-#endif
 
 static void
 ath_spi_read_id(void)
@@ -94,122 +54,9 @@ void ath_spi_flash_unblock(void)
 }
 #endif
 
-#if  defined(CONFIG_ATH_SPI_CS1_GPIO)
-
-#define ATH_SPI_CS0_GPIO		5
-
-static void ath_gpio_config_output(int gpio)
-{
-#if defined(CONFIG_MACH_AR934x) || \
-	defined(CONFIG_MACH_QCA955x) || \
-	defined(CONFIG_MACH_QCA953x) || \
-	defined(CONFIG_MACH_QCA956x) || \
-	defined(CONFIG_MACH_QCN550x)
-	ath_reg_rmw_clear(ATH_GPIO_OE, (1 << gpio));
-#else
-	ath_reg_rmw_set(ATH_GPIO_OE, (1 << gpio));
-#endif
-}
-
-static void ath_gpio_set_fn(int gpio, int fn)
-{
-#define gpio_fn_reg(x)  ((x) / 4)
-#define gpio_lsb(x)     (((x) % 4) * 8)
-#define gpio_msb(x)     (gpio_lsb(x) + 7)
-#define gpio_mask(x)    (0xffu << gpio_lsb(x))
-#define gpio_set(x, f)  (((f) & 0xffu) << gpio_lsb(x))
-
-	uint32_t *reg = ((uint32_t *)GPIO_OUT_FUNCTION0_ADDRESS) +
-				gpio_fn_reg(gpio);
-
-	ath_reg_wr(reg, (ath_reg_rd(reg) & ~gpio_mask(gpio)) | gpio_set(gpio, fn));
-}
-
-int ath_spi_flash_get_fn_cs0(void)
-{
-#if CONFIG_MACH_QCA934x
-	return 0x09;
-#elif (CONFIG_MACH_QCA953x || CONFIG_MACH_QCA955x)
-	return 0x09;
-#endif
-	return -1;
-}
-
-int ath_spi_flash_get_fn_cs1(void)
-{
-#if CONFIG_MACH_QCA934x
-	return 0x07;
-#elif (CONFIG_MACH_QCA953x || CONFIG_MACH_QCA955x)
-	return 0x0a;
-#endif
-	return -1;
-}
-
-void ath_spi_flash_enable_cs1(void)
-{
-	int fn = ath_spi_flash_get_fn_cs1();
-
-	if (fn < 0) {
-		printf("Error, enable SPI_CS_1 failed\n");
-		return;
-	}
-
-	ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO,
-			ath_spi_flash_get_fn_cs1());
-	ath_gpio_config_output(CONFIG_ATH_SPI_CS1_GPIO);
-}
-#else
-#define ath_spi_flash_enable_cs1(...)
-#endif
-
-int flash_select(int chip)
-{
-#if  defined(CONFIG_ATH_SPI_CS1_GPIO)
-	int fn_cs0, fn_cs1;
-
-	fn_cs0 = ath_spi_flash_get_fn_cs0();
-	fn_cs1 = ath_spi_flash_get_fn_cs1();
-
-	if (fn_cs0 < 0 || fn_cs1 < 0) {
-		printf("Error, flash select failed\n");
-		return -1;
-	}
-#endif
-
-	switch (chip) {
-	case 0:
-#if  defined(CONFIG_ATH_SPI_CS1_GPIO)
-		ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO, fn_cs1);
-		ath_gpio_set_fn(ATH_SPI_CS0_GPIO, fn_cs0);
-#elif defined(ATH_DUAL_NOR)
-		ath_reg_rmw_set(ATH_SPI_FS, 1);
-		ath_spi_exit_ext_addr(1);
-		ath_reg_rmw_clear(ATH_SPI_FS, 1);
-#endif
-		break;
-
-	case 1:
-#if  defined(CONFIG_ATH_SPI_CS1_GPIO)
-		ath_gpio_set_fn(ATH_SPI_CS0_GPIO, 0);
-		ath_gpio_set_fn(CONFIG_ATH_SPI_CS1_GPIO, fn_cs0);
-#elif defined(ATH_DUAL_NOR)
-		ath_reg_rmw_set(ATH_SPI_FS, 1);
-		ath_spi_enter_ext_addr(1);
-		ath_reg_rmw_clear(ATH_SPI_FS, 1);
-#endif
-		break;
-
-	default:
-		printf("Error, please specify correct flash number 0/1\n");
-		return -1;
-	}
-
-	return 0;
-}
-
 unsigned long flash_init(void)
 {
-#if !(defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x))
+#if !(defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x))
 #ifdef ATH_SST_FLASH
 	ath_reg_wr_nf(ATH_SPI_CLOCK, 0x3);
 	ath_spi_flash_unblock();
@@ -218,22 +65,10 @@ unsigned long flash_init(void)
 	ath_reg_wr_nf(ATH_SPI_CLOCK, 0x43);
 #endif
 #endif
-
-#if  defined(CONFIG_MACH_QCA953x) /* Added for HB-SMIC */
-#ifdef ATH_SST_FLASH
-	ath_reg_wr_nf(ATH_SPI_CLOCK, 0x4);
-	ath_spi_flash_unblock();
-	ath_reg_wr(ATH_SPI_FS, 0);
-#else
-	ath_reg_wr_nf(ATH_SPI_CLOCK, 0x44);
-#endif
-#endif 
 	ath_reg_rmw_set(ATH_SPI_FS, 1);
 	ath_spi_read_id();
-	ath_spi_exit_ext_addr(1);
 	ath_reg_rmw_clear(ATH_SPI_FS, 1);
 
-	ath_spi_flash_enable_cs1();
 	/*
 	 * hook into board specific code to fill flash_info
 	 */
@@ -249,34 +84,15 @@ ath_spi_flash_print_info(flash_info_t *info)
 int
 flash_erase(flash_info_t *info, int s_first, int s_last)
 {
-	u32 addr;
-	int ext = 0;
 	int i, sector_size = info->size / info->sector_count;
 
 	printf("\nFirst %#x last %#x sector size %#x\n",
 		s_first, s_last, sector_size);
 
-	addr = s_first * sector_size;
-	if (addr >= ATH_16M_FLASH_SIZE) {
-		ext = 1;
-		ath_spi_enter_ext_addr(ATH_GET_EXT_4B(addr));
-	} else if (s_last * sector_size >= ATH_16M_FLASH_SIZE) {
-		printf("Erase failed, cross 16M is forbidden\n");
-		return -1;
-	}
-
 	for (i = s_first; i <= s_last; i++) {
-		addr = i * sector_size;
-
-		if (ext)
-			addr = ATH_GET_EXT_3BS(addr);
-
 		printf("\b\b\b\b%4d", i);
-		ath_spi_sector_erase(addr);
+		ath_spi_sector_erase(i * sector_size);
 	}
-
-	ath_spi_exit_ext_addr(ext);
-
 	ath_spi_done();
 	printf("\n");
 
@@ -337,19 +153,9 @@ write_buff(flash_info_t *info, uchar *source, ulong addr, ulong len)
 	int total = 0, len_this_lp, bytes_this_page;
 	ulong dst;
 	uchar *src;
-	int ext = 0;
 
 	printf("write addr: %x\n", addr);
 	addr = addr - CFG_FLASH_BASE;
-
-	if (addr >= ATH_16M_FLASH_SIZE) {
-		ext = 1;
-		ath_spi_enter_ext_addr(ATH_GET_EXT_4B(addr));
-		addr = ATH_GET_EXT_3BS(addr);
-	} else if (addr + len >= ATH_16M_FLASH_SIZE) {
-		printf("Write failed, cross 16M is forbidden\n");
-		return -1;
-	}
 
 	while (total < len) {
 		src = source + total;
@@ -362,8 +168,6 @@ write_buff(flash_info_t *info, uchar *source, ulong addr, ulong len)
 		ath_spi_write_page(dst, src, len_this_lp);
 		total += len_this_lp;
 	}
-
-	ath_spi_exit_ext_addr(ext);
 
 	ath_spi_done();
 

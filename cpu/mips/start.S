@@ -2,7 +2,7 @@
  *  Startup Code for MIPS32 CPU-core
  *
  *  Copyright (c) 2003	Wolfgang Denk <wd@denx.de>
- * 
+ *
  * See file CREDITS for list of people who contributed to this
  * project.
  *
@@ -212,7 +212,7 @@ reset:
 	mtc0	zero, $15
 	mtc0	zero, $16
 
-#if defined(CONFIG_MACH_QCA955x)
+#ifdef CONFIG_MACH_QCA955x
 /*
  * Workaround recommnded by MIPS for the Scorpion Freeze issue
  */
@@ -279,7 +279,7 @@ reset:
 	mtc0	zero, $26
 	mtc0	zero, $27
 	mtc0	zero, $28
-#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x)
 	mtc0	zero, $29	# C0_TagHi
 	mtc0	zero, $28, 2	# C0_DTagLo
 	mtc0	zero, $29, 2	# C0_DTagHi
@@ -352,7 +352,7 @@ reset:
 
 #ifndef COMPRESSED_UBOOT
 
-#if (defined(CONFIG_MACH_HORNET) && defined(CONFIG_HORNET_1_1_WAR)) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#if defined(CONFIG_MACH_HORNET) && defined(CONFIG_HORNET_1_1_WAR)
 /**************************************************************************/
 /*
  * WAR: Hornet 1.1 currently need a reset once we boot to let the resetb has
@@ -376,9 +376,7 @@ do_reset:
     li t9, 0x1000000        // bit24, fullchip reset
     or t8, t8, t9         // t8:  set bit 18
     sw t8, 0(t7)
-do_reset_loop:
-    b   do_reset_loop
-    nop
+
 normal_path:
 #endif /* CONFIG_MACH_HORNET */
 
@@ -409,7 +407,7 @@ rel_start:
 #if defined(CONFIG_AR7100) || defined(CONFIG_AR7240) || defined(CONFIG_ATHEROS)
 	/* REMAP_DISABLE */
 	li	a0,	KSEG1ADDR(ATH_SPI_CLOCK)
-#if defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
+#if defined(CONFIG_MACH_QCA955x)
 	li	t0,	0x246
 #elif defined(CONFIG_WASP_SUPPORT)
 	li	t0,	0x243
@@ -475,7 +473,7 @@ rel_start:
 #endif /* #ifndef COMPRESSED_UBOOT */
 
 #if defined(CONFIG_WASP_SUPPORT) || defined(CFG_INIT_STACK_IN_SRAM)
-	li	t0, CFG_INIT_SRAM_SP_OFFSET	/* Setup stack in SRAM */
+	li	t0, 0xbd007000	/* Setup stack in SRAM */
 #else
 	li	t0, CFG_SDRAM_BASE + CFG_INIT_SP_OFFSET
 #endif
@@ -575,7 +573,6 @@ in_ram:
 
 	.end	relocate_code
 
-#if !defined(CONFIG_MACH_QCA955x) && !defined(CONFIG_MACH_QCA953x) && !defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
 #if !defined(CONFIG_WASP_SUPPORT) && defined(CONFIG_AR7240)
 /*
  * void ar7240_ddr_tap_init(void)
@@ -5036,7 +5033,6 @@ _load_tap_into_reg:
 
 
 #endif
-#endif /* !defined(CONFIG_MACH_QCA955x) && !defined(CONFIG_MACH_QCA953x) */
 
 #ifndef COMPRESSED_UBOOT
 	/* Exception handlers.
