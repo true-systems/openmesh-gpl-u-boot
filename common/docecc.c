@@ -7,7 +7,7 @@
  * Author: Fabrice Bellard (fabrice.bellard@netgem.com)
  * Copyright (C) 2000 Netgem S.A.
  *
- * $Id: docecc.c,v 1.4 2001/10/02 15:05:13 dwmw2 Exp $
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/common/docecc.c#1 $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

@@ -2,7 +2,7 @@
 /* Defines for NAND Flash Translation Layer  */
 /* (c) 1999 Machine Vision Holdings, Inc.    */
 /* Author: David Woodhouse <dwmw2@mvhi.com>  */
-/* $Id: nftl.h,v 1.10 2000/12/29 00:25:38 dwmw2 Exp $ */
+/* $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/linux/mtd/nftl.h#1 $ */
 
 #ifndef __MTD_NFTL_H__
 #define __MTD_NFTL_H__

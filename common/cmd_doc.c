@@ -3,7 +3,7 @@
  * (c) 1999 Machine Vision Holdings, Inc.
  * (c) 1999, 2000 David Woodhouse <dwmw2@infradead.org>
  *
- * $Id: doc2000.c,v 1.46 2001/10/02 15:05:13 dwmw2 Exp $
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/common/cmd_doc.c#1 $
  */
 
 #include <common.h>

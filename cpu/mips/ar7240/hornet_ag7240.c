@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <config.h>
 #include <common.h>
 #include <malloc.h>
@@ -195,9 +178,11 @@ if ((ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK) == AR7240_REV_1_2) {
             }
 #ifndef CONFIG_HORNET_EMU
             /* Virian */
-            mgmt_cfg_val = 0x4;
-            ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
-            ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
+            if (CFG_AG7240_NMACS > 1) {
+                mgmt_cfg_val = 0x4;
+                ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
+                ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
+            }
             printf("Virian MDC CFG Value ==> %x\n",mgmt_cfg_val);
 #endif
 
@@ -274,7 +259,7 @@ static int ag7240_check_link(ag7240_mac_t *mac)
            ag7240_set_mac_if(mac, 1);
            ag7240_reg_rmw_set(mac, AG7240_MAC_FIFO_CFG_5, (1 << 19));
            if (is_ar7242() && (mac->mac_unit == 0))
-               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1c000000);
+               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1a000000);
            break;
 
        case _100BASET:
@@ -292,7 +277,7 @@ static int ag7240_check_link(ag7240_mac_t *mac)
            ag7240_set_mac_speed(mac, 0);
            ag7240_reg_rmw_clear(mac, AG7240_MAC_FIFO_CFG_5, (1 << 19));
            if (is_ar7242() && (mac->mac_unit == 0))
-               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1616);
+               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1313);
            break;
 
        default:
@@ -436,7 +421,7 @@ static void ag7240_get_ethaddr(struct eth_device *dev)
     }
 
     /* Use fixed address if the above address is invalid */
-    if (mac[0] != 0x00 || (mac[0] == 0xff && mac[5] == 0xff)) {
+    if (mac[0] == 0xff && mac[5] == 0xff) {
         mac[0] = 0x00;
         mac[1] = 0x03;
         mac[2] = 0x7f;

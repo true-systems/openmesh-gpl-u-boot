@@ -1,0 +1,187 @@
+# Set the toolchain path
+export TOOLCHAIN=gcc-4.3.3
+export UBOOT_GCC_4_3_3_EXTRA_CFLAGS=-fPIC
+export TOOLPREFIX=mips-linux-uclibc-
+export TOOLARCH=build_mips/staging_dir/usr
+
+export FLASH_SIZE=16
+export KERNEL=mips-linux-2.6.31
+export KERNELVER=2.6.31
+export KERNELTARGET=vmlinux.bin
+export COMPRESSKERNEL=y
+export KERNELARCH=mips
+export BOARD_NAME=OM2Pv2
+
+ifeq ($(FLASH_SIZE),8)
+ifeq ($(COMPRESSED_UBOOT),1)
+export TARGETFSSIZE=5505024
+else
+export TARGETFSSIZE=5242880
+endif
+else	# flash size
+ifeq ($(COMPRESSED_UBOOT),1)
+export TARGETFSSIZE=3080192
+else
+export TARGETFSSIZE=2818048
+endif
+endif
+
+export AP_TYPE=single
+export BUILD_TYPE=squashfs
+
+export BUSYBOX=busybox-1.01
+export WIRELESSTOOLS=wireless_tools.29
+export WIRELESSTOOLSLIB=libiw.so.29
+
+#
+# Enable the "new" hostapd
+#
+export BUILD_WPA2=y
+
+ifeq ($(BUILD_WPA2),y)
+export MADWIFIPATH=$(TOPDIR)/wlan/linux
+export MADWIFIINC=$(TOPDIR)/wlan
+#for station forwarding support
+export CONFIG_ETHERSTA=y
+endif
+
+#
+# UMAC build option
+#
+
+export BUILD_UMAC=1
+
+# Hornet uses AHB bus to connect WMAC and AR7240
+#export BUS=PCI
+export BUS=AHB
+export TARGETARCH=mipsisa32-be-elf
+
+# Set Phy Err Diagnostics (Radar detection) to be enabled for AP builds
+export ATH_CAP_PHYERR_DIAG=1
+
+export AR5416_G_MODE=1
+export AR9100=0
+export AH_DEBUG=1
+
+export AH_SUPPORT_AR5212=0
+export AH_SUPPORT_5111=0
+export AH_SUPPORT_5112=0
+export AH_SUPPORT_2413=0
+export AH_SUPPORT_5111=0
+export AH_SUPPORT_5112=0
+export AH_SUPPORT_2413=0
+export AH_SUPPORT_5413=0
+export AH_SUPPORT_2316=0
+export AH_SUPPORT_2317=0
+export AH_SUPPORT_2425=0
+export AH_SUPPORT_SOWL=0
+export AH_SUPPORT_AR5416=0
+export AH_SUPPORT_AR9300=1
+export AH_SUPPORT_EEPROM_AR9330=1
+export AH_SUPPORT_HORNET=1
+
+export ATH_SUPPORT_DFS=0
+export ATH_SUPPORT_IQUE=0
+export ATH_CHAINMASK_SELECT=0
+export ATH_RXBUF=128
+export ATH_CAP_AMSDU=0
+export IEEE80211_MCAST_ENHANCEMENT=0
+export ATH_RB=0
+export BUILD_WPA2=y
+
+ifeq ($(BUILD_WPA2),y)
+export ATH_WPS_IE=1
+export MADWIFIPATH=$(TOPDIR)/wlan/linux
+export MADWIFIINC=$(TOPDIR)/wlan
+else
+export ATH_WPS_IE=0
+endif
+
+export AH_CAL_IN_FLASH=1
+export AH_CAL_RADIOS=1
+export AH_CAL_LOCATIONS=0xbffc1000
+
+# Set the GPIO PIN for WPS LED
+export WPS_LED_GPIO_PIN=1
+
+export ATH_WDS_INTEROP=0
+
+# By default compressed u-boot will be compiled
+export COMPRESSED_UBOOT=0
+
+export ATH_SINGLE_CFG=1
+
+# Build combined wlan driver
+export ATH_WLAN_COMBINE=0
+
+# No 5G support
+export ATH_NO_5G_SUPPORT=1
+
+# No S/W based crypto support
+export ATH_NO_SW_CRYPTO=1
+
+# By default optimization will be enabled for 2MB flash
+export BUILD_OPTIMIZED=y
+
+# Added for separate NVRAM partition
+export ATH_CONFIG_NVRAM=1
+
+# added for Extend AP/STA support
+export ATH_EXT_AP=1
+
+# added for hostapd size optimiziation
+export CONFIG_NO_STDOUT_DEBUG=y
+
+# Disable spectral module
+export ATH_SUPPORT_SPECTRAL=0
+
+# HOSTAP 0.7.2
+export BUILD_HOSTAPD_072=1
+
+# added for unwanted files removal
+export INSTALL_BLACKLIST="usr/bin/gdbserver lib/libiw* lib/libthread_* sbin/athst*"
+
+# Set for including debug tools, e.g dumpregs
+export DEBUG_TOOLS=1
+
+# Turn on WLAN HAL emulation flags if BUILD_EMU is defined
+ifneq ($(BUILD_EMU),)
+export AR9300_EMULATION=1
+export AR9300_EMULATION_BB=1
+export AR9330_EMULATION=1
+endif
+
+# Support PAPRD
+export ATH_SUPPORT_PAPRD=1
+
+# export xtal clock
+export CONFIG_HORNET_XTAL=25
+
+# export hornet 1.1 war
+export CONFIG_HORNET_1_1_WAR=1
+
+# export traffic fast recover EV #75248
+export ATH_TRAFFIC_FAST_RECOVER=1
+
+#export antenna diversity
+export ATH_SUPPORT_ANT_DIV_COMB=1
+
+# export GPIO configuration for LED
+export AP_USB_LED_GPIO=1
+export WPS_LED_GPIO_PIN=26
+
+# export WLAN LED SUPPORT, (func_0,func_1,func_2)=(linkLed, activityLed, connectionLed)
+export ATH_SUPPORT_LED=1
+export GPIO_PIN_FUNC_0=0
+export GPIO_PIN_FUNC_1=0
+export GPIO_PIN_FUNC_2=0
+
+# export GPIO configuration for push button
+export JUMPSTART_GPIO=11
+export AP_RESET_GPIO=12
+
+# Enable updated ddr tap calibration algorithm
+export NEW_DDR_TAP_CAL=1
+
+# export disable configuration for watchdog reset
+export AP_WATCHDOG_RESET_DISABLE=0

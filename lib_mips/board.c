@@ -45,13 +45,6 @@ extern int timer_init(void);
 
 extern int incaip_set_cpuclk(void);
 
-#if defined(CONFIG_WASP_SUPPORT) || defined(CONFIG_MACH_QCA955x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
-void ath_set_tuning_caps(void);
-#else
-#define ath_set_tuning_caps()	/* nothing */
-#endif
-
-
 extern ulong uboot_end_data;
 extern ulong uboot_end;
 
@@ -328,11 +321,7 @@ void board_init_r (gd_t *id, ulong dest_addr)
 	extern char * env_name_spec;
 #endif
 #ifdef CONFIG_ATH_NAND_SUPPORT
-#ifdef ATH_SPI_NAND
-	extern ulong ath_spi_nand_init(void);
-#else
 	extern ulong ath_nand_init(void);
-#endif
 #endif
 	char *s, *e;
 	bd_t *bd;
@@ -457,14 +446,8 @@ void board_init_r (gd_t *id, ulong dest_addr)
 #endif
 
 #if defined(CONFIG_ATH_NAND_SUPPORT) && !defined(CONFIG_ATH_NAND_BR)
-#ifdef ATH_SPI_NAND
-	ath_spi_nand_init();
-#else
- 	ath_nand_init();
+	ath_nand_init();
 #endif
-#endif
-
-        ath_set_tuning_caps(); /* Needed here not to mess with Ethernet clocks */
 
 	/* main_loop() can return to retry autoboot, if so just run it again. */
 	for (;;) {

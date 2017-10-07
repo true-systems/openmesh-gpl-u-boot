@@ -2,6 +2,8 @@
  *  drivers/mtd/nandids.c
  *
  *  Copyright (C) 2002 Thomas Gleixner (tglx@linutronix.de)
+  *
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/drivers/nand/nand_ids.c#1 $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

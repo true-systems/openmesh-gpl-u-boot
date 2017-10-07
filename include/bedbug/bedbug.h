@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/bedbug/bedbug.h#1 $ */
 
 #ifndef _BEDBUG_H
 #define _BEDBUG_H

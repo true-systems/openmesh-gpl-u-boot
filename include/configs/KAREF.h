@@ -26,7 +26,7 @@
  ***********************************************************************/
 
 /*
- * $Id: KAREF.h,v 1.6 2005/06/03 15:05:25 tsawyer Exp $
+ * $Id: //depot/sw/releases/Aquila_9.2.0_U10.5/boot/u-boot/include/configs/KAREF.h#1 $
  *
  */
 

@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <common.h>
 #include <command.h>
 #include <asm/mipsregs.h>
@@ -23,22 +6,13 @@
 #include <version.h>
 #include "ar7240_soc.h"
 
-#ifdef CONFIG_ATH_NAND_BR
-#include <nand.h>
-#endif
-
 extern int wasp_ddr_initial_config(uint32_t refresh);
 extern int ar7240_ddr_find_size(void);
 
 #ifdef COMPRESSED_UBOOT
 #	define prmsg(...)
 #	define args		char *s
-#	define board_str(a)	do {			\
-	char ver[] = "0";				\
-	strcpy(s, "U-Boot " a "Wasp 1.");		\
-	ver[0] += ar7240_reg_rd(AR7240_REV_ID) & 0xf;	\
-	strcat(s, ver);					\
-} while (0)
+#	define board_str(a)	strcpy(s, a)
 #else
 #	define prmsg		printf
 #	define args		void
@@ -91,6 +65,41 @@ void wasp_gpio_config(void)
 	ar7240_reg_rmw_clear(GPIO_OUT_FUNCTION1_ADDRESS, GPIO_OUT_FUNCTION1_ENABLE_GPIO_4_MASK);
 	ar7240_reg_rmw_set(GPIO_OUT_FUNCTION1_ADDRESS, GPIO_OUT_FUNCTION1_ENABLE_GPIO_4_SET(0x80));
 	ar7240_reg_rmw_set(GPIO_OE_ADDRESS, (1 << 4));
+#ifdef CONFIG_GPIO_CUSTOM
+#endif
+}
+
+void ath_set_tuning_caps(void)
+{
+	typedef struct {
+		u_int8_t	pad[0x28],
+				params_for_tuning_caps[2],
+				featureEnable;
+	} __attribute__((__packed__)) ar9300_eeprom_t;
+
+	ar9300_eeprom_t	*eep = (ar9300_eeprom_t *)WLANCAL;
+	uint32_t	val;
+
+
+	val = 0;
+	/* checking feature enable bit 6 and caldata is valid */
+	if ((eep->featureEnable & 0x40) && (eep->pad[0x0] != 0xff)) {
+		/* xtal_capin -bit 17:23 and xtag_capout -bit 24:30*/
+		val = (eep->params_for_tuning_caps[0] & 0x7f) << 17;
+		val |= (eep->params_for_tuning_caps[0] & 0x7f) << 24;
+	} else {
+		/* default when no caldata available*/
+		/* checking clock in bit 4 */
+		if (ar7240_reg_rd(RST_BOOTSTRAP_ADDRESS) & 0x10) {
+			val = (0x1020 << 17);  /*default 0x2040 for 40Mhz clock*/
+		} else {
+			val = (0x2040 << 17); /*default 0x4080 for 25Mhz clock*/
+		}
+	}
+	val |= (ar7240_reg_rd(XTAL_ADDRESS) & (((1 << 17) - 1) | (1 << 31)));
+	ar7240_reg_wr(XTAL_ADDRESS, val);
+	prmsg("Setting 0xb8116290 to 0x%x\n", val);
+	return;
 }
 
 int
@@ -123,6 +132,8 @@ wasp_mem_config(void)
 
 	wasp_gpio_config();
 
+	ath_set_tuning_caps(); /* Needed here not to mess with Ethernet clocks */ 
+
 	reg32 = ar7240_ddr_find_size();
 
 	return reg32;
@@ -135,12 +146,59 @@ long int initdram(int board_type)
 
 int	checkboard(args)
 {
-#if CONFIG_AP123
-	board_str("AP123\n");
-#elif CONFIG_MI124
-	board_str("MI124\n");
-#else
-	board_str("DB120\n");
-#endif
+	board_str(BOARD_NAME" (ar934x) U-boot\n");
+
 	return 0;
 }
+
+#ifdef CONFIG_GPIO_CUSTOM
+int gpio_custom (int opcode)
+{
+	int rcode = 0;
+	static int cmd = -1;
+
+	switch (opcode) {
+		case 0:
+			if (0) {
+				cmd = 0;
+			}
+			else {
+				cmd = -1;
+			}
+			rcode = cmd >= 0;
+			break;
+		case 1:
+			switch (cmd) {
+				case 0:
+				{
+					char key[] = "netretry", *val = NULL, *s = NULL;
+					int i = -1;
+
+					if ((s = getenv (key)) != NULL && (val = malloc (strlen (s) + 1)) != NULL) {
+						strcpy (val, s);
+					}
+					setenv (key, "no");
+					s = getenv ("factory_boot") != NULL? "run factory_boot": "boot 0";
+					for (i = 3; i-- > 0 && run_command (s, 0) == -1;) {
+						printf ("Retry%s\n", i > 0? "...": " count exceeded!");
+						if (i <= 0) {
+							run_command ("boot", 0);
+						}
+					}
+					if (val != NULL) {
+						setenv (key, val);
+					}
+					break;
+				}
+				default:
+					break;
+			}
+			cmd = -1;
+			break;
+		default:
+			break;
+	}
+
+	return rcode;
+}
+#endif

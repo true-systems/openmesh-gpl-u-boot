@@ -1,20 +1,3 @@
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
-
 #include <config.h>
 #include <common.h>
 #include <malloc.h>
@@ -41,7 +24,6 @@ void  ag7240_miiphy_write(char *devname, uint32_t phaddr,
 ag7240_mac_t *ag7240_macs[CFG_AG7240_NMACS];
 extern void ar7240_sys_frequency(u32 *cpu_freq, u32 *ddr_freq, u32 *ahb_freq);
 
-#ifdef CFG_ATHRS26_PHY
 extern int athrs26_phy_setup(int unit);
 extern int athrs26_phy_is_up(int unit);
 extern int athrs26_phy_is_fdx(int unit);
@@ -49,18 +31,6 @@ extern int athrs26_phy_speed(int unit);
 extern void athrs26_reg_init(void);
 extern void athrs26_reg_init_lan(void);
 extern int athrs26_mdc_check(void);
-#endif
-
-#ifdef CFG_ATHRS27_PHY
-extern int athrs27_phy_setup(int unit);
-extern int athrs27_phy_is_up(int unit);
-extern int athrs27_phy_is_fdx(int unit);
-extern int athrs27_phy_speed(int unit);
-extern void athrs27_reg_init(void);
-extern void athrs27_reg_init_lan(void);
-extern int athrs27_mdc_check(void);
-#endif
-
 #ifdef CONFIG_F1E_PHY
 extern int athr_phy_setup(int unit);
 extern int athr_phy_is_up(int unit);
@@ -140,7 +110,7 @@ void ag7240_mii_setup(ag7240_mac_t *mac)
 {
     u32 mgmt_cfg_val;
     u32 cpu_freq,ddr_freq,ahb_freq;
-    u32 check_cnt;
+    u32 check_cnt,revid_val;
 #ifdef CFG_ATHRS27_PHY
     if (is_wasp()) {
         printf("WASP ----> S27 PHY \n");
@@ -218,9 +188,11 @@ void ag7240_mii_setup(ag7240_mac_t *mac)
                  ag7240_reg_wr(mac, AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
             }
             /* Virian */
-            mgmt_cfg_val = 0x4;
-            ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
-            ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
+            if (CFG_AG7240_NMACS > 1) {
+                 mgmt_cfg_val = 0x4;
+                 ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val | (1 << 31));
+                 ag7240_reg_wr(ag7240_macs[1], AG7240_MAC_MII_MGMT_CFG, mgmt_cfg_val);
+            }
             printf("Virian MDC CFG Value ==> %x\n",mgmt_cfg_val);
 
         }
@@ -256,21 +228,25 @@ void ag7240_mii_setup(ag7240_mac_t *mac)
                      if(check_cnt == 11)
                              printf("%s: MDC check failed\n", __func__);
              }
-        }
- 
+	}
+
     }
 }
 
 static void ag7240_hw_start(ag7240_mac_t *mac)
 {
 
+#ifdef CONFIG_AR7242_RGMII_PHY
+    if(mac->mac_unit || (mac->mac_unit == 0 && is_ar7242()))
+#else
     if(mac->mac_unit)
+#endif
     {
         ag7240_reg_wr(mac, AG7240_MAC_CFG1, (AG7240_MAC_CFG1_RX_EN |
             AG7240_MAC_CFG1_TX_EN));
         ag7240_reg_rmw_set(mac, AG7240_MAC_CFG2, (AG7240_MAC_CFG2_PAD_CRC_EN |
             AG7240_MAC_CFG2_LEN_CHECK | AG7240_MAC_CFG2_IF_1000));
-    }
+        }
     else {
 
     ag7240_reg_wr(mac, AG7240_MAC_CFG1, (AG7240_MAC_CFG1_RX_EN |
@@ -278,8 +254,8 @@ static void ag7240_hw_start(ag7240_mac_t *mac)
 
     ag7240_reg_rmw_set(mac, AG7240_MAC_CFG2, (AG7240_MAC_CFG2_PAD_CRC_EN |
 		         AG7240_MAC_CFG2_LEN_CHECK | AG7240_MAC_CFG2_IF_10_100));
-   }
-   ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_0, 0x1f00);
+    }
+    ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_0, 0x1f00);
 
    ag7240_mii_setup(mac);
 
@@ -291,11 +267,9 @@ static void ag7240_hw_start(ag7240_mac_t *mac)
      * Setting Drop CRC Errors, Pause Frames,Length Error frames 
      * and Multi/Broad cast frames. 
      */
-#ifdef AG7240_BROADCAST_ENABLE
-    ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_5, 0xe6be2);
-#else
+
     ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_5, 0x7eccf);
-#endif
+
     ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_3, 0x1f00140);
 
     printf(": cfg1 %#x cfg2 %#x\n", ag7240_reg_rd(mac, AG7240_MAC_CFG1),
@@ -305,11 +279,11 @@ static void ag7240_hw_start(ag7240_mac_t *mac)
 
 static int ag7240_check_link(ag7240_mac_t *mac)
 {
-    u32 link, duplex, speed;
+    u32 link, duplex, speed, fdx;
 
-    ag7240_phy_link(mac->mac_unit, (int *)&link);
-    ag7240_phy_duplex(mac->mac_unit, (int *)&duplex);
-    ag7240_phy_speed(mac->mac_unit, (int *)&speed);
+    ag7240_phy_link(mac->mac_unit, &link);
+    ag7240_phy_duplex(mac->mac_unit, &duplex);
+    ag7240_phy_speed(mac->mac_unit, &speed);
 
     mac->link = link;
 #ifdef SUPPORT_PLC
@@ -330,7 +304,7 @@ static int ag7240_check_link(ag7240_mac_t *mac)
            ag7240_set_mac_if(mac, 1);
            ag7240_reg_rmw_set(mac, AG7240_MAC_FIFO_CFG_5, (1 << 19));
            if (is_ar7242() && (mac->mac_unit == 0)) {
-               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1c000000);
+               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1a000000);
 	   }
 #ifdef CONFIG_F1E_PHY
            if (is_wasp() && (mac->mac_unit == 0)) {
@@ -356,7 +330,7 @@ static int ag7240_check_link(ag7240_mac_t *mac)
            ag7240_set_mac_speed(mac, 0);
            ag7240_reg_rmw_clear(mac, AG7240_MAC_FIFO_CFG_5, (1 << 19));
            if ((is_ar7242() || is_wasp()) && (mac->mac_unit == 0))
-               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1616);
+               ar7240_reg_wr(AR7242_ETH_XMII_CONFIG,0x1313);
            break;
 
        default:
@@ -466,9 +440,7 @@ static void ag7240_halt(struct eth_device *dev)
 unsigned char *
 ag7240_mac_addr_loc(void)
 {
-#ifndef BOARDCAL
-    extern flash_info_t flash_info[];
-#endif
+	extern flash_info_t flash_info[];
 
 #ifdef BOARDCAL
     /*
@@ -502,7 +474,7 @@ static void ag7240_get_ethaddr(struct eth_device *dev)
         return;
     }
     /* Use fixed address if the above address is invalid */
-    if (mac[0] != 0x00 || (mac[0] == 0xff && mac[5] == 0xff)) {
+    if (mac[0] == 0xff && mac[5] == 0xff) {
 #else
     if (1) {
 #endif 
@@ -575,7 +547,7 @@ int ag7240_enet_initialize(bd_t * bis)
     for (i = 0;i < CFG_AG7240_NMACS;i++) {
         eth_register(dev[i]);
 #if(CONFIG_COMMANDS & CFG_CMD_MII)
-        miiphy_register(dev[i]->name, ag7240_miiphy_read, ag7240_miiphy_write);
+    miiphy_register(dev[i]->name, ag7240_miiphy_read, ag7240_miiphy_write);
 #endif
 
          ag7240_reg_rmw_set(ag7240_macs[i], AG7240_MAC_CFG1, AG7240_MAC_CFG1_SOFT_RST
@@ -585,11 +557,8 @@ int ag7240_enet_initialize(bd_t * bis)
            mask = (AR7240_RESET_GE0_MAC | AR7240_RESET_GE0_PHY |
                     AR7240_RESET_GE1_MAC | AR7240_RESET_GE1_PHY);
 
-           if (is_ar7241() || is_ar7242() ||  is_wasp()) {
+           if (is_ar7241() || is_ar7242() ||  is_wasp())
                 mask = mask | AR7240_RESET_GE0_MDIO | AR7240_RESET_GE1_MDIO;
-                printf(" wasp  reset mask:%x \n",mask);
-           }
-
 
            ar7240_reg_rmw_set(AR7240_RESET, mask);
            if(!is_ar933x())
@@ -609,24 +578,24 @@ int ag7240_enet_initialize(bd_t * bis)
         if(!is_ar933x())
             udelay(100 * 1000);
 
-        {
-            unsigned char *mac = dev[i]->enetaddr;
+    {
+        unsigned char *mac = dev[i]->enetaddr;
 
-            printf("%s: %02x:%02x:%02x:%02x:%02x:%02x\n", dev[i]->name,
-                   mac[0] & 0xff, mac[1] & 0xff, mac[2] & 0xff,
-                   mac[3] & 0xff, mac[4] & 0xff, mac[5] & 0xff);
-        }
-        mac_l = (dev[i]->enetaddr[4] << 8) | (dev[i]->enetaddr[5]);
-        mac_h = (dev[i]->enetaddr[0] << 24) | (dev[i]->enetaddr[1] << 16) |
-            (dev[i]->enetaddr[2] << 8) | (dev[i]->enetaddr[3] << 0);
+        printf("%s: %02x:%02x:%02x:%02x:%02x:%02x\n", dev[i]->name,
+               mac[0] & 0xff, mac[1] & 0xff, mac[2] & 0xff,
+               mac[3] & 0xff, mac[4] & 0xff, mac[5] & 0xff);
+    }
+    mac_l = (dev[i]->enetaddr[4] << 8) | (dev[i]->enetaddr[5]);
+    mac_h = (dev[i]->enetaddr[0] << 24) | (dev[i]->enetaddr[1] << 16) |
+        (dev[i]->enetaddr[2] << 8) | (dev[i]->enetaddr[3] << 0);
 
-        ag7240_reg_wr(ag7240_macs[i], AG7240_GE_MAC_ADDR1, mac_l);
-        ag7240_reg_wr(ag7240_macs[i], AG7240_GE_MAC_ADDR2, mac_h);
+    ag7240_reg_wr(ag7240_macs[i], AG7240_GE_MAC_ADDR1, mac_l);
+    ag7240_reg_wr(ag7240_macs[i], AG7240_GE_MAC_ADDR2, mac_h);
 
-        /* if using header for register configuration, we have to     */
-        /* configure s26 register after frame transmission is enabled */
+    /* if using header for register configuration, we have to     */
+    /* configure s26 register after frame transmission is enabled */
 
-        if (ag7240_macs[i]->mac_unit == 0) { /* WAN Phy */
+    if (ag7240_macs[i]->mac_unit == 0) { /* WAN Phy */
 #ifdef CONFIG_AR7242_S16_PHY
             if (is_ar7242() || is_wasp()) {
                 athrs16_reg_init();
@@ -640,8 +609,12 @@ int ag7240_enet_initialize(bd_t * bis)
                 printf("s27 reg init \n");
                 athrs27_reg_init();
 #endif
+#if defined(CONFIG_F1E_PHY) || defined(CONFIG_AR7242_RGMII_PHY)
 #ifdef CONFIG_F1E_PHY
                printf("F1Phy reg init \n");
+#else
+               printf("RGMII reg init \n");
+#endif
                athr_reg_init();
 #endif
             }
@@ -654,10 +627,10 @@ int ag7240_enet_initialize(bd_t * bis)
             printf("s27 reg init lan \n");
             athrs27_reg_init_lan();
 #endif
-        }
+    }
 
-        ag7240_phy_setup(ag7240_macs[i]->mac_unit);
-        printf("%s up\n",dev[i]->name);
+    ag7240_phy_setup(ag7240_macs[i]->mac_unit);
+    printf("%s up\n",dev[i]->name);
     }
 
     return 1;
