@@ -1,20 +1,16 @@
-
-/* 
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
+/*****************************************************************************/
+/*! file ath_pci.c
+** /brief PCI support for Atheros boards
+**
+** This provides the support code required for PCI support on the AP91/93
+** board in the U-Boot environment. This board is a Python based system
+** with a Merlin WLAN interface. This file also contains the support
+** for initialization of the Merlin radios on the PCi bus, required for
+** pre-configuration for use by Linux.
+**
+** Copyright (c) 2008 Atheros Communications Inc. All rights reserved.
+**
+*/
 
 #include <common.h>
 #include <command.h>
@@ -64,7 +60,6 @@ ath_pci_write_config(struct pci_controller *hose,
 	return 0;
 }
 
-#ifdef PCIE2_APP_ADDRESS
 static int
 ath_local_read_config_rc2(int where, int size, uint32_t *value)
 {
@@ -94,7 +89,6 @@ ath_pci_write_config_rc2(struct pci_controller *hose,
 	ath_reg_wr((0xb6000000 + where), value);
 	return 0;
 }
-#endif
 
 /*
 ** We will use the ART configuration information stored in flash to initialize
@@ -136,12 +130,9 @@ void plat_dev_init(void)
 
 	ath_pci_write_config(&hose, NULL, 0x04, 0x6);
 
-#ifdef PCIE2_APP_ADDRESS
 	ath_pci_write_config_rc2(&hose, NULL, 0x10, 0xffff);
 
 	ath_pci_write_config_rc2(&hose, NULL, 0x04, 0x6);
-#endif
-
 	/*
 	** Set pointer to first reg address
 	*/
@@ -221,7 +212,7 @@ pci_init_board (void)
 #else
 	uint32_t cmd;
 
-	if (is_drqfn() && !is_qca953x()) {
+	if (is_drqfn()) {
 		/*
 		 * Dont enable PCIe in DRQFN package as it has some issues
 		 * related to PCIe
@@ -229,51 +220,6 @@ pci_init_board (void)
 		PCI_INIT_RETURN;
 	}
 
-#if defined(CONFIG_MACH_QCA953x)
-	if (ath_reg_rd(RST_BOOTSTRAP_ADDRESS) & RST_BOOTSTRAP_TESTROM_ENABLE_MASK) { 
-		ath_reg_rmw_clear(RST_MISC2_ADDRESS, RST_MISC2_PERSTN_RCPHY_SET(1));
-
-		ath_reg_wr(PCIE_PHY_REG_1_ADDRESS, PCIE_PHY_REG_1_RESET_1); 
-		ath_reg_wr(PCIE_PHY_REG_3_ADDRESS, PCIE_PHY_REG_3_RESET_1); 
-
-		ath_reg_rmw_set(PCIE_PWR_MGMT_ADDRESS, PCIE_PWR_MGMT_ASSERT_CLKREQN_SET(1));
-
-		ath_reg_rmw_set(PCIE_PLL_CONFIG_ADDRESS, PCIE_PLL_CONFIG_PLLPWD_SET(1));
-
-		ath_reg_rmw_set(RST_RESET_ADDRESS, RST_RESET_PCIE_RESET_SET(1));
-		ath_reg_rmw_set(RST_RESET_ADDRESS, RST_RESET_PCIE_PHY_RESET_SET(1));
-
-		ath_reg_rmw_clear(RST_CLKGAT_EN_ADDRESS, RST_CLKGAT_EN_PCIE_RC_SET(1));
-
-		PCI_INIT_RETURN;
-	} else { 
-	 	 /* Honeybee -The PCIe reference clock frequency is being changed 
-	  	    to vary from 99.968MHz to 99.999MHz using SS modulation */
-		ath_reg_wr_nf(PCIE_PLL_DITHER_DIV_MAX_ADDRESS,
-			PCIE_PLL_DITHER_DIV_MAX_EN_DITHER_SET(0x1) |
-			PCIE_PLL_DITHER_DIV_MAX_USE_MAX_SET(0x1) |
-			PCIE_PLL_DITHER_DIV_MAX_DIV_MAX_INT_SET(0x17) |
-			PCIE_PLL_DITHER_DIV_MAX_DIV_MAX_FRAC_SET(0x3fff));
-
-		ath_reg_wr_nf(PCIE_PLL_DITHER_DIV_MIN_ADDRESS,
-			PCIE_PLL_DITHER_DIV_MIN_DIV_MIN_FRAC_SET(0x3f84)|
-			PCIE_PLL_DITHER_DIV_MIN_DIV_MIN_INT_SET(0x17));
-	} 
-#else 
-
-#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
-
-        ath_reg_rmw_set(PCIE_PHY_REG_1_ADDRESS, PCIE_PHY_REG_1_S_SET(PCIE_PHY_REG_1_S_RESET));
-
-        ath_reg_wr_nf(PCIE_PLL_DITHER_DIV_MAX_ADDRESS,
-                      PCIE_PLL_DITHER_DIV_MAX_USE_MAX_SET(0x1) |
-                      PCIE_PLL_DITHER_DIV_MAX_DIV_MAX_INT_SET(0x17) |
-                      PCIE_PLL_DITHER_DIV_MAX_DIV_MAX_FRAC_SET(0x3fff));
-
-        ath_reg_wr_nf(PCIE_PLL_DITHER_DIV_MIN_ADDRESS,
-                      PCIE_PLL_DITHER_DIV_MIN_DIV_MIN_FRAC_SET(0x3f84) |
-                      PCIE_PLL_DITHER_DIV_MIN_DIV_MIN_INT_SET(0x17));
-#else
 	// common for rc1 and rc2
 	ath_reg_wr_nf(PCIE_PLL_DITHER_DIV_MAX_ADDRESS,
 		PCIE_PLL_DITHER_DIV_MAX_EN_DITHER_SET(0x1) |
@@ -283,31 +229,7 @@ pci_init_board (void)
 
 	ath_reg_wr_nf(PCIE_PLL_DITHER_DIV_MIN_ADDRESS,
 		PCIE_PLL_DITHER_DIV_MIN_DIV_MIN_INT_SET(0x14));
-#endif
 
-#endif 
-
-#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCA953x) || defined(CONFIG_MACH_QCN550x)
-
-	prmsg("Power up PLL with outdiv = 0 then switch to 3\n");
-
-	ath_reg_wr(PCIE_DPLL3_ADDRESS, PCIE_DPLL3_LOCAL_PLL_PWD_SET(0x1));
-	ath_reg_rmw_clear(PCIE_PLL_CONFIG_ADDRESS, PCIE_PLL_CONFIG_PLLPWD_SET(1));
-	ath_reg_rmw_clear(PCIE_PLL_CONFIG_ADDRESS, PCIE_PLL_CONFIG_BYPASS_SET(1));
-	ath_reg_wr(PCIE_DPLL1_ADDRESS, PCIE_DPLL1_REFDIV_SET(0x1) |
-		PCIE_DPLL1_NINT_SET(0x18));
-	ath_reg_wr(PCIe_DPLL2_ADDRESS, PCIe_DPLL2_LOCAL_PLL_SET(0x1) |
-		PCIe_DPLL2_KD_SET(0x4) |
-		PCIe_DPLL2_PLL_PWD_SET(0x1) |
-		PCIe_DPLL2_PHASE_SHIFT_SET(0x6));
-
-	ath_reg_wr(PCIE_DPLL3_ADDRESS, PCIE_DPLL3_RESET);
-	ath_reg_wr(PCIe_DPLL2_ADDRESS, PCIe_DPLL2_LOCAL_PLL_SET(0x1) |
-		PCIe_DPLL2_KD_SET(0x4) |
-		PCIe_DPLL2_PLL_PWD_SET(0x1) |
-		PCIe_DPLL2_OUTDIV_SET(0x3) |
-		PCIe_DPLL2_PHASE_SHIFT_SET(0x6));
-#else
 	ath_reg_wr_nf(PCIE_PLL_CONFIG_ADDRESS,
 		PCIE_PLL_CONFIG_REFDIV_SET(1) |
 		PCIE_PLL_CONFIG_BYPASS_SET(1) |
@@ -317,17 +239,12 @@ pci_init_board (void)
 	ath_reg_rmw_clear(PCIE_PLL_CONFIG_ADDRESS, PCIE_PLL_CONFIG_PLLPWD_SET(1));
 	udelay(1000);
 	ath_reg_rmw_clear(PCIE_PLL_CONFIG_ADDRESS, PCIE_PLL_CONFIG_BYPASS_SET(1));
-#endif
 	udelay(1000);
 
-#if !defined(CONFIG_MACH_QCA956x) && !defined(CONFIG_MACH_QCN550x)
-
-#ifdef PCIE2_APP_ADDRESS
 	if (!(ath_reg_rd(RST_BOOTSTRAP_ADDRESS) & RST_BOOTSTRAP_PCIE_RC_EP_SELECT_MASK)) {
 		pci_rc2_init_board();
 		return;
 	}
-#endif
 
 	ath_reg_rmw_set(RST_RESET_ADDRESS, RST_RESET_PCIE_PHY_RESET_SET(1));
 	udelay(10000);
@@ -335,18 +252,14 @@ pci_init_board (void)
 	ath_reg_rmw_set(RST_RESET_ADDRESS, RST_RESET_PCIE_RESET_SET(1));
 	udelay(10000);
 
-#ifdef PCIE2_APP_ADDRESS
 	ath_reg_rmw_clear(RST_MISC2_ADDRESS, RST_MISC2_PERSTN_RCPHY_SET(1));
 	udelay(10000);
-#endif
 
 	ath_reg_wr_nf(PCIE_RESET_ADDRESS, 0);	// Put endpoint in reset
 	udelay(100000);
 
-#ifdef PCIE2_APP_ADDRESS
 	ath_reg_rmw_set(RST_MISC2_ADDRESS, RST_MISC2_PERSTN_RCPHY_SET(1));
 	udelay(10000);
-#endif
 
 	ath_reg_rmw_clear(RST_RESET_ADDRESS, RST_RESET_PCIE_PHY_RESET_SET(1));
 	udelay(10000);
@@ -376,45 +289,43 @@ pci_init_board (void)
 	 */
 	if (((ath_reg_rd(PCIE_RESET_ADDRESS)) & 0x1) == 0x0) {
 		prmsg("*** Warning *** : PCIe WLAN Module not found !!!\n");
-	} else {
-#ifndef COMPRESSED_UBOOT
-		/*
-		 * Now, configure for u-boot tools
-		 */
-
-		hose.first_busno = 0;
-		hose.last_busno = 0xff;
-
-		/* System space */
-		pci_set_region(	&hose.regions[0],
-				0x80000000,
-				0x00000000,
-				32 * 1024 * 1024,
-				PCI_REGION_MEM | PCI_REGION_MEMORY);
-
-		/* PCI memory space */
-		pci_set_region(	&hose.regions[1],
-				0x10000000,
-				0x10000000,
-				128 * 1024 * 1024,
-				PCI_REGION_MEM);
-
-		hose.region_count = 2;
-
-		pci_register_hose(&hose);
-
-		pci_set_ops(	&hose,
-				pci_hose_read_config_byte_via_dword,
-				pci_hose_read_config_word_via_dword,
-				ath_pci_read_config,
-				pci_hose_write_config_byte_via_dword,
-				pci_hose_write_config_word_via_dword,
-				ath_pci_write_config);
-#endif
 	}
-#endif
-#ifdef PCIE2_APP_ADDRESS
-        pci_rc2_init_board();
+
+	pci_rc2_init_board();
+
+#ifndef COMPRESSED_UBOOT
+	/*
+	 * Now, configure for u-boot tools
+	 */
+
+	hose.first_busno = 0;
+	hose.last_busno = 0xff;
+
+	/* System space */
+	pci_set_region(	&hose.regions[0],
+			0x80000000,
+			0x00000000,
+			32 * 1024 * 1024,
+			PCI_REGION_MEM | PCI_REGION_MEMORY);
+
+	/* PCI memory space */
+	pci_set_region(	&hose.regions[1],
+			0x10000000,
+			0x10000000,
+			128 * 1024 * 1024,
+			PCI_REGION_MEM);
+
+	hose.region_count = 2;
+
+	pci_register_hose(&hose);
+
+	pci_set_ops(	&hose,
+			pci_hose_read_config_byte_via_dword,
+			pci_hose_read_config_word_via_dword,
+			ath_pci_read_config,
+			pci_hose_write_config_byte_via_dword,
+			pci_hose_write_config_word_via_dword,
+			ath_pci_write_config);
 #endif
 	plat_dev_init();
 #endif /* CONFIG_ATH_EMULATION */
@@ -422,80 +333,9 @@ pci_init_board (void)
 	PCI_INIT_RETURN;
 }
 
-#ifdef PCIE2_APP_ADDRESS
 void
 pci_rc2_init_board (void)
 {
-#if defined(CONFIG_MACH_QCA956x) || defined(CONFIG_MACH_QCN550x)
-#if defined(CONFIG_MACH_QCA956x)
-	ath_reg_rmw_clear(GPIO_OE_ADDRESS, 0x01);
-        udelay(10000);
-        ath_reg_rmw_set(GPIO_OUT_FUNCTION0_ADDRESS, GPIO_OUT_FUNCTION0_ENABLE_GPIO_0_SET(0x73));
-#elif defined(CONFIG_MACH_QCN550x)
-	ath_reg_rmw_clear(GPIO_OE_ADDRESS, 0x20);
-        udelay(10000);
-        ath_reg_rmw_set(GPIO_OUT_FUNCTION1_ADDRESS, GPIO_OUT_FUNCTION1_ENABLE_GPIO_5_SET(0x73));
-#endif
-        udelay(10000);
-        ath_reg_rmw_set(RST_RESET_ADDRESS,RST_RESET_PCIE_PHY_RESET_SET(1) |
-                                          RST_RESET_PCIE_RESET_SET(1));
-
-        udelay(10000);
-        ath_reg_rmw_clear(RST_RESET_ADDRESS,RST_RESET_PCIE_PHY_RESET_SET(1) |
-                                            RST_RESET_PCIE_RESET_SET(1));
-
-        udelay(10000);
-        ath_reg_rmw_set(RST_RESET2_ADDRESS,RST_RESET_PCIE_PHY_RESET_SET(1) |
-                                           RST_RESET_PCIE_RESET_SET(1));
-
-        udelay(10000);
-        ath_reg_rmw_clear(RST_RESET2_ADDRESS,RST_RESET_PCIE_PHY_RESET_SET(1) |
-                                             RST_RESET_PCIE_RESET_SET(1));
-
-        udelay(10000);
-        ath_reg_wr(PCIE2_RESET_ADDRESS,PCIE2_RESET_EP_RESET_L_SET(1));
-        udelay(10000);
-        ath_reg_wr(ATH_PCI_CRP_WRDATA,0x6);
-        udelay(10000);
-        ath_reg_wr(PCIE_APP_ADDRESS,PCIE_APP_LTSSM_ENABLE_SET(1) |
-                                    PCIE_APP_SLV_RESP_ERR_MAP_SET(0x3f) |
-                                    PCIE_APP_CFG_BE_SET(0xf) |
-                                    PCIE_APP_PCIE_BAR_MSN_SET(1));
-        udelay(10000);
-        ath_reg_wr(PCIE_INT_MASK_ADDRESS,PCIE_INT_MASK_CORR_ERR_SET(1) |
-                                         PCIE_INT_MASK_NONFATAL_ERR_SET(1) |
-                                         PCIE_INT_MASK_FATAL_ERR_SET(1) |
-                                         PCIE_INT_MASK_GM_COMP_LOOKUP_ERR_SET(1) |
-                                         PCIE_INT_MASK_RADMX_COMP_LOOKUP_ERR_SET(1) |
-                                         PCIE_INT_MASK_INTA_SET(1) |
-                                         PCIE_INT_MASK_INTB_SET(1) |
-                                         PCIE_INT_MASK_INTC_SET(1) |
-                                         PCIE_INT_MASK_INTD_SET(1) |
-                                         PCIE_INT_MASK_MSI_SET(1) |
-                                         PCIE_INT_MASK_MSI_ERR_SET(1) |
-                                         PCIE_INT_MASK_AER_INT_SET(1) |
-                                         PCIE_INT_MASK_AER_MSI_SET(1) |
-                                         PCIE_INT_MASK_SYS_ERR_SET(1) |
-                                         PCIE_INT_MASK_INTAL_SET(1) |
-                                         PCIE_INT_MASK_INTBL_SET(1) |
-                                         PCIE_INT_MASK_INTCL_SET(1) |
-                                         PCIE_INT_MASK_INTDL_SET(1));
-        udelay(10000);
-        ath_local_write_config_rc2(0x70c, 4, 0x1b403200);
-        udelay(10000);
-        ath_reg_wr(PCIE_DEBUG_ADDRESS,PCIE_DEBUG_BYTESWAP_SET(1));
-        udelay(10000);
-		
-        ath_reg_rmw_set(XTAL2_SEC_ADDRESS, XTAL2_SEC_SPARE_SET(0xc));
-        udelay(10000);
-        ath_reg_rmw_clear(PCIe_DPLL2_ADDRESS, PCIe_DPLL2_KI_SET(0x3) |
-                                              PCIe_DPLL2_KD_SET(0xF));
-        udelay(10000);
-        ath_reg_rmw_set(PCIe_DPLL2_ADDRESS, PCIe_DPLL2_KD_SET(0x4));
-        udelay(10000);
-
-#else
-
 	uint32_t	cmd;
 
 	ath_reg_rmw_set(RST_RESET2_ADDRESS, RST_RESET2_PCIE2_PHY_RESET_SET(1));
@@ -534,7 +374,6 @@ pci_rc2_init_board (void)
 	ath_reg_wr_nf(PCIE2_RESET_ADDRESS, 4);	// Pull endpoint out of reset
 	udelay(100000);
 
-#endif	   
 	/*
 	 * Check if the WLAN PCI-E H/W is present, If the
 	 * WLAN H/W is not present, skip the PCI platform
@@ -545,4 +384,3 @@ pci_rc2_init_board (void)
 		return;
 	}
 }
-#endif

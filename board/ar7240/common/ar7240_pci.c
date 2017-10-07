@@ -1,19 +1,16 @@
-/*
- * Copyright (c) 2014 Qualcomm Atheros, Inc.
- * 
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- * 
- */
+/*****************************************************************************/
+/*! file ap93_pci.c
+** /brief PCI support for AP91/93 board
+**
+**  This provides the support code required for PCI support on the AP91/93
+**  board in the U-Boot environment.  This board is a Python based system
+**  with a Merlin WLAN interface.  This file also contains the support
+**  for initialization of the Merlin radios on the PCi bus, required for
+**  pre-configuration for use by Linux.
+**
+**  Copyright (c) 2008 Atheros Communications Inc.  All rights reserved.
+**
+*/
 
 #include <common.h>
 #include <command.h>
@@ -414,6 +411,24 @@ void pci_init_board (void)
 	 * WLAN H/W is not present, skip the PCI platform
 	 * initialization code and return
 	 */
+
+#ifdef CONFIG_SHUTDOWN_PCIE_USB
+    printf("Shutdown PCIE and USB!\n");
+    ar7240_reg_wr(0xb806001c, 0x2404c8f8);
+    pci_udelay(10000);
+
+    ar7240_reg_wr(0xb8030008, 0x00000001);
+    pci_udelay(10000);
+
+	ar7240_reg_wr(0xb80600bc, 0x00080000);
+	pci_udelay(10000);
+	ar7240_reg_wr(0xb8116cc0, 0x1061060e);
+	pci_udelay(10000);
+	ar7240_reg_wr(0xb8116d00, 0x1061060e);
+	pci_udelay(10000);
+	ar7240_reg_wr(0xb8116d08, 0x00005c0c);
+	pci_udelay(10000);
+#endif
 
 	if (((ar7240_reg_rd(AR7240_PCI_LCL_RESET)) & 0x1) == 0x0) {
 		printf("*** Warning *** : PCIe WLAN Module not found !!!\n");

@@ -1,0 +1,368 @@
+Archive member included because of file (symbol)
+
+lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+                              cpu/mips/start_bootstrap.o (bootstrap_board_init_f)
+lib_bootstrap/libbootstrap.a(string.o)
+                              lib_bootstrap/libbootstrap.a(bootstrap_board.o) (memset)
+lib_bootstrap/libbootstrap.a(crc32.o)
+                              lib_bootstrap/libbootstrap.a(bootstrap_board.o) (crc32)
+lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+                              lib_bootstrap/libbootstrap.a(bootstrap_board.o) (lzma_inflate)
+lib_bootstrap/libbootstrap.a(time.o)
+                              lib_bootstrap/libbootstrap.a(bootstrap_board.o) (timer_init)
+lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+                              lib_bootstrap/libbootstrap.a(LzmaWrapper.o) (LzmaDecodeProperties)
+board/ar7240/pb9x/libpb9x.a(pb9x.o)
+                              lib_bootstrap/libbootstrap.a(bootstrap_board.o) (initdram)
+board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+                              lib_bootstrap/libbootstrap.a(bootstrap_board.o) (pci_init_board)
+board/ar7240/pb9x/libpb9x.a(lowlevel_init.o)
+                              cpu/mips/start_bootstrap.o (lowlevel_init)
+cpu/mips/libmips.a(interrupts.o)
+                              lib_bootstrap/libbootstrap.a(bootstrap_board.o) (disable_interrupts)
+cpu/mips/libmips.a(cache.o)   cpu/mips/start_bootstrap.o (simple_mips_cache_reset)
+cpu/mips/ar7240/libar7240.a(meminit.o)
+                              board/ar7240/pb9x/libpb9x.a(pb9x.o) (ar7240_ddr_find_size)
+cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+                              lib_bootstrap/libbootstrap.a(bootstrap_board.o) (serial_init)
+
+Allocating common symbols
+Common symbol       size              file
+
+monitor_flash_len   0x4               lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+___strtok           0x4               lib_bootstrap/libbootstrap.a(string.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000000000                . = 0x0
+                0x0000000000000000                . = ALIGN (0x4)
+
+.text           0x000000009f000000     0x3400
+ *(.text)
+ .text          0x000000009f000000      0x850 cpu/mips/start_bootstrap.o
+                0x000000009f000000                _start_bootstrap
+                0x000000009f00052c                bootstrap_relocate_code
+                0x000000009f0005f0                ath_ddr_tap_cal
+ .text          0x000000009f000850      0x350 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+                0x000000009f000930                hang
+                0x000000009f000850                malloc
+                0x000000009f000890                realloc
+                0x000000009f0008a0                sbrk
+                0x000000009f000938                bootstrap_board_init_f
+                0x000000009f000a70                bootstrap_board_init_r
+                0x000000009f000898                free
+ .text          0x000000009f000ba0      0x650 lib_bootstrap/libbootstrap.a(string.o)
+                0x000000009f001044                memmove
+                0x000000009f001014                memcpy
+                0x000000009f000f8c                strswab
+                0x000000009f000cfc                strnlen
+                0x000000009f000c84                strrchr
+                0x000000009f000ba0                strcat
+                0x000000009f0011b0                memchr
+                0x000000009f0010f0                strstr
+                0x000000009f000e60                strtok
+                0x000000009f0010c0                memcmp
+                0x000000009f000bd8                strncat
+                0x000000009f000d38                strdup
+                0x000000009f000fe8                memset
+                0x000000009f000f20                strsep
+                0x000000009f000db0                strspn
+                0x000000009f000c60                strlen
+                0x000000009f000c24                strchr
+                0x000000009f000e10                strpbrk
+ .text          0x000000009f0011f0      0x190 lib_bootstrap/libbootstrap.a(crc32.o)
+                0x000000009f0011f0                crc32
+ .text          0x000000009f001380      0x2b0 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+                0x000000009f0013f4                lzma_inflate
+ .text          0x000000009f001630       0xc0 lib_bootstrap/libbootstrap.a(time.o)
+                0x000000009f001660                set_timer
+                0x000000009f001644                reset_timer
+                0x000000009f0016e4                get_tbclk
+                0x000000009f001654                get_timer
+                0x000000009f001630                timer_init
+                0x000000009f00166c                udelay
+                0x000000009f0016d4                get_ticks
+ .text          0x000000009f0016f0      0xad0 lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+                0x000000009f0016f0                LzmaDecodeProperties
+                0x000000009f00176c                LzmaDecode
+ .text          0x000000009f0021c0      0x220 board/ar7240/pb9x/libpb9x.a(pb9x.o)
+                0x000000009f0021c0                ar7240_usb_initial_config
+                0x000000009f002220                ar7240_mem_config
+                0x000000009f00234c                checkboard
+                0x000000009f0021e8                ar7240_gpio_config
+                0x000000009f002334                initdram
+ .text          0x000000009f0023e0      0x410 board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+                0x000000009f0025c4                pci_init_board
+                0x000000009f002438                plat_dev_init
+ .text          0x000000009f0027f0      0x290 board/ar7240/pb9x/libpb9x.a(lowlevel_init.o)
+                0x000000009f0027f0                lowlevel_init
+ .text          0x000000009f002a80       0x10 cpu/mips/libmips.a(interrupts.o)
+                0x000000009f002a88                disable_interrupts
+                0x000000009f002a80                enable_interrupts
+ .text          0x000000009f002a90      0x360 cpu/mips/libmips.a(cache.o)
+                0x000000009f002cf8                dcache_flush_range
+                0x000000009f002ad8                mips_cache_reset
+                0x000000009f002c9c                mips_cache_lock
+                0x000000009f002a90                simple_mips_cache_reset
+                0x000000009f002d74                mips_icache_flush_ix
+                0x000000009f002da4                mips_cache_lock_24k
+                0x000000009f002d20                mips_cache_flush
+                0x000000009f002c70                dcache_status
+                0x000000009f002c80                dcache_disable
+ .text          0x000000009f002df0      0x370 cpu/mips/ar7240/libar7240.a(meminit.o)
+                0x000000009f002e58                ar7240_ddr_initial_config
+                0x000000009f002e20                ar7240_ddr_find_size
+                0x000000009f002df0                ar7240_ddr_tap_set
+ .text          0x000000009f003160      0x2a0 cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+                0x000000009f0033a0                serial_setbrg
+                0x000000009f0032dc                serial_tstc
+                0x000000009f003334                serial_putc
+                0x000000009f003160                ar7240_sys_frequency
+                0x000000009f003208                serial_init
+                0x000000009f0033a8                serial_puts
+                0x000000009f0032f0                serial_getc
+                0x000000009f003400                . = ALIGN (0x4)
+
+.rodata         0x000000009f003400      0x430
+ *(.rodata)
+ .rodata        0x000000009f003400       0x30 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+                0x000000009f003400                version_string
+ .rodata        0x000000009f003430      0x400 lib_bootstrap/libbootstrap.a(crc32.o)
+
+.reginfo        0x000000009f003830       0x18
+ .reginfo       0x000000009f003830       0x18 cpu/mips/start_bootstrap.o
+
+.rodata.str1.4  0x000000009f003848       0x3f
+ .rodata.str1.4
+                0x000000009f003848       0x3f board/ar7240/pb9x/libpb9x.a(pb9x.o)
+                                         0x40 (size before relaxing)
+                0x000000009f003888                . = ALIGN (0x4)
+
+.data           0x000000009f003890       0x20
+ *(.data)
+ .data          0x000000009f003890       0x20 cpu/mips/ar7240/libar7240.a(meminit.o)
+                0x000000009f003898                tap_settings
+                0x000000009f003890                tap_pattern
+
+.data.rel       0x000000009f0038b0       0x14
+ .data.rel      0x000000009f0038b0       0x14 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+                0x000000009f0038b0                init_sequence
+                0x000000009f0038c4                . = ALIGN (0x4)
+
+.sdata
+ *(.sdata)
+ *(.sdata)
+                0x000000009f0038d0                _gp = ALIGN (0x10)
+                0x000000009f0038d0                . = ALIGN (0x10)
+                0x000000009f0038d0                __got_start_bootstrap = .
+
+.got            0x000000009f0038d0       0xc4
+ *(.got)
+ .got           0x000000009f0038d0       0xc4 cpu/mips/start_bootstrap.o
+                0x000000009f0038d0                _GLOBAL_OFFSET_TABLE_
+                0x000000009f003994                __got_end_bootstrap = .
+                0x000000009f003994                uboot_end_data_bootstrap = .
+                0x0000000000000031                num_got_entries = ((__got_end_bootstrap - __got_start_bootstrap) >> 0x2)
+                0x000000009f003994                . = ALIGN (0x4)
+
+.sbss
+ *(.sbss)
+
+.bss            0x000000009f0039a0      0x100
+ *(.bss)
+ .bss           0x000000009f0039a0       0x10 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+ .bss           0x000000009f0039b0       0x10 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .bss           0x000000009f0039c0       0xe0 board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+                0x000000009f003aa0                uboot_end_bootstrap = .
+
+.scommon        0x000000009f003aa0        0x8
+ .scommon       0x000000009f003aa0        0x4 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+                0x000000009f003aa0                monitor_flash_len
+ .scommon       0x000000009f003aa4        0x4 lib_bootstrap/libbootstrap.a(string.o)
+                0x000000009f003aa4                ___strtok
+
+.rel.dyn
+Address of section .text set to 0x9f000000
+LOAD cpu/mips/start_bootstrap.o
+START GROUP
+LOAD lib_bootstrap/libbootstrap.a
+LOAD board/ar7240/pb9x/libpb9x.a
+LOAD cpu/mips/libmips.a
+LOAD cpu/mips/ar7240/libar7240.a
+END GROUP
+LOAD /opt/LSDK-9.5.3.15/build/gcc-3.4.4-2.16.1/build_mips_nofpu/bin-ccache/../lib/gcc/mips-linux-uclibc/3.4.4/libgcc.a
+OUTPUT(bootstrap elf32-tradbigmips)
+
+.pdr            0x0000000000000000      0x8a0
+ .pdr           0x0000000000000000       0x20 cpu/mips/start_bootstrap.o
+ .pdr           0x0000000000000020      0x100 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+ .pdr           0x0000000000000120      0x240 lib_bootstrap/libbootstrap.a(string.o)
+ .pdr           0x0000000000000360       0x20 lib_bootstrap/libbootstrap.a(crc32.o)
+ .pdr           0x0000000000000380       0x40 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .pdr           0x00000000000003c0       0xe0 lib_bootstrap/libbootstrap.a(time.o)
+ .pdr           0x00000000000004a0       0x40 lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+ .pdr           0x00000000000004e0       0xa0 board/ar7240/pb9x/libpb9x.a(pb9x.o)
+ .pdr           0x0000000000000580       0x80 board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+ .pdr           0x0000000000000600       0x40 cpu/mips/libmips.a(interrupts.o)
+ .pdr           0x0000000000000640      0x120 cpu/mips/libmips.a(cache.o)
+ .pdr           0x0000000000000760       0x60 cpu/mips/ar7240/libar7240.a(meminit.o)
+ .pdr           0x00000000000007c0       0xe0 cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+
+.stab           0x0000000000000000     0x1adc
+ .stab          0x0000000000000000     0x1164 cpu/mips/start_bootstrap.o
+ .stab          0x0000000000001164      0x2d0 board/ar7240/pb9x/libpb9x.a(lowlevel_init.o)
+                                        0x2dc (size before relaxing)
+ .stab          0x0000000000001434      0x6a8 cpu/mips/libmips.a(cache.o)
+                                        0x6b4 (size before relaxing)
+
+.stabstr        0x0000000000000000      0x1aa
+ .stabstr       0x0000000000000000      0x1aa cpu/mips/start_bootstrap.o
+
+.mdebug.abi32   0x0000000000000000        0x0
+
+.debug_abbrev   0x0000000000000000      0xc78
+ .debug_abbrev  0x0000000000000000      0x238 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+ .debug_abbrev  0x0000000000000238      0x172 lib_bootstrap/libbootstrap.a(string.o)
+ .debug_abbrev  0x00000000000003aa       0x93 lib_bootstrap/libbootstrap.a(crc32.o)
+ .debug_abbrev  0x000000000000043d      0x150 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .debug_abbrev  0x000000000000058d      0x148 lib_bootstrap/libbootstrap.a(time.o)
+ .debug_abbrev  0x00000000000006d5      0x11b lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+ .debug_abbrev  0x00000000000007f0      0x102 board/ar7240/pb9x/libpb9x.a(pb9x.o)
+ .debug_abbrev  0x00000000000008f2      0x16a board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+ .debug_abbrev  0x0000000000000a5c       0x5c cpu/mips/libmips.a(interrupts.o)
+ .debug_abbrev  0x0000000000000ab8       0xd5 cpu/mips/ar7240/libar7240.a(meminit.o)
+ .debug_abbrev  0x0000000000000b8d       0xeb cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+
+.debug_info     0x0000000000000000     0x25a6
+ .debug_info    0x0000000000000000      0x6b5 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+ .debug_info    0x00000000000006b5      0x6fc lib_bootstrap/libbootstrap.a(string.o)
+ .debug_info    0x0000000000000db1      0x12e lib_bootstrap/libbootstrap.a(crc32.o)
+ .debug_info    0x0000000000000edf      0x31e lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .debug_info    0x00000000000011fd      0x2b1 lib_bootstrap/libbootstrap.a(time.o)
+ .debug_info    0x00000000000014ae      0x4c6 lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+ .debug_info    0x0000000000001974      0x1cb board/ar7240/pb9x/libpb9x.a(pb9x.o)
+ .debug_info    0x0000000000001b3f      0x5a1 board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+ .debug_info    0x00000000000020e0       0xac cpu/mips/libmips.a(interrupts.o)
+ .debug_info    0x000000000000218c      0x1f6 cpu/mips/ar7240/libar7240.a(meminit.o)
+ .debug_info    0x0000000000002382      0x224 cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+
+.debug_line     0x0000000000000000      0xbc0
+ .debug_line    0x0000000000000000      0x1b7 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+ .debug_line    0x00000000000001b7      0x19b lib_bootstrap/libbootstrap.a(string.o)
+ .debug_line    0x0000000000000352       0x7a lib_bootstrap/libbootstrap.a(crc32.o)
+ .debug_line    0x00000000000003cc      0x143 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .debug_line    0x000000000000050f       0xc8 lib_bootstrap/libbootstrap.a(time.o)
+ .debug_line    0x00000000000005d7      0x1c8 lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+ .debug_line    0x000000000000079f       0xb5 board/ar7240/pb9x/libpb9x.a(pb9x.o)
+ .debug_line    0x0000000000000854      0x15b board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+ .debug_line    0x00000000000009af       0x3a cpu/mips/libmips.a(interrupts.o)
+ .debug_line    0x00000000000009e9      0x113 cpu/mips/ar7240/libar7240.a(meminit.o)
+ .debug_line    0x0000000000000afc       0xc4 cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+
+.debug_frame    0x0000000000000000      0x5b4
+ .debug_frame   0x0000000000000000       0xb8 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+ .debug_frame   0x00000000000000b8      0x180 lib_bootstrap/libbootstrap.a(string.o)
+ .debug_frame   0x0000000000000238       0x20 lib_bootstrap/libbootstrap.a(crc32.o)
+ .debug_frame   0x0000000000000258       0x64 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .debug_frame   0x00000000000002bc       0x8c lib_bootstrap/libbootstrap.a(time.o)
+ .debug_frame   0x0000000000000348       0x50 lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+ .debug_frame   0x0000000000000398       0x68 board/ar7240/pb9x/libpb9x.a(pb9x.o)
+ .debug_frame   0x0000000000000400       0x78 board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+ .debug_frame   0x0000000000000478       0x30 cpu/mips/libmips.a(interrupts.o)
+ .debug_frame   0x00000000000004a8       0x64 cpu/mips/ar7240/libar7240.a(meminit.o)
+ .debug_frame   0x000000000000050c       0xa8 cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+
+.debug_pubnames
+                0x0000000000000000      0x48b
+ .debug_pubnames
+                0x0000000000000000       0xb5 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+ .debug_pubnames
+                0x00000000000000b5       0xec lib_bootstrap/libbootstrap.a(string.o)
+ .debug_pubnames
+                0x00000000000001a1       0x1c lib_bootstrap/libbootstrap.a(crc32.o)
+ .debug_pubnames
+                0x00000000000001bd       0x23 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .debug_pubnames
+                0x00000000000001e0       0x74 lib_bootstrap/libbootstrap.a(time.o)
+ .debug_pubnames
+                0x0000000000000254       0x3a lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+ .debug_pubnames
+                0x000000000000028e       0x79 board/ar7240/pb9x/libpb9x.a(pb9x.o)
+ .debug_pubnames
+                0x0000000000000307       0x37 board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+ .debug_pubnames
+                0x000000000000033e       0x3f cpu/mips/libmips.a(interrupts.o)
+ .debug_pubnames
+                0x000000000000037d       0x81 cpu/mips/ar7240/libar7240.a(meminit.o)
+ .debug_pubnames
+                0x00000000000003fe       0x8d cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+
+.debug_aranges  0x0000000000000000      0x160
+ .debug_aranges
+                0x0000000000000000       0x20 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+ .debug_aranges
+                0x0000000000000020       0x20 lib_bootstrap/libbootstrap.a(string.o)
+ .debug_aranges
+                0x0000000000000040       0x20 lib_bootstrap/libbootstrap.a(crc32.o)
+ .debug_aranges
+                0x0000000000000060       0x20 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .debug_aranges
+                0x0000000000000080       0x20 lib_bootstrap/libbootstrap.a(time.o)
+ .debug_aranges
+                0x00000000000000a0       0x20 lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+ .debug_aranges
+                0x00000000000000c0       0x20 board/ar7240/pb9x/libpb9x.a(pb9x.o)
+ .debug_aranges
+                0x00000000000000e0       0x20 board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+ .debug_aranges
+                0x0000000000000100       0x20 cpu/mips/libmips.a(interrupts.o)
+ .debug_aranges
+                0x0000000000000120       0x20 cpu/mips/ar7240/libar7240.a(meminit.o)
+ .debug_aranges
+                0x0000000000000140       0x20 cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+
+.debug_str      0x0000000000000000      0xbee
+ .debug_str     0x0000000000000000      0x3b0 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+                                        0x412 (size before relaxing)
+ .debug_str     0x00000000000003b0       0xd6 lib_bootstrap/libbootstrap.a(string.o)
+                                        0x1b4 (size before relaxing)
+ .debug_str     0x0000000000000486       0x30 lib_bootstrap/libbootstrap.a(crc32.o)
+                                         0xfa (size before relaxing)
+ .debug_str     0x00000000000004b6      0x124 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+                                        0x244 (size before relaxing)
+ .debug_str     0x00000000000005da       0x7c lib_bootstrap/libbootstrap.a(time.o)
+                                        0x15d (size before relaxing)
+ .debug_str     0x0000000000000656      0x139 lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+                                        0x240 (size before relaxing)
+ .debug_str     0x000000000000078f       0xaa board/ar7240/pb9x/libpb9x.a(pb9x.o)
+                                        0x169 (size before relaxing)
+ .debug_str     0x0000000000000839      0x1c8 board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+                                        0x2c4 (size before relaxing)
+ .debug_str     0x0000000000000a01       0x5a cpu/mips/libmips.a(interrupts.o)
+                                         0xf2 (size before relaxing)
+ .debug_str     0x0000000000000a5b       0xe9 cpu/mips/ar7240/libar7240.a(meminit.o)
+                                        0x1a5 (size before relaxing)
+ .debug_str     0x0000000000000b44       0xaa cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+                                        0x172 (size before relaxing)
+
+.comment        0x0000000000000000       0xc6
+ .comment       0x0000000000000000       0x12 lib_bootstrap/libbootstrap.a(bootstrap_board.o)
+ .comment       0x0000000000000012       0x12 lib_bootstrap/libbootstrap.a(string.o)
+ .comment       0x0000000000000024       0x12 lib_bootstrap/libbootstrap.a(crc32.o)
+ .comment       0x0000000000000036       0x12 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .comment       0x0000000000000048       0x12 lib_bootstrap/libbootstrap.a(time.o)
+ .comment       0x000000000000005a       0x12 lib_bootstrap/libbootstrap.a(LzmaDecode.o)
+ .comment       0x000000000000006c       0x12 board/ar7240/pb9x/libpb9x.a(pb9x.o)
+ .comment       0x000000000000007e       0x12 board/ar7240/pb9x/libpb9x.a(ar7240_pci.o)
+ .comment       0x0000000000000090       0x12 cpu/mips/libmips.a(interrupts.o)
+ .comment       0x00000000000000a2       0x12 cpu/mips/ar7240/libar7240.a(meminit.o)
+ .comment       0x00000000000000b4       0x12 cpu/mips/ar7240/libar7240.a(ar7240_serial.o)
+
+.debug_ranges   0x0000000000000000       0x98
+ .debug_ranges  0x0000000000000000       0x48 lib_bootstrap/libbootstrap.a(LzmaWrapper.o)
+ .debug_ranges  0x0000000000000048       0x50 lib_bootstrap/libbootstrap.a(LzmaDecode.o)
